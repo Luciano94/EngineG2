@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+ProyectoEngine/\.vs/
+
+ProyectoEngine/Debug/
+
+ProyectoEngine/Engine/Debug/
+
+ProyectoEngine/EngineDLL/Debug/
