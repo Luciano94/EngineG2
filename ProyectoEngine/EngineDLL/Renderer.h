@@ -2,6 +2,8 @@
 #include "Exports.h"
 #include "Window.h"
 #include <iostream>
+#include<glm/glm.hpp>
+#include<glm\gtc\matrix_transform.hpp>
 
 using namespace std;
 
@@ -9,6 +11,9 @@ class ENGINEDLL_API Renderer {
 private:
 	void* win;
 	unsigned int VertexArrayID;
+	glm::mat4 WorldMatrix;
+	glm::mat4 ViewMatrix;
+	glm::mat4 ProjectionMatrix;
 public:
 	bool Start(void* wnd);
 	bool Stop();
