@@ -2,6 +2,7 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 using namespace std;
+
 bool Renderer::Start(void* wnd) {
 	cout << "Renderer::Start()" << endl;
 	win = wnd;
@@ -35,21 +36,31 @@ unsigned int Renderer::GenBuffer(float * buffer, int size)
 	return vertexBuffer;
 }
 
-void Renderer::DrawBuffer(unsigned int vtxBuffer, int size)
-{
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vtxBuffer);
+void Renderer::BeginDraw(unsigned int atribID) {
+	glEnableVertexAttribArray(atribID);
+}
+
+void Renderer::EndDraw(unsigned int atribID) {
+	// Dibujar el triángulo !
+	glDisableVertexAttribArray(atribID);
+}
+
+void Renderer::BindDraw(unsigned int atribID) {
 	glVertexAttribPointer(
-		0,                  // atributo 0. No hay razón particular para el 0, pero debe corresponder en el shader.
+		atribID,                  // atributo 0. No hay razón particular para el 0, pero debe corresponder en el shader.
 		3,                  // tamaño
 		GL_FLOAT,           // tipo
 		GL_FALSE,           // normalizado?
 		0,                    // Paso
 		(void*)0            // desfase del buffer
 	);
-	// Dibujar el triángulo !
+}
+
+void Renderer::DrawBuffer(unsigned int vtxBuffer, int size)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vtxBuffer);
+	
 	glDrawArrays(GL_TRIANGLES, 0, size); // Empezar desde el vértice 0S; 3 vértices en total -> 1 triángulo
-	glDisableVertexAttribArray(0);
 }
 
 void Renderer::DestroyBuffer(unsigned int buffer)

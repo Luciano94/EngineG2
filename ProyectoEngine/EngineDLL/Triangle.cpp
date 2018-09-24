@@ -35,8 +35,10 @@ void Triangle::Draw()
 {
 	if (material != NULL)
 		material->Bind();
-
+	render->BeginDraw(0);
+	render->BindDraw(0);
 	render->DrawBuffer(bufferId, vtxCount);
+	render->EndDraw(0);
 }
 
 void Triangle::SetMaterial(Material* material)

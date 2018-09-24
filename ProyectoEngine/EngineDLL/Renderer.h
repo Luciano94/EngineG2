@@ -19,6 +19,9 @@ public:
 	bool Stop();
 	void setClearScreenColor(float r, float g, float b, float a);
 	unsigned int GenBuffer(float* buffer, int size);
+	void BeginDraw(unsigned int name);
+	void EndDraw(unsigned int name);
+	void BindDraw(unsigned int name);
 	void DrawBuffer(unsigned int vtxBuffer, int size);
 	void DestroyBuffer(unsigned int buffer);
 	void ClearScreen();
