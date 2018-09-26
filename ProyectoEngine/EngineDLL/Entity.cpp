@@ -5,10 +5,10 @@
 Entity::Entity(Renderer * renderPTR)
 {
 	render = renderPTR;
-	WorldMatrix = glm::mat4(0.0f);
-	TranslateMatrix = glm::mat4(0.0f);
-	RotMatrix = glm::mat4(0.0f);
-	ScaleMatrix = glm::mat4(0.0f);
+	WorldMatrix = glm::mat4(1.0f);
+	TranslateMatrix = glm::mat4(1.0f);
+	RotMatrix = glm::mat4(1.0f);
+	ScaleMatrix = glm::mat4(1.0f);
 
 	pos[0] = pos[1] = pos[2] = 0.0f;
 	rot[0] = rot[1] = rot[2] = 0.0f;
@@ -59,4 +59,14 @@ glm::vec3 Entity::GetScale(){
 
 Entity::~Entity()
 {
+}
+
+void Entity::SetPos(float x, float y, float z)
+{
+	pos[0] = x;
+	pos[1] = y;
+	pos[2] = z;
+
+	TranslateMatrix = glm::translate(glm::mat4(1.0f), pos);
+	UpdateWorldMatrix();
 }

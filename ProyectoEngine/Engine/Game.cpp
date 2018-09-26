@@ -2,6 +2,7 @@
 
 bool Game::OnStart() {
 	i = 0;
+	deltaTime = 0;
 	mat1 = new Material();
 	unsigned int programID = mat1->LoadShaders("vertexshader.txt", "fragmentshader.txt");
 	tr1 = new Triangle(render);
@@ -17,7 +18,15 @@ bool Game::OnStop() {
 
 bool Game::OnUpdate() {
 	i++;
-
+	if (i == 60) {
+		i = 0;
+		deltaTime++;
+	}
+	if (deltaTime == 360) {
+		deltaTime = 0;
+	}
+	float z = deltaTime * (180 / 3.141592654);
+	tr1->SetRot(0, 0, z);
 	cout <<"Game::OnUpdate():"<< i <<endl;
 	return true;
 }

@@ -8,6 +8,7 @@ using namespace std;
 class Game : public GameBase {
 private:
 	int i;
+	int deltaTime;
 	Triangle * tr1;
 	Material * mat1;
 protected:

@@ -15,6 +15,19 @@ bool Renderer::Start(void* wnd) {
 	
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
+
+	ProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.f);
+
+	ViewMatrix = glm::lookAt(
+		glm::vec3(0, 0, 3),
+		glm::vec3(0, 0, 0),
+		glm::vec3(0, 1, 0)
+	);
+
+	WorldMatrix = glm::mat4(1.0f);
+
+	UpdateWVP();
+
 	return true;
 }
 
@@ -74,6 +87,33 @@ void Renderer::ClearScreen(){
 
 void Renderer::SwapBuffer(){
 	glfwSwapBuffers((GLFWwindow*) win);
+}
+
+void Renderer::UpdateWVP()
+{
+	WVP = ProjectionMatrix * ViewMatrix * WorldMatrix;
+}
+
+glm::mat4 & Renderer::GetWVP()
+{
+	return WVP;
+}
+
+void Renderer::LoadIMatrix()
+{
+	WorldMatrix = glm::mat4(1.0f);
+}
+
+void Renderer::SetWMatrix(glm::mat4 matrix)
+{
+	WorldMatrix = matrix;
+	UpdateWVP();
+}
+
+void Renderer::MultiplyWMatrix(glm::mat4 matrix)
+{
+	WorldMatrix *= matrix;
+	UpdateWVP();
 }
 
 Renderer::Renderer() {

@@ -1,8 +1,8 @@
 #pragma once
 #include<iostream>
-
+#include "Exports.h"
 using namespace std;
-class Window {
+class ENGINEDLL_API Window {
 private:
 	void* window;
 public:

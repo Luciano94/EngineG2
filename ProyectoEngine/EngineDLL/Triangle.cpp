@@ -33,8 +33,14 @@ void Triangle::SetVertices(float* vertices, int count)
 
 void Triangle::Draw()
 {
-	if (material != NULL)
-		material->Bind();
+	render->LoadIMatrix();
+	render->SetWMatrix(WorldMatrix);
+
+	if (material != NULL) {
+		material->Bind("WVP");
+		material->SetMatrixProperty(render->GetWVP());
+	}
+
 	render->BeginDraw(0);
 	render->BindDraw(0);
 	render->DrawBuffer(bufferId, vtxCount);

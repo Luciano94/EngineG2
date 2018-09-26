@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-	Game* game = new Game();
+	GameBase* game = new Game();
 	if (game->Start(800,600, (char*)&"Hoola")) {
 		game->Loop();
 	}

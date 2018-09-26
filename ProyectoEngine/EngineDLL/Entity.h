@@ -16,11 +16,14 @@ protected:
 	void UpdateWorldMatrix();
 public:
 	virtual void Draw() = 0;
+
 	Entity(Renderer * renderPTR);
 	~Entity();
+
 	void SetPos(float x, float y, float z);
 	void SetRot(float x, float y, float z);
 	void SetScale(float x, float y, float z);
+
 	glm::vec3 GetPos();
 	glm::vec3 GetRot();
 	glm::vec3 GetScale();
