@@ -1,6 +1,7 @@
 #pragma once
 #include "GameBase.h"
 #include "Triangle.h"
+#include "Square.h"
 #include "Material.h"
 #include <iostream>
 
@@ -11,8 +12,10 @@ private:
 	float speed;
 	float rotZ;
 	float posX;
+	Square * sqr1;
 	Triangle * tr1;
 	Triangle * tr2;
+	Material * mat3;
 	Material * mat2;
 	Material * mat1;
 protected:

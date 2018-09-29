@@ -54,26 +54,24 @@ void Renderer::BeginDraw(unsigned int atribID) {
 }
 
 void Renderer::EndDraw(unsigned int atribID) {
-	// Dibujar el triángulo !
 	glDisableVertexAttribArray(atribID);
 }
 
-void Renderer::BindDraw(unsigned int atribID) {
+void Renderer::BindDraw(unsigned int atribID, unsigned int vtxBuffer) {
+	glBindBuffer(GL_ARRAY_BUFFER, vtxBuffer);
 	glVertexAttribPointer(
-		atribID,                  // atributo 0. No hay razón particular para el 0, pero debe corresponder en el shader.
+		atribID,            // atributo 0. No hay razón particular para el 0, pero debe corresponder en el shader.
 		3,                  // tamaño
 		GL_FLOAT,           // tipo
 		GL_FALSE,           // normalizado?
-		0,                    // Paso
+		0,                  // Paso
 		(void*)0            // desfase del buffer
 	);
 }
 
 void Renderer::DrawBuffer(unsigned int vtxBuffer, int size)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, vtxBuffer);
-	
-	glDrawArrays(GL_TRIANGLES, 0, size); // Empezar desde el vértice 0S; 3 vértices en total -> 1 triángulo
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, size);
 }
 
 void Renderer::DestroyBuffer(unsigned int buffer)

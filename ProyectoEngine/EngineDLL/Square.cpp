@@ -1,28 +1,39 @@
-#include "Triangle.h"
+#include "Square.h"
 
-Triangle::Triangle(Renderer *render) :Entity(render)
+
+
+Square::Square(Renderer *render) :Entity(render)
 {
 	shouldDispose = false;
 	material = NULL;
 	vertex = NULL;
 	bufferId = -1;
 
-	vertex = new float[9]
+	vertex = new float[12]
 	{
-		-1.0f, -1.0f, 0.0f,
-		1.0f, -1.0f, 0.0f,
-		0.0f,  1.0f, 0.0f,
+		-0.5f, -0.5f, 0.f,
+		-0.5f,  0.5f, 0.f,
+		0.5f, -0.5f, 0.f,
+		0.5f,  0.5f, 0.f
 	};
 
-	SetVertices(vertex, 3);
+	colorVertex = new float[12] 
+	{
+		1.f, 0.f, 0.f,
+		0.f, 1.f, 0.f,
+		0.f, 0.f, 1.f,
+		1.f, 1.f, 0.f
+	};
+
+	SetVertices(vertex, 4);
 }
 
-Triangle::~Triangle()
+Square::~Square()
 {
 	Dispose();
 }
 
-void Triangle::SetVertices(float* vertices, int count)
+void Square::SetVertices(float* vertices, int count)
 {
 	Dispose();
 	vtxCount = count;
@@ -31,7 +42,11 @@ void Triangle::SetVertices(float* vertices, int count)
 
 }
 
-void Triangle::Draw()
+void Square::SetColorVertex(float* vertices, int count) {
+	
+}
+
+void Square::Draw()
 {
 	render->LoadIMatrix();
 	render->SetWMatrix(WorldMatrix);
@@ -47,12 +62,12 @@ void Triangle::Draw()
 	render->EndDraw(0);
 }
 
-void Triangle::SetMaterial(Material* material)
+void Square::SetMaterial(Material* material)
 {
 	this->material = material;
 }
 
-void Triangle::Dispose()
+void Square::Dispose()
 {
 	if (shouldDispose)
 	{

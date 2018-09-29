@@ -24,7 +24,7 @@ public:
 
 	void BeginDraw(unsigned int atribID);
 	void EndDraw(unsigned int atribID);
-	void BindDraw(unsigned int atribID);
+	void BindDraw(unsigned int atribID, unsigned int vtxBuffer);
 	void DrawBuffer(unsigned int vtxBuffer, int size);
 
 	void DestroyBuffer(unsigned int buffer);
