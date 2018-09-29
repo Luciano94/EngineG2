@@ -4,10 +4,13 @@
 #include "Renderer.h"
 #include "Window.h"
 #include "typeDef.h"
+#include <GLFW/glfw3.h>
 using namespace std;
 class ENGINEDLL_API GameBase {
 private:
 	Window * window;
+	double currentFrame;
+	double lastFrame;
 protected:
 	Renderer * render;
 	virtual bool OnStart() = 0;
@@ -15,10 +18,11 @@ protected:
 	virtual bool OnUpdate() = 0;
 	virtual void OnDraw() = 0;
 public:
+	double deltaTime;
 	bool Start(int h, int w, char* name);
 	bool Stop();
 	void Loop();
-
+	double getDeltaTime();
 	GameBase();
 	~GameBase();
 };

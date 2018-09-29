@@ -2,11 +2,19 @@
 
 bool Game::OnStart() {
 	i = 0;
-	deltaTime = 0;
+	speed = 10;
+	rotZ = 0;
+	posX = 0;
+	/*TRIANGULO 1*/
 	mat1 = new Material();
 	unsigned int programID = mat1->LoadShaders("vertexshader.txt", "fragmentshader.txt");
 	tr1 = new Triangle(render);
 	tr1->SetMaterial(mat1);
+	/*TRIANGULO 2*/
+	mat2 = new Material();
+	unsigned int programID2 = mat2->LoadShaders("vertexshader.txt", "fragmentshader.txt");
+	tr2 = new Triangle(render);
+	tr2->SetMaterial(mat2);
 	cout << "Game::OnStart()" << endl;
 	return true;
 }
@@ -18,15 +26,10 @@ bool Game::OnStop() {
 
 bool Game::OnUpdate() {
 	i++;
-	if (i == 60) {
-		i = 0;
-		deltaTime++;
-	}
-	if (deltaTime == 360) {
-		deltaTime = 0;
-	}
-	float z = deltaTime * (180 / 3.141592654);
-	tr1->SetRot(0, 0, z);
+	rotZ += deltaTime * speed;
+	posX += deltaTime * speed;
+	tr1->SetRot(0, 0, rotZ);
+	tr2->SetPos(posX, 0, 0);
 	cout <<"Game::OnUpdate():"<< i <<endl;
 	return true;
 }
@@ -34,6 +37,7 @@ bool Game::OnUpdate() {
 void Game::OnDraw()
 {
 	tr1->Draw();
+	tr2->Draw();
 	cout << "Game::OnDraw(): " << i << endl;
 }
 
