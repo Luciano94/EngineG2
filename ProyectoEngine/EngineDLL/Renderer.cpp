@@ -12,10 +12,9 @@ bool Renderer::Start(void* wnd) {
 		cout << "Falló al inicializar GLEW\n" << endl;
 		return -1;
 	}
-	
+
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
-
 	ProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.f);
 
 	ViewMatrix = glm::lookAt(
@@ -49,6 +48,16 @@ unsigned int Renderer::GenBuffer(float * buffer, int size)
 	return vertexBuffer;
 }
 
+unsigned int Renderer::GenColorBuffer(float * buffer, int size)
+{
+	unsigned int colorbuffer;
+	glGenBuffers(1, &colorbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+	glBufferData(GL_ARRAY_BUFFER, size , buffer, GL_STATIC_DRAW);
+	return colorbuffer;
+}
+
+
 void Renderer::BeginDraw(unsigned int atribID) {
 	glEnableVertexAttribArray(atribID);
 }
@@ -60,7 +69,7 @@ void Renderer::EndDraw(unsigned int atribID) {
 void Renderer::BindDraw(unsigned int atribID, unsigned int vtxBuffer) {
 	glBindBuffer(GL_ARRAY_BUFFER, vtxBuffer);
 	glVertexAttribPointer(
-		atribID,            // atributo 0. No hay razón particular para el 0, pero debe corresponder en el shader.
+		atribID,            // debe corresponder en el shader.
 		3,                  // tamaño
 		GL_FLOAT,           // tipo
 		GL_FALSE,           // normalizado?

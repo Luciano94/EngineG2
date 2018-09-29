@@ -17,7 +17,8 @@ bool Game::OnStart() {
 	tr2->SetMaterial(mat2);
 	/*CUADRADO*/
 	mat3 = new Material();
-	unsigned int ProgramID3 = mat3->LoadShaders("vertexshader.txt", "fragmentshader.txt");
+	unsigned int ProgramID3 = mat3->LoadShaders("vColor.glsl", "fColor.glsl");
+	//unsigned int ProgramID3 = mat3->LoadShaders("vertexshader.txt", "fragmentshader.txt");
 	sqr1 = new Square(render);
 	sqr1->SetMaterial(mat3);
 	cout << "Game::OnStart()" << endl;

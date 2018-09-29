@@ -7,10 +7,12 @@ class ENGINEDLL_API Square : public Entity
 private:
 	Material * material;
 	bool shouldDispose;
-	unsigned int bufferId;
 	float * vertex;
-	float * colorVertex;
 	int vtxCount;
+	unsigned int bufferId;
+	float * colorVertex;
+	int vtxColorCount;
+	unsigned int ColorBufferId;
 
 public:
 	void Draw() override;
@@ -19,6 +21,6 @@ public:
 	void SetVertices(float * vertices, int count);
 	void SetColorVertex(float * vertices, int count);
 	void SetMaterial(Material* material);
-	void Dispose();
+	void Dispose(unsigned int bufferId);
 };
 

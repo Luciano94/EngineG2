@@ -11,6 +11,7 @@ class ENGINEDLL_API Renderer {
 private:
 	void* win;
 	unsigned int VertexArrayID;
+	unsigned int ColorVertexArrayID;
 	glm::mat4 WorldMatrix;
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
@@ -21,6 +22,10 @@ public:
 
 	void setClearScreenColor(float r, float g, float b, float a);
 	unsigned int GenBuffer(float* buffer, int size);
+
+	unsigned int GenColorBuffer(float * buffer, int size);
+
+	void DrawColorBuffer(unsigned int atribId, unsigned int vtxBuffer, int size);
 
 	void BeginDraw(unsigned int atribID);
 	void EndDraw(unsigned int atribID);
