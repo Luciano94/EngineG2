@@ -2,8 +2,7 @@
 
 
 
-Entity::Entity(Renderer * renderPTR)
-{
+Entity::Entity(Renderer * renderPTR){
 	render = renderPTR;
 	WorldMatrix = glm::mat4(1.0f);
 	TranslateMatrix = glm::mat4(1.0f);
@@ -17,8 +16,7 @@ Entity::Entity(Renderer * renderPTR)
 
 
 
-void Entity::SetRot(float x, float y, float z)
-{
+void Entity::SetRot(float x, float y, float z){
 	rot[0] = x;
 	rot[1] = y;
 	rot[2] = z;
@@ -30,8 +28,7 @@ void Entity::SetRot(float x, float y, float z)
 	UpdateWorldMatrix();
 }
 
-void Entity::SetScale(float x, float y, float z)
-{
+void Entity::SetScale(float x, float y, float z){
 	scale[0] = x;
 	scale[1] = y;
 	scale[2] = z;
@@ -61,8 +58,7 @@ Entity::~Entity()
 {
 }
 
-void Entity::SetPos(float x, float y, float z)
-{
+void Entity::SetPos(float x, float y, float z){
 	pos[0] = x;
 	pos[1] = y;
 	pos[2] = z;

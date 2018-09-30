@@ -12,13 +12,11 @@ Material::Material()
 {
 }
 
-
 Material::~Material()
 {
 }
 
-unsigned int  Material::LoadShaders(const char * vertex_file_path, const char * fragment_file_path)
-{
+unsigned int  Material::LoadShaders(const char * vertex_file_path, const char * fragment_file_path){
 	// Crear los shaders
 	GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
 	GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -112,12 +110,12 @@ unsigned int  Material::LoadShaders(const char * vertex_file_path, const char * 
 	this->ProgramID = ProgramID;
 	return ProgramID;
 }
-void Material::SetMatrixProperty( glm::mat4 & mat)
-{
+
+void Material::SetMatrixProperty( glm::mat4 & mat){
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mat[0][0]);
 }
-void Material::Bind(const char* name)
-{
+
+void Material::Bind(const char* name){
 	glUseProgram(ProgramID);
 	matrixID = glGetUniformLocation(ProgramID, name);
 }

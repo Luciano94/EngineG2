@@ -2,7 +2,7 @@
 
 bool Game::OnStart() {
 	i = 0;
-	speed = 10;
+	speed = 1;
 	rotZ = 0;
 	posX = 0;
 	/*TRIANGULO 1*/

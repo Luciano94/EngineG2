@@ -5,9 +5,9 @@ GameBase::GameBase() {
 
 GameBase::~GameBase() {
 }
+
 bool GameBase::Start(int h, int w, char* name) {
 	lastFrame = 0;
-	deltaTime = 0;
 	cout << "GameBase::Start()" << endl;
 	render = new Renderer();
 	window = new Window ();
@@ -20,9 +20,9 @@ bool GameBase::Start(int h, int w, char* name) {
 
 void GameBase::Loop() {
 	bool looping = true;
-	render->setClearScreenColor(0.0f, 0.0f, 0.4f, 0.0f);
+	render->setClearScreenColor(0.2f, 0.2f, 0.5f, 0.0f);
 	while (looping && !window->ShouldClose()) {
-		deltaTime = getDeltaTime();
+		getDeltaTime();
 		looping = OnUpdate();
 		render->ClearScreen();
 		OnDraw();
@@ -31,12 +31,10 @@ void GameBase::Loop() {
 	}
 }
 
-double GameBase::getDeltaTime()
-{
-	currentFrame = glfwGetTime() / 10;
-	double deltatime = currentFrame - lastFrame;
+void GameBase::getDeltaTime(){
+	currentFrame = glfwGetTime();
+	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
-	return deltatime;
 }
 
 bool GameBase::Stop() {

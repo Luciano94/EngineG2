@@ -2,21 +2,20 @@
 
 
 
-Square::Square(Renderer *render) :Entity(render)
-{
+Square::Square(Renderer *render) :Entity(render){
 	shouldDispose = false;
 	material = NULL;
 	vertex = NULL;
 	bufferId = -1;
 	colorVertex = NULL;
-	ColorBufferId = -1;
+	colorShape = new ColorShape(render);
 
 	vertex = new float[12]
 	{
-		-0.5f, -0.5f, 0.f,
-		-0.5f,  0.5f, 0.f,
-		0.5f, -0.5f, 0.f,
-		0.5f,  0.5f, 0.f
+		-1.0f, -1.0f, 0.f,
+		-1.0f,  1.0f, 0.f,
+		1.0f, -1.0f, 0.f,
+		1.0f,  1.0f, 0.f
 	};
 
 	colorVertex = new float[12] 
@@ -27,34 +26,23 @@ Square::Square(Renderer *render) :Entity(render)
 		0.822f,  0.569f,  0.201f,
 	};
 
+	colorShape->SetVertices(colorVertex, 4);
 	SetVertices(vertex, 4);
-	SetColorVertex(colorVertex, 4);
 }
 
-Square::~Square()
-{
-	Dispose(bufferId);
-	Dispose(ColorBufferId);
+Square::~Square(){
+	Dispose();
 }
 
-void Square::SetVertices(float* vertices, int count)
-{
-	Dispose(bufferId);
+void Square::SetVertices(float* vertices, int count){
+	Dispose();
+
 	vtxCount = count;
 	shouldDispose = true;
 	bufferId = render->GenBuffer(vertices, sizeof(float)* count * 3);
-
 }
 
-void Square::SetColorVertex(float* vertices, int count) {
-	Dispose(ColorBufferId);
-	vtxColorCount = count;
-	shouldDispose = true;
-	ColorBufferId = render->GenColorBuffer(vertices, sizeof(float)* count * 3);
-}
-
-void Square::Draw()
-{
+void Square::Draw(){
 	render->LoadIMatrix();
 	render->SetWMatrix(WorldMatrix);
 
@@ -65,26 +53,22 @@ void Square::Draw()
 
 	/*dibujar cuadrado*/
 	render->BeginDraw(0);
-	render->BeginDraw(1);
 	render->BindDraw(0, bufferId);
-	render->BindDraw(1, ColorBufferId);
 	render->DrawBuffer(bufferId, vtxCount);
-	render->DrawBuffer(ColorBufferId, vtxColorCount);
+	colorShape->Draw();
 	render->EndDraw(0);
-	render->EndDraw(1);
 }
 
-void Square::SetMaterial(Material* material)
-{
+void Square::SetMaterial(Material* material){
 	this->material = material;
 }
 
-void Square::Dispose(unsigned int bufferId)
-{
-	if (shouldDispose)
-	{
+void Square::Dispose(){
+
+	if (shouldDispose){
 		render->DestroyBuffer(bufferId);
 		delete[] vertex;
+		delete[] colorVertex;
 		shouldDispose = false;
 	}
 }
