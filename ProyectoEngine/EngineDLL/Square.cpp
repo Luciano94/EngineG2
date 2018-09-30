@@ -64,14 +64,13 @@ void Square::Draw()
 	}
 
 	/*dibujar cuadrado*/
-	render->BindDraw(0, bufferId);
 	render->BeginDraw(0);
-	render->DrawBuffer(bufferId, vtxCount);
-	render->EndDraw(0);
-	/*pintar (? cuadrado*/
-	render->BindDraw(1, ColorBufferId);
 	render->BeginDraw(1);
+	render->BindDraw(0, bufferId);
+	render->BindDraw(1, ColorBufferId);
+	render->DrawBuffer(bufferId, vtxCount);
 	render->DrawBuffer(ColorBufferId, vtxColorCount);
+	render->EndDraw(0);
 	render->EndDraw(1);
 }
 
