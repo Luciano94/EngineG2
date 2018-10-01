@@ -2,6 +2,7 @@
 #include "GameBase.h"
 #include "Triangle.h"
 #include "Square.h"
+#include "Circle.h"
 #include "Material.h"
 #include <iostream>
 
@@ -15,8 +16,8 @@ private:
 	Square * sqr1;
 	Triangle * tr1;
 	Triangle * tr2;
+	Circle * cir1;
 	Material * mat3;
-	Material * mat2;
 	Material * mat1;
 protected:
 	bool OnStart() override;

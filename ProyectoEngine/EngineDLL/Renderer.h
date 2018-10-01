@@ -25,12 +25,10 @@ public:
 
 	unsigned int GenColorBuffer(float * buffer, int size);
 
-	void DrawColorBuffer(unsigned int atribId, unsigned int vtxBuffer, int size);
-
 	void BeginDraw(unsigned int atribID);
 	void EndDraw(unsigned int atribID);
 	void BindDraw(unsigned int atribID, unsigned int vtxBuffer);
-	void DrawBuffer(unsigned int vtxBuffer, int size);
+	void DrawBuffer(unsigned int vtxBuffer, int size, int typeDraw);
 
 	void DestroyBuffer(unsigned int buffer);
 	void ClearScreen();

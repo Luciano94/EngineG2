@@ -78,9 +78,9 @@ void Renderer::BindDraw(unsigned int atribID, unsigned int vtxBuffer) {
 	);
 }
 
-void Renderer::DrawBuffer(unsigned int vtxBuffer, int size)
+void Renderer::DrawBuffer(unsigned int vtxBuffer, int size, int typeDraw)
 {
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, size);
+	glDrawArrays(typeDraw, 0, size);
 }
 
 void Renderer::DestroyBuffer(unsigned int buffer)

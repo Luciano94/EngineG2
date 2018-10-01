@@ -2,13 +2,7 @@
 
 
 
-Square::Square(Renderer *render) :Entity(render){
-	shouldDispose = false;
-	material = NULL;
-	vertex = NULL;
-	bufferId = -1;
-	colorVertex = NULL;
-	colorShape = new ColorShape(render);
+Square::Square(Renderer *render) :Shape(render){
 
 	vertex = new float[12]
 	{
@@ -26,49 +20,15 @@ Square::Square(Renderer *render) :Entity(render){
 		0.822f,  0.569f,  0.201f,
 	};
 
-	colorShape->SetVertices(colorVertex, 4);
+	SetColorVertex(colorVertex, 4);
 	SetVertices(vertex, 4);
 }
 
 Square::~Square(){
-	Dispose();
 }
 
-void Square::SetVertices(float* vertices, int count){
-	Dispose();
 
-	vtxCount = count;
-	shouldDispose = true;
-	bufferId = render->GenBuffer(vertices, sizeof(float)* count * 3);
-}
-
-void Square::Draw(){
-	render->LoadIMatrix();
-	render->SetWMatrix(WorldMatrix);
-
-	if (material != NULL) {
-		material->Bind("WVP");
-		material->SetMatrixProperty(render->GetWVP());
-	}
-
-	/*dibujar cuadrado*/
-	render->BeginDraw(0);
-	render->BindDraw(0, bufferId);
-	render->DrawBuffer(bufferId, vtxCount);
-	colorShape->Draw();
-	render->EndDraw(0);
-}
-
-void Square::SetMaterial(Material* material){
-	this->material = material;
-}
-
-void Square::Dispose(){
-
-	if (shouldDispose){
-		render->DestroyBuffer(bufferId);
-		delete[] vertex;
-		delete[] colorVertex;
-		shouldDispose = false;
-	}
+void Square::Draw()
+{
+	DrawMesh(GL_TRIANGLE_STRIP);
 }
