@@ -6,28 +6,31 @@ void Circle::Draw()
 	DrawMesh(GL_TRIANGLE_FAN);
 }
 
-Circle::Circle(Renderer * render):Shape(render)
+Circle::Circle(Renderer * render, float rdio, int trCant):Shape(render)
 {
-	vertex = new float[12]
-	{
-		-0.2f, -0.2f,
-		0.2f, -0.2f,
-		0.2f, 0.2f,
-		-0.2f, 0.2f
-	};
+	cantOfTriangles = trCant;
+	radius = rdio;
+	vertexCount = cantOfTriangles * 3;
+	angle = 0;
+	degrees = 360.0f / cantOfTriangles;
+	vertex = new float[vertexCount];
+	glm::vec3 vec;
 
-	colorVertex = new float[12]
+	for (int i = 0; i < vertexCount; i+=3)
 	{
-		0.583f,  0.771f,  0.014f,
-		0.609f,  0.115f,  0.436f,
-		0.327f,  0.483f,  0.844f,
-		0.822f,  0.569f,  0.201f,
-	};
+		vec = glm::vec3(cos(angle),sin(angle), 0) * radius;
+		vertex[i] = vec.x;
+		vertex[i + 1] = vec.y;
+		vertex[i + 2] = vec.z;
+		angle += degrees * PI / 180.0f;
+	}
 
-	SetColorVertex(colorVertex, 4);
-	SetVertices(vertex, 4);
+	SetVertices(vertex, cantOfTriangles);
+	SetColorVertex(vertex, cantOfTriangles);
+
 }
 
 Circle::~Circle()
 {
+	delete[] vertex;
 }

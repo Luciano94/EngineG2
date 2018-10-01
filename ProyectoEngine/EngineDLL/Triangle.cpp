@@ -22,6 +22,8 @@ Triangle::Triangle(Renderer *render) :Shape(render)
 
 Triangle::~Triangle()
 {
+	delete[] vertex;
+	delete[] colorVertex;
 }
 
 void Triangle::Draw()

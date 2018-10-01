@@ -19,7 +19,7 @@ bool Game::OnStart() {
 	sqr1 = new Square(render);
 	sqr1->SetMaterial(mat3);
 	/*Circulo*/
-	cir1 = new Circle(render);
+	cir1 = new Circle(render,1,20);
 	cir1->SetMaterial(mat3);
 	cout << "Game::OnStart()" << endl;
 	return true;
