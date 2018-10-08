@@ -4,6 +4,7 @@
 #include "Square.h"
 #include "Circle.h"
 #include "Material.h"
+#include "Importer.h"
 #include <iostream>
 
 using namespace std;

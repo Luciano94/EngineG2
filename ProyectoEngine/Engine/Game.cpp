@@ -22,6 +22,7 @@ bool Game::OnStart() {
 	cir1 = new Circle(render,1,20);
 	cir1->SetMaterial(mat3);
 	cout << "Game::OnStart()" << endl;
+	cin.get();
 	return true;
 }
 
