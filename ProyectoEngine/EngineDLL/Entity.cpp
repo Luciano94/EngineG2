@@ -38,6 +38,29 @@ void Entity::SetScale(float x, float y, float z){
 	UpdateWorldMatrix();
 }
 
+void Entity::Translate(float x, float y, float z)
+{
+	pos[0] += x;
+	pos[1] += y;
+	pos[2] += z;
+
+	TranslateMatrix = glm::translate(glm::mat4(1.0f), pos);
+	UpdateWorldMatrix();
+}
+
+void Entity::Rotate(float x, float y, float z)
+{
+	rot[0] += x;
+	rot[1] += y;
+	rot[2] += z;
+
+	RotMatrix = glm::rotate(glm::mat4(1.0f), rot[0], glm::vec3(1.0f, 0.0f, 0.0f));
+	RotMatrix *= glm::rotate(glm::mat4(1.0f), rot[1], glm::vec3(0.0f, 1.0f, 0.0f));
+	RotMatrix *= glm::rotate(glm::mat4(1.0f), rot[2], glm::vec3(0.0f, 0.0f, 1.0f));
+
+	UpdateWorldMatrix();
+}
+
 void Entity::UpdateWorldMatrix(){
 	WorldMatrix = TranslateMatrix * RotMatrix * ScaleMatrix;
 }

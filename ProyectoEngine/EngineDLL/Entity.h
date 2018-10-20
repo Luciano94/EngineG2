@@ -23,6 +23,8 @@ public:
 	void SetPos(float x, float y, float z);
 	void SetRot(float x, float y, float z);
 	void SetScale(float x, float y, float z);
+	void Translate(float x, float y, float z);
+	void Rotate(float x, float y, float z);
 
 	glm::vec3 GetPos();
 	glm::vec3 GetRot();

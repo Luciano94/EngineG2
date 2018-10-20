@@ -3,8 +3,6 @@
 bool Game::OnStart() {
 	i = 0;
 	speed = 1;
-	rotZ = 0;
-	posX = 0;
 	/*TRIANGULO 1*/
 	mat1 = new Material();
 	unsigned int programID = mat1->LoadShaders("vertexshader.txt", "fragmentshader.txt");
@@ -22,7 +20,6 @@ bool Game::OnStart() {
 	cir1 = new Circle(render,1,20);
 	cir1->SetMaterial(mat3);
 	cout << "Game::OnStart()" << endl;
-	cin.get();
 	return true;
 }
 
@@ -39,12 +36,10 @@ bool Game::OnStop() {
 
 bool Game::OnUpdate() {
 	i++;
-	rotZ += deltaTime * speed;
-	posX += deltaTime * speed;
-	tr1->SetRot(0, 0, rotZ);
-	tr2->SetPos(posX, 0, 0);
-	sqr1->SetPos(-posX, 0, 0);
-	cir1->SetPos(0, posX, 0);
+	tr1->Rotate(0, 0, speed * deltaTime);
+	tr2->Translate(speed * deltaTime, 0, 0);
+	sqr1->Translate(speed * deltaTime * -1, 0, 0);
+	cir1->Translate(0, speed * deltaTime, 0);
 	cout <<"Game::OnUpdate():"<< i <<endl;
 	return true;
 }
