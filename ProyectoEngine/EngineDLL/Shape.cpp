@@ -17,16 +17,16 @@ void Shape::DrawMesh(int typeDraw)
 	render->SetWMatrix(WorldMatrix);
 
 	if (material != NULL) {
+		material->BindProgram();
 		material->Bind("WVP");
 		material->SetMatrixProperty(render->GetWVP());
 	}
 
-	render->BindDraw(0, bufferId);
-	render->BindDraw(1, colorBufferId);
 	render->BeginDraw(0);
+	render->BindBuffer(0, bufferId,3);
 	render->BeginDraw(1);
+	render->BindBuffer(1, colorBufferId,3);
 	render->DrawBuffer(bufferId, vertexCount, typeDraw);
-	render->DrawBuffer(colorBufferId, colorVertexCount, typeDraw);
 	render->EndDraw(0);
 	render->EndDraw(1);
 }

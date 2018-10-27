@@ -3,6 +3,7 @@
 #include "Triangle.h"
 #include "Square.h"
 #include "Circle.h"
+#include "Sprite.h"
 #include "Material.h"
 #include "Importer.h"
 #include <iostream>
@@ -18,7 +19,9 @@ private:
 	Triangle * tr1;
 	Triangle * tr2;
 	Circle * cir1;
+	Sprite * spr1;
 	Material * mat3;
+	Material * mat2;
 	Material * mat1;
 protected:
 	bool OnStart() override;

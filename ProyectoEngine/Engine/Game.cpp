@@ -19,6 +19,12 @@ bool Game::OnStart() {
 	/*Circulo*/
 	cir1 = new Circle(render,1,20);
 	cir1->SetMaterial(mat3);
+	/*Sprite*/
+	mat2 = new Material();
+	unsigned int programID2 = mat2->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
+	spr1 = new Sprite(render);
+	spr1->SetMaterial(mat2);
+	spr1->LoadMaterial("sample2.bmp");
 	cout << "Game::OnStart()" << endl;
 	return true;
 }
@@ -26,10 +32,12 @@ bool Game::OnStart() {
 bool Game::OnStop() {
 	cout << "Game::OnStop()" << endl;
 	delete mat1;
+	delete mat2;
 	delete mat3;
 	delete tr1;
 	delete tr2;
 	delete sqr1;
+	delete spr1;
 	delete cir1;
 	return true;
 }
@@ -50,6 +58,7 @@ void Game::OnDraw()
 	tr2->Draw();
 	sqr1->Draw();
 	cir1->Draw();
+	spr1->Draw();
 	cout << "Game::OnDraw(): " << i << endl;
 }
 

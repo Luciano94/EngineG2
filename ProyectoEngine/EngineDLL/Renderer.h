@@ -23,11 +23,10 @@ public:
 	void setClearScreenColor(float r, float g, float b, float a);
 	unsigned int GenBuffer(float* buffer, int size);
 
-	unsigned int GenColorBuffer(float * buffer, int size);
-
 	void BeginDraw(unsigned int atribID);
 	void EndDraw(unsigned int atribID);
-	void BindDraw(unsigned int atribID, unsigned int vtxBuffer);
+	void BindBuffer(unsigned int atribID, unsigned int vtxBuffer, unsigned int size);
+	void BindTexture(unsigned int texture, unsigned int textureID);
 	void DrawBuffer(unsigned int vtxBuffer, int size, int typeDraw);
 
 	void DestroyBuffer(unsigned int buffer);

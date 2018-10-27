@@ -48,15 +48,6 @@ unsigned int Renderer::GenBuffer(float * buffer, int size)
 	return vertexBuffer;
 }
 
-unsigned int Renderer::GenColorBuffer(float * buffer, int size)
-{
-	unsigned int colorbuffer;
-	glGenBuffers(1, &colorbuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-	glBufferData(GL_ARRAY_BUFFER, size , buffer, GL_STATIC_DRAW);
-	return colorbuffer;
-}
-
 
 void Renderer::BeginDraw(unsigned int atribID) {
 	glEnableVertexAttribArray(atribID);
@@ -66,16 +57,25 @@ void Renderer::EndDraw(unsigned int atribID) {
 	glDisableVertexAttribArray(atribID);
 }
 
-void Renderer::BindDraw(unsigned int atribID, unsigned int vtxBuffer) {
+void Renderer::BindBuffer(unsigned int atribID, unsigned int vtxBuffer, unsigned int size) {
 	glBindBuffer(GL_ARRAY_BUFFER, vtxBuffer);
 	glVertexAttribPointer(
 		atribID,            // debe corresponder en el shader.
-		3,                  // tamaño
+		size,                  // tamaño
 		GL_FLOAT,           // tipo
 		GL_FALSE,           // normalizado?
 		0,                  // Paso
 		(void*)0            // desfase del buffer
 	);
+}
+
+void Renderer::BindTexture(unsigned int texture, unsigned int textureID)
+{
+	// Bind our texture in Texture Unit 0
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	// Set our "myTextureSampler" sampler to use Texture Unit 0
+	glUniform1i(textureID, 0);
 }
 
 void Renderer::DrawBuffer(unsigned int vtxBuffer, int size, int typeDraw)

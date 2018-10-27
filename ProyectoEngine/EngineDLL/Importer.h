@@ -2,9 +2,6 @@
 #include "Exports.h"
 #include <fstream>
 
-class ENGINEDLL_API Importer
-{
-private:
 	struct Header
 	{
 		unsigned int dataPos;
@@ -13,8 +10,11 @@ private:
 		unsigned char * data;
 	};
 
+class ENGINEDLL_API Importer
+{
+private:
 	static bool bmpCorrectFormat(unsigned char header[], FILE *bmpFile);
 public:
-	static unsigned char LoadBMP(const char * bmpFile);
+	static unsigned int LoadBMP(const char * bmpFile, Header &hed);
 };
 
