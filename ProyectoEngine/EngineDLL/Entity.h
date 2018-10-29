@@ -1,6 +1,7 @@
 #pragma once
 #include "Renderer.h"
 #include "Exports.h"
+#include "BoundingBox.h"
 class ENGINEDLL_API Entity
 {
 private:
@@ -9,10 +10,12 @@ private:
 	glm::vec3 scale;
 protected:
 	Renderer * render;
+
 	glm::mat4 WorldMatrix;
 	glm::mat4 TranslateMatrix;
 	glm::mat4 RotMatrix;
 	glm::mat4 ScaleMatrix;
+
 	void UpdateWorldMatrix();
 public:
 	virtual void Draw() = 0;
