@@ -26,7 +26,7 @@ void Shape::DrawMesh(int typeDraw)
 	render->BindBuffer(0, bufferId,3);
 	render->BeginDraw(1);
 	render->BindBuffer(1, colorBufferId,3);
-	render->DrawBuffer(bufferId, vertexCount, typeDraw);
+	render->DrawBuffer(vertexCount, typeDraw);
 	render->EndDraw(0);
 	render->EndDraw(1);
 }

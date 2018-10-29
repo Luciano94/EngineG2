@@ -69,16 +69,35 @@ void Renderer::BindBuffer(unsigned int atribID, unsigned int vtxBuffer, unsigned
 	);
 }
 
+unsigned int Renderer::ChargeTexture(unsigned int width, unsigned int height, unsigned char * data)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	
+	glGenerateMipmap(GL_TEXTURE_2D);
+	
+	return textureID;
+}
+
 void Renderer::BindTexture(unsigned int texture, unsigned int textureID)
 {
-	// Bind our texture in Texture Unit 0
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	// Set our "myTextureSampler" sampler to use Texture Unit 0
 	glUniform1i(textureID, 0);
 }
 
-void Renderer::DrawBuffer(unsigned int vtxBuffer, int size, int typeDraw)
+void Renderer::DrawBuffer(int size, int typeDraw)
 {
 	glDrawArrays(typeDraw, 0, size);
 }

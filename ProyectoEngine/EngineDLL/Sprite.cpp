@@ -1,8 +1,7 @@
 #include "Sprite.h"
 
 
-Sprite::Sprite(Renderer * render): Shape(render)
-{
+Sprite::Sprite(Renderer * render): Shape(render){
 	vertex = new float[12]
 	{
 		-1.0f, -1.0f, 0.f,
@@ -22,9 +21,9 @@ Sprite::Sprite(Renderer * render): Shape(render)
 	SetTextureVertex(uvArray, 4);
 }
 
-void Sprite::SetTextureVertex(float * vertices, int count)
-{
+void Sprite::SetTextureVertex(float * vertices, int count){
 	DispouseTexture();
+	
 	uvVtxCount = count;
 	shouldDispouseTexture = true;
 	uvBufferID = render->GenBuffer(vertices, sizeof(float)* count * 2);
@@ -32,18 +31,21 @@ void Sprite::SetTextureVertex(float * vertices, int count)
 
 
 void Sprite::LoadMaterial(const char * bmpFile) {
-	textureID = Importer::LoadBMP(bmpFile, texture);
+	Importer::LoadBMP(bmpFile, texture);
+	textureID = render->ChargeTexture(texture.width, texture.height, texture.data);
 	material->BindTexture("myTextureSampler");
 }
 
-void Sprite::DispouseTexture()
-{
+void Sprite::DispouseTexture(){
+	if (shouldDispouseTexture) {
+		render->DestroyBuffer(uvBufferID);
+		shouldDispouseTexture = false;
+	}
 }
 
 
 
-void Sprite::DrawMeshWhitTexture(int typeDraw)
-{
+void Sprite::DrawMeshWhitTexture(int typeDraw){
 	render->LoadIMatrix();
 	render->SetWMatrix(WorldMatrix);
 
@@ -58,16 +60,16 @@ void Sprite::DrawMeshWhitTexture(int typeDraw)
 	render->BindBuffer(0, bufferId, 3);
 	render->BeginDraw(1);
 	render->BindBuffer(1, uvBufferID, 2);
-	render->DrawBuffer(bufferId, vertexCount, typeDraw);
+	render->DrawBuffer(vertexCount, typeDraw);
 	render->EndDraw(0);
 	render->EndDraw(1);
 }
 
-void Sprite::Draw()
-{
+void Sprite::Draw(){
 	DrawMeshWhitTexture(GL_TRIANGLE_STRIP);
 }
 
-Sprite::~Sprite()
-{
+Sprite::~Sprite(){
+	delete[] vertex;
+	delete[] uvArray;
 }

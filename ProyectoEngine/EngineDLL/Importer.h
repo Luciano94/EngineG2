@@ -15,6 +15,6 @@ class ENGINEDLL_API Importer
 private:
 	static bool bmpCorrectFormat(unsigned char header[], FILE *bmpFile);
 public:
-	static unsigned int LoadBMP(const char * bmpFile, Header &hed);
+	static void LoadBMP(const char * bmpFile, Header &hed);
 };
 
