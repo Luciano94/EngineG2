@@ -1,17 +1,20 @@
 #pragma once
 #include "Exports.h"
-#include "CollisionManager.h"
+#include "GlobalDefinitions.h"
 #include<glm/glm.hpp>
 #include<glm\gtc\matrix_transform.hpp>
 
-class BoundingCircle
-{
+class ENGINEDLL_API BoundingCircle{
 private:
+	Layers layer;
+	bool staticCircle;
+
 	glm::vec2 pos;
 	unsigned int radius;
-	Layers layer;
 public:
-	BoundingCircle(glm::vec2 pos, unsigned int radius);
+	bool isStatic();
+
+	BoundingCircle(glm::vec2 pos, unsigned int radius, bool setStatic);
 	glm::vec2 GetPos();
 	unsigned int GetRadius();
 

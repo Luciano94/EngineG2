@@ -1,22 +1,28 @@
 #pragma once
 #include "Exports.h"
-#include "CollisionManager.h"
+#include "GlobalDefinitions.h"
 #include<glm/glm.hpp>
 #include<glm\gtc\matrix_transform.hpp>
 
 class ENGINEDLL_API BoundingBox{
 private:
-	glm::vec2 pos;
+	Layers layer;
+	bool staticBox;
+
 	unsigned int wigth;
 	unsigned int heigth;
-	Layers layer;
+	glm::vec2 pos;
 public:
-	BoundingBox(glm::vec2 pos, unsigned int wigth, unsigned int heigth);
+	BoundingBox(glm::vec2 pos, unsigned int wigth, unsigned int heigth, bool setStatic);
+	~BoundingBox();
+
+	bool isStatic();
+
 	unsigned int GetX();
 	unsigned int GetY();
 	glm::vec2 GetPos();
+	void SetPos(int x, int y);
 	unsigned int GetWigth();
 	unsigned int GetHeigth();
-	~BoundingBox();
 };
 

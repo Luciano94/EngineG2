@@ -1,7 +1,12 @@
 #include "BoundingCircle.h"
 
-BoundingCircle::BoundingCircle(glm::vec2 pos, unsigned int radius):
-pos(pos), radius(radius){
+bool BoundingCircle::isStatic()
+{
+	return staticCircle;
+}
+
+BoundingCircle::BoundingCircle(glm::vec2 pos, unsigned int radius, bool setStatic):
+pos(pos), radius(radius), staticCircle(setStatic){
 }
 
 glm::vec2 BoundingCircle::GetPos()
