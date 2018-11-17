@@ -1,15 +1,15 @@
 #include "BoundingBox.h"
 
 BoundingBox::BoundingBox(glm::vec2 pos, unsigned int wigth, unsigned int heigth, bool setStatic):
-pos(pos), wigth(wigth), heigth(heigth), staticBox(setStatic){
+pos(pos), wigth(wigth), heigth(heigth), staticBox(setStatic), isCollision(false){
 }
 
-unsigned int BoundingBox::GetX()
+float BoundingBox::GetX()
 {
 	return pos.x;
 }
 
-unsigned int BoundingBox::GetY()
+float BoundingBox::GetY()
 {
 	return pos.y;
 }
@@ -19,19 +19,29 @@ glm::vec2 BoundingBox::GetPos()
 	return pos;
 }
 
-void BoundingBox::SetPos(int x, int y){
+void BoundingBox::SetPos(float x, float y){
 	pos.x = x;
 	pos.y = y;
 }
 
-unsigned int BoundingBox::GetWigth()
+float BoundingBox::GetWigth()
 {
 	return wigth;
 }
 
-unsigned int BoundingBox::GetHeigth()
+float BoundingBox::GetHeigth()
 {
 	return heigth;
+}
+
+bool BoundingBox::GetCollision()
+{
+	return isCollision;
+}
+
+void BoundingBox::SetCollision(bool value)
+{
+	isCollision = value;
 }
 
 BoundingBox::~BoundingBox(){

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameBase.h"
+#include "CollisionManager.h"
 #include "Triangle.h"
 #include "Square.h"
 #include "Circle.h"
@@ -19,7 +20,13 @@ private:
 	Triangle * tr1;
 	Triangle * tr2;
 	Circle * cir1;
+
 	Sprite * spr1;
+	Sprite * spr2;
+	Sprite * spr3;
+	Sprite * spr4;
+	Sprite * spr5;
+	
 	Material * mat3;
 	Material * mat2;
 	Material * mat1;

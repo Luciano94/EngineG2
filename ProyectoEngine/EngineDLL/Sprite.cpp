@@ -2,6 +2,7 @@
 
 
 Sprite::Sprite(Renderer * render): Shape(render){
+	onCollision = false;
 	vertex = new float[12]
 	{
 		-1.0f, -1.0f, 0.f,
@@ -19,6 +20,7 @@ Sprite::Sprite(Renderer * render): Shape(render){
 		1.0f, 1.0f,
 	};
 	SetTextureVertex(uvArray, 4);
+
 }
 
 void Sprite::SetTextureVertex(float * vertices, int count){
@@ -27,6 +29,16 @@ void Sprite::SetTextureVertex(float * vertices, int count){
 	uvVtxCount = count;
 	shouldDispouseTexture = true;
 	uvBufferID = render->GenBuffer(vertices, sizeof(float)* count * 2);
+}
+
+void Sprite::setCollision()
+{
+	onCollision = true;
+}
+
+bool Sprite::getCollision()
+{
+	return onCollision;
 }
 
 

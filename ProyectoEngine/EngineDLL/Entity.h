@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Exports.h"
 #include "BoundingBox.h"
+#include "BoundingCircle.h"
 class ENGINEDLL_API Entity
 {
 private:
@@ -17,13 +18,18 @@ protected:
 	glm::mat4 ScaleMatrix;
 
 	void UpdateWorldMatrix();
+
+	BoundingBox * bBox;
 public:
 	virtual void Draw() = 0;
 
 	Entity(Renderer * renderPTR);
 	~Entity();
 
+	BoundingBox * getBoundingBox();
+
 	void SetPos(float x, float y, float z);
+	void SetBoundingBox(float width, float heigth, bool isStatic);
 	void SetRot(float x, float y, float z);
 	void SetScale(float x, float y, float z);
 	void Translate(float x, float y, float z);

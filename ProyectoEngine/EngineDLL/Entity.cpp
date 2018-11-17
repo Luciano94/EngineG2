@@ -3,6 +3,7 @@
 
 
 Entity::Entity(Renderer * renderPTR){
+	bBox = NULL;
 	render = renderPTR;
 	WorldMatrix = glm::mat4(1.0f);
 	TranslateMatrix = glm::mat4(1.0f);
@@ -12,6 +13,8 @@ Entity::Entity(Renderer * renderPTR){
 	pos[0] = pos[1] = pos[2] = 0.0f;
 	rot[0] = rot[1] = rot[2] = 0.0f;
 	scale[0] = scale[1] = scale[2] = 1.0f;
+
+	
 }
 
 
@@ -40,10 +43,18 @@ void Entity::SetScale(float x, float y, float z){
 
 void Entity::Translate(float x, float y, float z)
 {
-	pos[0] += x;
-	pos[1] += y;
-	pos[2] += z;
-
+	if (bBox == NULL) {
+		pos[0] += x;
+		pos[1] += y;
+		pos[2] += z;
+	}
+	else if (!bBox->GetCollision()) {
+		pos[0] += x;
+		pos[1] += y;
+		pos[2] += z;
+		bBox->SetPos(pos[0], pos[1]);
+		bBox->SetCollision(false);
+	}
 	TranslateMatrix = glm::translate(glm::mat4(1.0f), pos);
 	UpdateWorldMatrix();
 }
@@ -81,11 +92,29 @@ Entity::~Entity()
 {
 }
 
-void Entity::SetPos(float x, float y, float z){
-	pos[0] = x;
-	pos[1] = y;
-	pos[2] = z;
+BoundingBox * Entity::getBoundingBox()
+{
+	return bBox;
+}
 
-	TranslateMatrix = glm::translate(glm::mat4(1.0f), pos);
-	UpdateWorldMatrix();
+void Entity::SetPos(float x, float y, float z){
+	if (bBox == NULL ) {
+		pos[0] = x;
+		pos[1] = y;
+		pos[2] = z;
+	}
+	else if(!bBox->GetCollision()){
+		pos[0] = x;
+		pos[1] = y;
+		pos[2] = z;
+		bBox->SetPos(pos[0], pos[1]);
+		bBox->SetCollision(false);
+	}
+		TranslateMatrix = glm::translate(glm::mat4(1.0f), pos);
+		UpdateWorldMatrix();
+}
+
+void Entity::SetBoundingBox(float width, float heigth, bool isStatic)
+{
+	bBox = new BoundingBox(glm::vec2(pos.x, pos.y), width, heigth, isStatic);
 }

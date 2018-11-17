@@ -9,8 +9,10 @@ private:
 	Layers layer;
 	bool staticBox;
 
-	unsigned int wigth;
-	unsigned int heigth;
+	bool isCollision;
+
+	float wigth;
+	float heigth;
 	glm::vec2 pos;
 public:
 	BoundingBox(glm::vec2 pos, unsigned int wigth, unsigned int heigth, bool setStatic);
@@ -18,11 +20,13 @@ public:
 
 	bool isStatic();
 
-	unsigned int GetX();
-	unsigned int GetY();
+	float GetX();
+	float GetY();
 	glm::vec2 GetPos();
-	void SetPos(int x, int y);
-	unsigned int GetWigth();
-	unsigned int GetHeigth();
+	void SetPos(float x, float y);
+	float GetWigth();
+	float GetHeigth();
+	bool GetCollision();
+	void SetCollision(bool value);
 };
 

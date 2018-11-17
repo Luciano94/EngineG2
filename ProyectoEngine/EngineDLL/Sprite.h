@@ -12,6 +12,8 @@ private:
 	unsigned int textureID;
 	int uvVtxCount;
 	bool shouldDispouseTexture;
+
+	bool onCollision;
 public:
 	void Draw() override;
 	void DrawMeshWhitTexture(int typeDraw);
@@ -19,6 +21,9 @@ public:
 	void DispouseTexture();
 	void SetTextureVertex(float * vertices, int count);
 	
+	void setCollision();
+	bool getCollision();
+
 	Sprite(Renderer * render);
 	~Sprite();
 };
