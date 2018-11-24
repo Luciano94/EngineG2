@@ -3,7 +3,6 @@
 #include<vector>
 #include"Sprite.h"
 #include"BoundingBox.h"
-#include"BoundingCircle.h"
 #include"GlobalDefinitions.h"
 #include<glm/glm.hpp>
 #include<glm\gtc\matrix_transform.hpp>
@@ -16,13 +15,13 @@ private:
 	/*Box Collision*/
 	vector<list<Sprite*>*> * groupsOfGOBox;
 	void ResolveCollisionBox(Sprite * A, Sprite * B);
-
 	void LayersMatchBox(list<Sprite*> * layerA, list<Sprite*> * layerB);
 
-	/*Circle Collision*/
-	vector<list<Sprite*>*> * groupsOfGOCircle;
-	void ResolveCollisionCircle(Sprite * A, Sprite * B);
-	void LayersMatchCircle(list<Sprite*> * layerA, list<Sprite*> * layerB);
+	void VerticalCollision(Sprite * SpriteA, Sprite * SpriteB, 
+							BoundingBox * A, BoundingBox * B, float penetrateY);
+
+	void HorizontalCollision(Sprite * SpriteA, Sprite * SpriteB, 
+								BoundingBox * A, BoundingBox * B, float penetrateX);
 	
 	/*Singleton*/
 	CollisionManager();
@@ -33,8 +32,6 @@ public:
 	/*Box Collision*/
 	void SingUpToList(Layers layer, Sprite * A);
 	void UpdatePhysicsBox();
-	/*Circle Collision*/
-	void UpdatePhysicsCircle();
 
 	~CollisionManager();
 };

@@ -1,7 +1,7 @@
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox(glm::vec2 pos, unsigned int wigth, unsigned int heigth, bool setStatic):
-pos(pos), wigth(wigth), heigth(heigth), staticBox(setStatic), isCollision(false){
+BoundingBox::BoundingBox(glm::vec2 pos, unsigned int width, unsigned int heigth, bool setStatic, float mass):
+pos(pos), width(width), heigth(heigth), staticBox(setStatic), isCollision(false), mass(mass){
 }
 
 float BoundingBox::GetX()
@@ -24,9 +24,9 @@ void BoundingBox::SetPos(float x, float y){
 	pos.y = y;
 }
 
-float BoundingBox::GetWigth()
+float BoundingBox::GetWidth()
 {
-	return wigth;
+	return width;
 }
 
 float BoundingBox::GetHeigth()
@@ -37,6 +37,11 @@ float BoundingBox::GetHeigth()
 bool BoundingBox::GetCollision()
 {
 	return isCollision;
+}
+
+float BoundingBox::GetMass()
+{
+	return mass;
 }
 
 void BoundingBox::SetCollision(bool value)

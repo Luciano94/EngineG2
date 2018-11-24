@@ -1,7 +1,7 @@
 #include "Sprite.h"
 
 
-Sprite::Sprite(Renderer * render): Shape(render){
+Sprite::Sprite(Renderer * render, int columns, int rows): Shape(render){
 	onCollision = false;
 	vertex = new float[12]
 	{
@@ -12,13 +12,15 @@ Sprite::Sprite(Renderer * render): Shape(render){
 	};
 	SetVertices(vertex, 4);
 
-	uvArray = new float[8]
+	anim = new Animation(columns, rows);
+
+	uvArray = anim->UpdateAnimation(0);/*new float[8]
 	{
 		0.0f, 0.0f,
 		0.0f, 1.0f,
 		1.0f, 0.0f,
 		1.0f, 1.0f,
-	};
+	};*/
 	SetTextureVertex(uvArray, 4);
 
 }
@@ -29,6 +31,15 @@ void Sprite::SetTextureVertex(float * vertices, int count){
 	uvVtxCount = count;
 	shouldDispouseTexture = true;
 	uvBufferID = render->GenBuffer(vertices, sizeof(float)* count * 2);
+}
+
+void Sprite::UpdAnim(float deltaTime){
+	uvArray = anim->UpdateAnimation(deltaTime);
+	SetTextureVertex(uvArray, 4);
+}
+
+void Sprite::SetAnim(int initF, int finishF, float timePerF){
+	anim->SetAnimation(initF, finishF, timePerF);
 }
 
 void Sprite::setCollision()

@@ -6,26 +6,29 @@
 
 class ENGINEDLL_API BoundingBox{
 private:
-	Layers layer;
-	bool staticBox;
+	bool staticBox;		//si el objeto es estatico
+	bool isCollision;	// si el objeto colisiono o no	
 
-	bool isCollision;
-
-	float wigth;
-	float heigth;
-	glm::vec2 pos;
+	float mass;		//masa
+	float width;	//ancho
+	float heigth;	//alto
+	glm::vec2 pos;	//posicion
 public:
-	BoundingBox(glm::vec2 pos, unsigned int wigth, unsigned int heigth, bool setStatic);
+	BoundingBox(glm::vec2 pos, unsigned int width, unsigned int heigth, bool setStatic, float bulk);
 	~BoundingBox();
 
 	bool isStatic();
 
 	float GetX();
 	float GetY();
+
 	glm::vec2 GetPos();
 	void SetPos(float x, float y);
-	float GetWigth();
+
+	float GetWidth();
 	float GetHeigth();
+	float GetMass();
+
 	bool GetCollision();
 	void SetCollision(bool value);
 };

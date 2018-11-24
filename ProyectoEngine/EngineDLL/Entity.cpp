@@ -13,8 +13,6 @@ Entity::Entity(Renderer * renderPTR){
 	pos[0] = pos[1] = pos[2] = 0.0f;
 	rot[0] = rot[1] = rot[2] = 0.0f;
 	scale[0] = scale[1] = scale[2] = 1.0f;
-
-	
 }
 
 
@@ -114,7 +112,6 @@ void Entity::SetPos(float x, float y, float z){
 		UpdateWorldMatrix();
 }
 
-void Entity::SetBoundingBox(float width, float heigth, bool isStatic)
-{
-	bBox = new BoundingBox(glm::vec2(pos.x, pos.y), width, heigth, isStatic);
+void Entity::SetBoundingBox(float width, float heigth, bool isStatic, float bulk){
+	bBox = new BoundingBox(glm::vec2(pos.x, pos.y), width, heigth, isStatic, bulk);
 }

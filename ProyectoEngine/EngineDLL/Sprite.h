@@ -2,6 +2,7 @@
 #include "Shape.h"
 #include "Material.h"
 #include "Importer.h"
+#include "Animation.h"
 class ENGINEDLL_API Sprite : public Shape
 {
 private:
@@ -12,6 +13,7 @@ private:
 	unsigned int textureID;
 	int uvVtxCount;
 	bool shouldDispouseTexture;
+	Animation * anim;
 
 	bool onCollision;
 public:
@@ -21,10 +23,13 @@ public:
 	void DispouseTexture();
 	void SetTextureVertex(float * vertices, int count);
 	
+	void UpdAnim(float deltaTime);
+	void SetAnim(int initF, int finishF, float timePerF);
+
 	void setCollision();
 	bool getCollision();
 
-	Sprite(Renderer * render);
+	Sprite(Renderer * render, int columns, int rows);
 	~Sprite();
 };
 
