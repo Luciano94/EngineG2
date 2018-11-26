@@ -5,12 +5,17 @@ in vec2 UV;
 
 // Ouput data
 out vec3 color;
-
+float colorR = 1.0f;
+float colorG = 0.0f;
+float colorB = 1.0f;
 // Values that stay constant for the whole mesh.
 uniform sampler2D myTextureSampler;
 
 void main(){
 
     // Output color = color of the texture at the specified UV
-    color = texture( myTextureSampler, UV ).rgb;
+	color = texture( myTextureSampler, UV ).rgb;
+	
+	if(color.r == colorR && color.g == colorG && color.b == colorB)
+		discard;
 }
