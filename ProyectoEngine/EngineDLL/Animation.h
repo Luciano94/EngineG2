@@ -13,13 +13,18 @@ private:
 
 	int initFrame;
 	int finishFrame;
+	int currentFrame;
+	
 	float timePerFrame;
 	float currentTime;
-	int currentFrame;
+	
+
 public:
+
 	Animation(int columns, int rows);
 	void SetAnimation(int initF, int finishF, float timePerF);
 	float * UpdateAnimation(float deltaTime);
+	
 	~Animation();
 };
 

@@ -12,14 +12,11 @@
 using namespace std;
 class Game : public GameBase {
 private:
+
 	int i;
 	float speed;
 	float rotZ;
 	float posX;
-	Square * sqr1;
-	Triangle * tr1;
-	Triangle * tr2;
-	Circle * cir1;
 
 	Sprite * spr1;
 	Sprite * spr2;
@@ -27,9 +24,8 @@ private:
 	Sprite * spr4;
 	Sprite * spr5;
 	
-	Material * mat3;
 	Material * mat2;
-	Material * mat1;
+
 protected:
 	bool OnStart() override;
 	bool OnStop() override;

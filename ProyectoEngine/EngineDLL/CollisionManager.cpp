@@ -58,7 +58,7 @@ void CollisionManager::ResolveCollisionBox(Sprite * SpriteA, Sprite * SpriteB) {
 			VerticalCollision(SpriteA, SpriteB, A, B, penetrateY);
 		}
 		else {
-			HorizontalCollision(SpriteA,SpriteB, A,B,penetrateX);
+			HorizontalCollision(SpriteA,SpriteB, A, B, penetrateX);
 		}
 	}
 }
@@ -76,12 +76,12 @@ void CollisionManager::VerticalCollision(Sprite * SpriteA, Sprite * SpriteB,
 	else {	//Default
 		/*Calculo el porcentaje segun la masa de cada objeto*/
 		float totalMass = A->GetMass() + B->GetMass();
-		float ABulkPercent = (A->GetMass() / totalMass) * 2;
-		float BBulkPercent = (B->GetMass() / totalMass) * 2;
+		float AMassPercent = (A->GetMass() / totalMass) * 10;
+		float BMassPercent = (B->GetMass() / totalMass) * 10;
 
 		/*seteo su posicion*/
-		SpriteA->SetPos(A->GetX(), A->GetY() + (penetrateY / ABulkPercent), 0);
-		SpriteB->SetPos(B->GetX(), B->GetY() - (penetrateY / BBulkPercent), 0);
+		SpriteA->SetPos(A->GetX(), A->GetY() + (penetrateY / AMassPercent), 0);
+		SpriteB->SetPos(B->GetX(), B->GetY() - (penetrateY / BMassPercent), 0);
 	}
 }
 
@@ -96,8 +96,13 @@ void CollisionManager::HorizontalCollision(Sprite * SpriteA, Sprite * SpriteB,
 		A->SetCollision(true);
 	}
 	else {	//Default
-		SpriteA->SetPos(A->GetX() + (penetrateX / 2), A->GetY(), 0);
-		SpriteB->SetPos(B->GetX() - (penetrateX / 2), B->GetY(), 0);
+			/*Calculo el porcentaje segun la masa de cada objeto*/
+		float totalMass = A->GetMass() + B->GetMass();
+		float AMassPercent = (A->GetMass() / totalMass) * 10;
+		float BMassPercent = (B->GetMass() / totalMass) * 10;
+
+		SpriteA->SetPos(A->GetX() + (penetrateX / AMassPercent), A->GetY(), 0);
+		SpriteB->SetPos(B->GetX() - (penetrateX / BMassPercent), B->GetY(), 0);
 	}
 }
 

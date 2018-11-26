@@ -1,5 +1,5 @@
 #pragma once
-#include<list>
+#include<vector>
 #include "Exports.h"
 
 using namespace std;
@@ -8,9 +8,8 @@ class ENGINEDLL_API SpriteSheet
 {
 private: 
 	float * uvArray;
-	list<float *> * listOfUV;
+	vector<float *> * vectorOfUV;
 
-	int spriteW, spriteH;
 	int textureW, textureH;
 
 public:

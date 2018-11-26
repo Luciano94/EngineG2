@@ -14,7 +14,7 @@ private:
 	float heigth;	//alto
 	glm::vec2 pos;	//posicion
 public:
-	BoundingBox(glm::vec2 pos, unsigned int width, unsigned int heigth, bool setStatic, float bulk);
+	BoundingBox(glm::vec2 pos, unsigned int width, unsigned int heigth, bool setStatic, float mass);
 	~BoundingBox();
 
 	bool isStatic();
