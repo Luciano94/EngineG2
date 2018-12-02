@@ -59,6 +59,10 @@ TileMap::TileMap( const char * filePath, int winW, int winH, Renderer * render, 
 	Xlvl = viewW;
 	Ylvl = viewH;
 
+	view = new vector<vector<int>*>(viewW);
+	for (int i = 0; i < viewW; i++)
+		view->at(i) = new vector<int>(viewH);
+
 	viewSprite = new vector<vector<Tile*>*>(viewW);
 	for (int i = 0; i < viewW; i++)
 		viewSprite->at(i) = new vector<Tile*>(viewH);
@@ -80,10 +84,10 @@ void TileMap::ChargeSprite() {
 
 
 TileMap::~TileMap() {
-	delete[] View;
+	/*delete[] View;
 	for (int i = 0; i < viewW; i++) {
 		delete[] viewSprite->at(i);
-	}
+	}*/
 }
 
 void TileMap::LoadView() {
@@ -99,11 +103,12 @@ void TileMap::LoadView() {
 				if (offsetY >= lvlH) offsetY = lvlH - 1;
 				int pos = level->at(offsetX)->at(offsetY);
 				View[i, j] = level->at(i)->at(j);
-				if (View[i, j] == 0) {
+				view->at(i)->at(j) = level->at(i)->at(j);
+				if (view->at(i)->at(j) == 0) {
 					viewSprite->at(i)->at(j)->ChangeTexture(0);
 					Instance->SingUpToList(Layers::BckTile, viewSprite->at(i)->at(j));
 				}
-				if (View[i, j] == 1) {
+				if (view->at(i)->at(j) == 1) {
 					viewSprite->at(i)->at(j)->ChangeTexture(1);
 					Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(i)->at(j));
 				}
@@ -120,29 +125,15 @@ void TileMap::LoadView() {
 void TileMap::UpdateView() {
 	int posx = 10;
 	int posy = 9;
-	//swap rows
-	/*for (int i = 0; i < viewW; i++){
-		viewSprite->at(i)->erase(viewSprite->at(i)->begin());
-		Tile * temp = new Tile(render, 1, 1);
-		temp->SetMaterial(material);
-		temp->SetBoundingBox(2.0f, 2.0f, true, 0);
-		temp->AddTexture("Empty.bmp");
-		temp->AddTexture("Sample2.bmp");
-		viewSprite->at(i)->push_back(temp);
-	}*/
 	//Update X
-	for (int i = 0; i < viewH; i++) {
-		View[viewW - 1, i] = level->at(Xlvl)->at(i);
-		if (View[viewW - 1, i] == 0) {
-			viewSprite->at(viewW - 1)->at(i)->ChangeTexture(0);
-			Instance->SingUpToList(Layers::BckTile, viewSprite->at(viewW - 1)->at(i));
+	for (int i = 0; i < viewW; i++) {
+		for (int j = 1; j < viewH; j++){
+			view->at(i)->at(j-1) = view->at(i)->at(j);
 		}
-		if (View[viewW - 1, i] == 1) {
-			viewSprite->at(viewW - 1)->at(i)->ChangeTexture(1);
-			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(viewW - 1)->at(i));
-		}
-		viewSprite->at(viewW - 1)->at(i)->SetPos(posx + render->getCameraPos().x, posy, 0);
-		posy -= 2;
+	}
+	for (int i = 0; i < viewW; i++){
+		int pos = level->at(i)->at(Ylvl);
+		view->at(i)->at(viewH-1) = pos;
 	}
 	//Update Y
 	/*for (int i = 0; i < viewW; i++){
@@ -168,13 +159,14 @@ void TileMap::Draw(){
 	}
 }
 
+
 void TileMap::Update(){
 	CurrentCameraPos = render->getCameraPos();
 	DeltaCameraPos =  CurrentCameraPos - LastCameraPos;
 	LastCameraPos = CurrentCameraPos;
 	scrollX += DeltaCameraPos.x;
 	if (scrollX >= 2) {
-		if(Xlvl < lvlW-1)Xlvl++;
+		if (Ylvl < lvlH - 1)Ylvl++;
 		Instance->ClearLayer(Layers::CollisionTile);
 		Instance->ClearLayer(Layers::BckTile);
 		UpdateView();
@@ -186,6 +178,7 @@ void TileMap::Update(){
 		Instance->ClearLayer(Layers::CollisionTile);
 		Instance->ClearLayer(Layers::BckTile);
 		UpdateView();
+		LoadView();
 		scrollY = 0;
 	}
 }

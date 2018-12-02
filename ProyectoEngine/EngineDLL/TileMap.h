@@ -30,6 +30,7 @@ private:
 	vector<vector<Tile*>*> * viewSprite;
 
 	vector<vector<int>*> * level;
+	vector<vector<int>*> * view;
 	int lvlW;
 	int lvlH;
 	int Xlvl;
