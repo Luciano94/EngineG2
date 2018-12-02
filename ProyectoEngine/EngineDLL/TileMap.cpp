@@ -50,12 +50,12 @@ TileMap::TileMap( const char * filePath, int winW, int winH, Renderer * render, 
 	this->render = render;
 	this->material = material;
 	Instance = CollisionManager::GetInstance();
-	CameraPos = glm::vec3(0, 0, 0);
+	LastCameraPos = CurrentCameraPos = DeltaCameraPos = glm::vec3(0,0,0);
 	int tileW = 256 / 4;
 	int tileH = 256 / 4;
 
-	viewW = (winW / tileW) + 1;
-	viewH = (winH / tileH) + 1;
+	viewW = (winW / tileW) + 2;
+	viewH = (winH / tileH) + 2;
 	View = new int[viewW, viewH];
 
 	viewSprite = new vector<vector<Tile*>*>(viewW);
@@ -86,19 +86,19 @@ TileMap::~TileMap() {
 }
 
 void TileMap::LoadView() {
-	int posx = -15;
+	int posx = -10;
 	int posy = 9;
 	for (int i = 0; i < lvlW; i++){
-		posx = -11;
+		posx = -10;
 		for (int j = 0; j < lvlH; j++) {
 			if (i < viewW && j < viewH) {
-				int offsetX = i + CameraPos.x;
-				int offsetY = j + CameraPos.y;
+				int offsetX = j + CurrentCameraPos.x;
+				int offsetY = i + CurrentCameraPos.y;
 				if (offsetX >= lvlW) offsetX = lvlW-1;
 				if (offsetY >= lvlH) offsetY = lvlH-1;
 				int pos = level->at(offsetX)->at(offsetY);
 				View[i, j] = pos;
-				posx += 2;
+				
 				if (View[i, j] == 0) {
 					viewSprite->at(i)->at(j)->ChangeTexture(0);
 					Instance->SingUpToList(Layers::BckTile, viewSprite->at(i)->at(j));
@@ -107,7 +107,8 @@ void TileMap::LoadView() {
 					viewSprite->at(i)->at(j)->ChangeTexture(1);
 					Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(i)->at(j));
 				}
-				viewSprite->at(i)->at(j)->SetPos(posx + CameraPos.x, posy, 0);
+				posx += 2;
+				viewSprite->at(i)->at(j)->SetPos(posx , posy, 0);
 				cout << View[i, j];
 			}	
 		}
@@ -125,11 +126,14 @@ void TileMap::Draw(){
 }
 
 void TileMap::Update(){
-	int dif = render->getCameraPos().x - CameraPos.x;
-	scrollX += dif;
-	scrollX = 0;
-	Instance->ClearLayer(Layers::BckTile);
-	Instance->ClearLayer(Layers::CollisionTile);
-	CameraPos.x+= scrollX;
-	LoadView();
+	CurrentCameraPos = render->getCameraPos();
+	DeltaCameraPos =  CurrentCameraPos - LastCameraPos;
+	LastCameraPos = CurrentCameraPos;
+	scrollX += DeltaCameraPos.x;
+	if (scrollX >= 1) {
+		LoadView();
+		scrollX = 0;
+		Instance->ClearLayer(Layers::BckTile);
+		Instance->ClearLayer(Layers::CollisionTile);
+	}
 }

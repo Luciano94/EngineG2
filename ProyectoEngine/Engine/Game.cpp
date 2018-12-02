@@ -27,7 +27,7 @@ bool Game::OnStart() {
 	spr2 = new Sprite(render, 4, 2);
 	spr2->SetMaterial(mat2);
 	spr2->LoadMaterial("SpriteSheet.bmp");
-	spr2->SetPos(0, 10, 0);
+	spr2->SetPos(0, 7, 0);
 	spr2->SetBoundingBox(2.0f, 2.0f, false, 20);
 	instance->SingUpToList(Layers::Player, spr2);
 	spr2->SetAnim(0, 7, 0.1f);
@@ -76,8 +76,8 @@ bool Game::OnStop() {
 
 bool Game::OnUpdate() {
 	i++;
-	tilesito->Update();
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
+	tilesito->Update();
 	/*Animations*/
 	spr2->UpdAnim(deltaTime);
 	spr1->UpdAnim(deltaTime);

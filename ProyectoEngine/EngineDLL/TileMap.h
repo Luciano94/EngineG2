@@ -18,7 +18,10 @@ private:
 	Renderer * render;
 	Material * material;
 	CollisionManager * Instance;
-	glm::vec3 CameraPos;
+	glm::vec3 LastCameraPos;
+	glm::vec3 CurrentCameraPos;
+	glm::vec3 DeltaCameraPos;
+
 	float scrollX;
 
 	vector<vector<Tile*>*> * viewSprite;
