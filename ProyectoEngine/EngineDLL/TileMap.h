@@ -23,18 +23,24 @@ private:
 	glm::vec3 DeltaCameraPos;
 
 	float scrollX;
+	float scrollY;
+	int lastposX;
+	int lastposY;
 
 	vector<vector<Tile*>*> * viewSprite;
 
 	vector<vector<int>*> * level;
 	int lvlW;
 	int lvlH;
+	int Xlvl;
+	int Ylvl;
 	void ChargeSprite();
 
 	int * View;
 	int viewW;
 	int viewH;
 	void LoadView();
+	void UpdateView();
 
 
 public:

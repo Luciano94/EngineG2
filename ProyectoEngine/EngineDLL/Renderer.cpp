@@ -7,7 +7,6 @@ bool Renderer::Start(void* wnd) {
 	cout << "Renderer::Start()" << endl;
 	win = wnd;
 	glfwMakeContextCurrent((GLFWwindow*)wnd);
-	
 	if (glewInit() != GLEW_OK) {
 		cout << "Falló al inicializar GLEW\n" << endl;
 		return -1;
