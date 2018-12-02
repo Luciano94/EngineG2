@@ -16,6 +16,9 @@ bool Renderer::Start(void* wnd) {
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 	ProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.f);
+	
+	camPos = glm::vec3(0, 0, 0);
+	eyePos = glm::vec3(0, 0, 3);
 
 	ViewMatrix = glm::lookAt(
 		glm::vec3(0, 0, 3),
@@ -104,6 +107,23 @@ void Renderer::DrawBuffer(int size, int typeDraw)
 	glDrawArrays(typeDraw, 0, size);
 }
 
+
+void Renderer::UpdateMipMap(unsigned int textureID)
+{
+	glGenTextures(1, &textureID);
+
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glGenerateMipmap(GL_TEXTURE_2D);
+}
+
 void Renderer::DestroyBuffer(unsigned int buffer)
 {
 	glDeleteBuffers(1, &buffer);
@@ -142,6 +162,28 @@ void Renderer::MultiplyWMatrix(glm::mat4 matrix)
 {
 	WorldMatrix *= matrix;
 	UpdateWVP();
+}
+
+glm::vec3 Renderer::getCameraPos()
+{
+	return camPos;
+}
+
+void Renderer::CameraTranslate(glm::vec3 pos){
+	
+	camPos += pos;
+	eyePos += glm::vec3(pos.x, pos.y, 0);
+
+	ViewMatrix = glm::lookAt(
+		eyePos,
+		camPos,
+		glm::vec3(0, 1, 0)
+	);
+
+	WorldMatrix = glm::mat4(1.0f);
+
+	UpdateWVP();
+
 }
 
 Renderer::Renderer() {

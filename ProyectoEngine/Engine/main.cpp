@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
 	GameBase* game = new Game();
-	if (game->Start(800,600, (char*)&"Hoola")) {
+	if (game->Start(800,600, (char*)&"IziEngine")) {
 		game->Loop();
 	}
 	game->Stop();

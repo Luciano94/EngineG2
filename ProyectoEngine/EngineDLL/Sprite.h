@@ -5,7 +5,7 @@
 #include "Animation.h"
 class ENGINEDLL_API Sprite : public Shape
 {
-private:
+protected:
 
 	Header texture;
 	float * uvArray;

@@ -22,7 +22,7 @@ private:
 
 	void HorizontalCollision(Sprite * SpriteA, Sprite * SpriteB, 
 								BoundingBox * A, BoundingBox * B, float penetrateX);
-	
+
 	/*Singleton*/
 	CollisionManager();
 	static CollisionManager * Instance;
@@ -32,6 +32,8 @@ public:
 	/*Box Collision*/
 	void SingUpToList(Layers layer, Sprite * A);
 	void UpdatePhysicsBox();
+	/*Tile Collisions*/
+	void ClearLayer(int Layer);
 
 	~CollisionManager();
 };

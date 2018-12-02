@@ -5,6 +5,11 @@ bool Game::OnStart() {
 	speed = 2;
 	CollisionManager * instance = CollisionManager::GetInstance();
 	
+	mat1 = new Material();
+	unsigned int programID1 = mat1->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
+
+	tilesito = new TileMap("MatrixLevel.csv", 800, 600, render, mat1);
+
 	/*Material Sprite*/
 	mat2 = new Material();
 	unsigned int programID2 = mat2->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
@@ -24,7 +29,7 @@ bool Game::OnStart() {
 	spr2->LoadMaterial("SpriteSheet.bmp");
 	spr2->SetPos(0, 10, 0);
 	spr2->SetBoundingBox(2.0f, 2.0f, false, 20);
-	instance->SingUpToList(Layers::Enemy, spr2);
+	instance->SingUpToList(Layers::Player, spr2);
 	spr2->SetAnim(0, 7, 0.1f);
 	
 	/*Sprite 3*/
@@ -71,11 +76,12 @@ bool Game::OnStop() {
 
 bool Game::OnUpdate() {
 	i++;
+	tilesito->Update();
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
 	/*Animations*/
 	spr2->UpdAnim(deltaTime);
 	spr1->UpdAnim(deltaTime);
-
+	render->CameraTranslate(glm::vec3(0.5f * deltaTime, 0, 0));
 	/*Translate*/
 	spr2->Translate(0,-speed *  deltaTime, 0);
 	spr3->Translate(0, speed * deltaTime , 0);
@@ -87,6 +93,7 @@ bool Game::OnUpdate() {
 
 void Game::OnDraw()
 {
+	tilesito->Draw();
 	spr1->Draw();
 	spr2->Draw();
 	spr3->Draw();

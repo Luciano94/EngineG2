@@ -12,6 +12,10 @@ private:
 	void* win;
 	unsigned int VertexArrayID;
 	unsigned int ColorVertexArrayID;
+
+	glm::vec3 eyePos;
+	glm::vec3 camPos;
+
 	glm::mat4 WorldMatrix;
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
@@ -30,6 +34,9 @@ public:
 	void BindTexture(unsigned int texture, unsigned int textureID);
 	void DrawBuffer( int size, int typeDraw);
 
+
+	void UpdateMipMap(unsigned int textureID);
+
 	void DestroyBuffer(unsigned int buffer);
 	void ClearScreen();
 	void SwapBuffer();
@@ -39,7 +46,9 @@ public:
 	void LoadIMatrix();
 	void SetWMatrix(glm::mat4 matrix);
 	void MultiplyWMatrix(glm::mat4 matrix);
-
+	/*CAMERA*/
+	glm::vec3 getCameraPos();
+	void CameraTranslate(glm::vec3 pos);
 	Renderer();
 	~Renderer();
 };

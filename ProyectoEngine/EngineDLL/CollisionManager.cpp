@@ -27,8 +27,9 @@ CollisionManager::~CollisionManager() {
 void CollisionManager::UpdatePhysicsBox(){
 	for (int i = 0; i < (int)Layers::Count; i++){
 		for (int j = 0; j < (int)Layers::Count; j++){
+			if (j == Layers::BckTile || i == Layers::BckTile) continue;
 			if (j == i) continue;
-				LayersMatchBox(groupsOfGOBox->at(i), groupsOfGOBox->at(j));
+			LayersMatchBox(groupsOfGOBox->at(i), groupsOfGOBox->at(j));
 		}
 	}
 }
@@ -104,6 +105,10 @@ void CollisionManager::HorizontalCollision(Sprite * SpriteA, Sprite * SpriteB,
 		SpriteA->SetPos(A->GetX() + (penetrateX / AMassPercent), A->GetY(), 0);
 		SpriteB->SetPos(B->GetX() - (penetrateX / BMassPercent), B->GetY(), 0);
 	}
+}
+
+void CollisionManager::ClearLayer(int Layer){
+	groupsOfGOBox->at(Layer)->clear();
 }
 
 void CollisionManager::SingUpToList(Layers layer, Sprite * A){

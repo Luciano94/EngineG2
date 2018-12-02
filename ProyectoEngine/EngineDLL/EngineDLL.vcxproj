@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{4D8BC471-AA6D-4B86-8778-13F87C125FA8}</ProjectGuid>
     <RootNamespace>EngineDLL</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,6 +139,8 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteSheet.h" />
     <ClInclude Include="Square.h" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="TileMap.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="typeDef.h" />
     <ClInclude Include="Window.h" />
@@ -157,6 +159,8 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
     <ClCompile Include="Square.cpp" />
+    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>

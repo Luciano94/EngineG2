@@ -5,6 +5,7 @@
 #include "Square.h"
 #include "Circle.h"
 #include "Sprite.h"
+#include "TileMap.h"
 #include "Material.h"
 #include "Importer.h"
 #include <iostream>
@@ -12,6 +13,8 @@
 using namespace std;
 class Game : public GameBase {
 private:
+
+	TileMap * tilesito;
 
 	int i;
 	float speed;
@@ -24,6 +27,7 @@ private:
 	Sprite * spr4;
 	Sprite * spr5;
 	
+	Material * mat1;
 	Material * mat2;
 
 protected:

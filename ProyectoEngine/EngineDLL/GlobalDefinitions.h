@@ -14,6 +14,8 @@ enum Layers
 	Enemy,
 	EnemyBullet,
 	PlayerBullet,
+	CollisionTile,
+	BckTile,
 	Count
 };
 
