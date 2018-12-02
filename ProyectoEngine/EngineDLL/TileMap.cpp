@@ -53,8 +53,8 @@ TileMap::TileMap( const char * filePath, int winW, int winH, Renderer * render, 
 	LastCameraPos = CurrentCameraPos = DeltaCameraPos = glm::vec3(0,0,0);
 	int tileW = 256 / 4;
 	int tileH = 256 / 4;
-	viewW = (winW / tileW) + 3;
-	viewH = (winH / tileH) + 3;
+	viewW = (winW / tileW) + 4;
+	viewH = (winH / tileH) + 4;
 	View = new int[viewW, viewH];
 	Xlvl = viewW;
 	Ylvl = viewH;
@@ -91,10 +91,11 @@ TileMap::~TileMap() {
 }
 
 void TileMap::LoadView() {
-	int posx = -10;
+	int posx = -12;
 	int posy = 9;
+	lastposX = 0;
 	for (int i = 0; i < lvlW; i++) {
-		posx = -10;
+		posx = -12;
 		for (int j = 0; j < lvlH; j++) {
 			if (i < viewW && j < viewH) {
 				int offsetX = j + CurrentCameraPos.x;
@@ -118,8 +119,6 @@ void TileMap::LoadView() {
 		}
 		posy -= 2;
 	}
-	lastposX = posx + 2;
-	lastposY = posy -2;
 }
 
 void TileMap::UpdateView() {
@@ -131,24 +130,23 @@ void TileMap::UpdateView() {
 			view->at(i)->at(j-1) = view->at(i)->at(j);
 		}
 	}
-	for (int i = 0; i < viewW; i++){
-		int pos = level->at(i)->at(Ylvl);
-		view->at(i)->at(viewH-1) = pos;
-	}
-	//Update Y
-	/*for (int i = 0; i < viewW; i++){
-		View[i, 0] = level->at(i)->at(Ylvl);
-		if (View[i,0] == 0) {
-			viewSprite->at(i)->at(0)->ChangeTexture(0);
-			Instance->SingUpToList(Layers::BckTile, viewSprite->at(i)->at(0));
+	//volver a dibujar
+		posx = 10;
+		for (int j = 0; j < viewW; j++) {
+			if (view->at(j)->at(viewH-1) == 0) {
+				viewSprite->at(j)->at(lastposX)->ChangeTexture(0);
+				Instance->SingUpToList(Layers::BckTile, viewSprite->at(j)->at(lastposX));
+			}
+			if (view->at(j)->at(viewH - 1) == 1) {
+				viewSprite->at(j)->at(lastposX)->ChangeTexture(1);
+				Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
+			}
+			viewSprite->at(j)->at(lastposX)->SetPos(posx + CurrentCameraPos.x, posy, 0);
+			posy -= 2;
 		}
-		if (View[i,0] == 1) {
-			viewSprite->at(i)->at(0)->ChangeTexture(1);
-			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(i)->at(0));
-		}
-		viewSprite->at(i)->at(0)->SetPos(posx, posy, 0);
-		posy -= 2;
-	}*/
+		if (lastposX < viewW) lastposX++;
+		else lastposX = 0;
+
 }
 
 void TileMap::Draw(){
@@ -178,7 +176,6 @@ void TileMap::Update(){
 		Instance->ClearLayer(Layers::CollisionTile);
 		Instance->ClearLayer(Layers::BckTile);
 		UpdateView();
-		LoadView();
 		scrollY = 0;
 	}
 }
