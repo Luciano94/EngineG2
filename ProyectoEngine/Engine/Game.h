@@ -24,11 +24,8 @@ private:
 	Sprite * spr1;
 	Sprite * spr2;
 	Sprite * spr3;
-	Sprite * spr4;
-	Sprite * spr5;
 	
 	Material * mat1;
-	Material * mat2;
 
 protected:
 	bool OnStart() override;

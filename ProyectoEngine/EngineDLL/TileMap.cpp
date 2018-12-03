@@ -113,14 +113,13 @@ TileMap::~TileMap() {
 }
 
 void TileMap::LoadView() {
-	int posx = -12;
+	int posx;
 	int posy = 9;
 	lastposX = 0;
 	lastposY = 0;
-	for (int i = 0; i < lvlW; i++) {
+	for (int i = 0; i < viewW; i++) {
 		posx = -12;
-		for (int j = 0; j < lvlH; j++) {
-			if (i < viewW && j < viewH) {
+		for (int j = 0; j < viewH; j++) {
 				view->at(i)->at(j) = level->at(i)->at(j);
 				if (view->at(i)->at(j) == 0) {
 					viewSprite->at(i)->at(j)->ChangeTexture(0);
@@ -132,7 +131,6 @@ void TileMap::LoadView() {
 				}
 				posx += 2;
 				viewSprite->at(i)->at(j)->SetPos(posx, posy, 0);
-			}
 		}
 		posy -= 2;
 	}
@@ -141,7 +139,7 @@ void TileMap::LoadView() {
 
 
 void TileMap::UpdateViewX() {
-	int posx = 10;
+	int posx;
 	int posy = 9;
 
 	//Update X
@@ -173,6 +171,35 @@ void TileMap::UpdateViewX() {
 }
 
 void TileMap::UpdateViewXReverse() {
+	int posx;
+	int posy = 9;
+
+	//Update X
+	for (int i = 0; i < viewW; i++) {
+		for (int j = 1; j < viewH; j++) {
+			view->at(i)->at(j - 1) = view->at(i)->at(j);
+		}
+	}
+	for (int i = 0; i < viewW; i++) {
+		int pos = level->at(i)->at(Xlvl);
+		view->at(i)->at(viewH - 1) = pos;
+	}
+	//volver a dibujar
+	posx = 12;
+	for (int j = 0; j < viewW; j++) {
+		if (view->at(j)->at(viewH - 1) == 0) {
+			viewSprite->at(j)->at(lastposX)->ChangeTexture(0);
+			Instance->SingUpToList(Layers::BckTile, viewSprite->at(j)->at(lastposX));
+		}
+		if (view->at(j)->at(viewH - 1) == 1) {
+			viewSprite->at(j)->at(lastposX)->ChangeTexture(1);
+			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
+		}
+		viewSprite->at(j)->at(lastposX)->SetPos(posx + render->getCameraPos().x, posy, 0);
+		posy -= 2;
+	}
+	if (lastposX < viewH - 1) lastposX++;
+	else lastposX = 0;
 }
 
 void TileMap::UpdateViewY() {
