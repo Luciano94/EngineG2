@@ -17,7 +17,7 @@ void Tile::AddTexture(const char * bmpFile){
 
 void Tile::ChangeTexture(int i){
 	textureID = textures->at(i);
-	render->UpdateMipMap(textures->at(i));
+	render->UpdateTexture(textures->at(i));
 	material->BindTexture("myTextureSampler");
 }
 

@@ -93,10 +93,23 @@ void TileMap::ChargeSprite() {
 }
 
 TileMap::~TileMap() {
-	/*delete[] View;
-	for (int i = 0; i < viewW; i++) {
-		delete[] viewSprite->at(i);
-	}*/
+	//ViewSprite
+	for (int i = 0; i < viewW; i++){
+		for (int j = 0; j < viewH; j++){
+			delete viewSprite->at(i)->at(j);
+		}
+		delete viewSprite->at(i);
+	}
+	//Level
+	for (int i = 0; i < lvlW; i++) {
+		delete level->at(i);
+	}
+	delete level;
+	//View
+	for (int i = 0; i < viewW; i++){
+		delete view->at(i);
+	}
+	delete view;
 }
 
 void TileMap::LoadView() {
@@ -152,7 +165,7 @@ void TileMap::UpdateViewX() {
 			viewSprite->at(j)->at(lastposX)->ChangeTexture(1);
 			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
 		}
-		viewSprite->at(j)->at(lastposX)->SetPos(posx + LastCameraPos.x, posy, 0);
+		viewSprite->at(j)->at(lastposX)->SetPos(posx + render->getCameraPos().x, posy, 0);
 		posy -= 2;
 	}
 	if (lastposX < viewH-1) lastposX++;

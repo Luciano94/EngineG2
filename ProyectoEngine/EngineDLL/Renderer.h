@@ -35,7 +35,7 @@ public:
 	void DrawBuffer( int size, int typeDraw);
 
 
-	void UpdateMipMap(unsigned int textureID);
+	void UpdateTexture(unsigned int textureID);
 
 	void DestroyBuffer(unsigned int buffer);
 	void ClearScreen();
