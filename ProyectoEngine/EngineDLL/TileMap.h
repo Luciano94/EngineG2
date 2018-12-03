@@ -56,4 +56,5 @@ public:
 
 	void Draw();
 	void Update();
+	bool CheckCollisions(BoundingBox * bBox, Directions direc);
 };

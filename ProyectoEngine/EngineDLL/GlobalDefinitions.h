@@ -19,5 +19,13 @@ enum Layers
 	Count
 };
 
+enum Directions
+{
+	Left=0,
+	Rigth,
+	Up,
+	Down,
+	Counts
+};
 
 

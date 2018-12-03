@@ -85,7 +85,7 @@ void TileMap::ChargeSprite() {
 		for (int j = 0; j < viewH; j++){
 			viewSprite->at(i)->at(j) = new Tile(render, 1, 1);
 			viewSprite->at(i)->at(j)->SetMaterial(material);
-			viewSprite->at(i)->at(j)->SetBoundingBox(2.0f, 2.0f, true, 0);
+			//viewSprite->at(i)->at(j)->SetBoundingBox(2.0f, 2.0f, true, 0);
 			viewSprite->at(i)->at(j)->AddTexture("Empty.bmp");
 			viewSprite->at(i)->at(j)->AddTexture("Pastito.bmp");
 		}
@@ -125,11 +125,11 @@ void TileMap::LoadView() {
 				view->at(i)->at(j) = level->at(i)->at(j);
 				if (view->at(i)->at(j) == 0) {
 					viewSprite->at(i)->at(j)->ChangeTexture(0);
-					Instance->SingUpToList(Layers::BckTile, viewSprite->at(i)->at(j));
+					//Instance->SingUpToList(Layers::BckTile, viewSprite->at(i)->at(j));
 				}
 				if (view->at(i)->at(j) == 1) {
 					viewSprite->at(i)->at(j)->ChangeTexture(1);
-					Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(i)->at(j));
+					//Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(i)->at(j));
 				}
 				posx += 2;
 				viewSprite->at(i)->at(j)->SetPos(posx, posy, 0);
@@ -159,11 +159,11 @@ void TileMap::UpdateViewX() {
 	for (int j = 0; j < viewW; j++) {
 		if (view->at(j)->at(viewH-1) == 0) {
 			viewSprite->at(j)->at(lastposX)->ChangeTexture(0);
-			Instance->SingUpToList(Layers::BckTile, viewSprite->at(j)->at(lastposX));
+			//Instance->SingUpToList(Layers::BckTile, viewSprite->at(j)->at(lastposX));
 		}
 		if (view->at(j)->at(viewH - 1) == 1) {
 			viewSprite->at(j)->at(lastposX)->ChangeTexture(1);
-			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
+			//Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
 		}
 		viewSprite->at(j)->at(lastposX)->SetPos(posx + render->getCameraPos().x, posy, 0);
 		posy -= 2;
@@ -191,11 +191,11 @@ void TileMap::UpdateViewXReverse() {
 	for (int j = 0; j < viewW; j++) {
 		if (view->at(j)->at(0) == 0) {
 			viewSprite->at(j)->at(lastposXR)->ChangeTexture(0);
-			Instance->SingUpToList(Layers::BckTile, viewSprite->at(j)->at(lastposX));
+			//Instance->SingUpToList(Layers::BckTile, viewSprite->at(j)->at(lastposX));
 		}
 		if (view->at(j)->at(0) == 1) {
 			viewSprite->at(j)->at(lastposXR)->ChangeTexture(1);
-			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
+			//Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
 		}
 		viewSprite->at(j)->at(lastposXR)->SetPos(posx + render->getCameraPos().x, posy, 0);
 		posy -= 2;
@@ -229,11 +229,11 @@ void TileMap::UpdateViewY() {
 	for (int j = viewH-1; j>=1; j--) {
 		if (view->at(lastposYR)->at(j) == 0) {
 			viewSprite->at(lastposYR)->at(j)->ChangeTexture(0);
-			Instance->SingUpToList(Layers::BckTile, viewSprite->at(lastposYR)->at(j));
+			//Instance->SingUpToList(Layers::BckTile, viewSprite->at(lastposYR)->at(j));
 		}
 		if (view->at(lastposYR)->at(j) == 1) {
 			viewSprite->at(lastposYR)->at(j)->ChangeTexture(1);
-			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(lastposYR)->at(j));
+			//Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(lastposYR)->at(j));
 		}
 		posx += 2;
 		viewSprite->at(lastposYR)->at(j)->SetPos(posx , posy + render->getCameraPos().y, 0);
@@ -270,11 +270,11 @@ void TileMap::UpdateViewYReverse(){
 	for (int j = viewH - 1; j >= 1; j--) {
 		if (view->at(lastposYR)->at(j) == 0) {
 			viewSprite->at(lastposYR)->at(j)->ChangeTexture(0);
-			Instance->SingUpToList(Layers::BckTile, viewSprite->at(lastposYR)->at(j));
+			//Instance->SingUpToList(Layers::BckTile, viewSprite->at(lastposYR)->at(j));
 		}
 		if (view->at(lastposYR)->at(j) == 1) {
 			viewSprite->at(lastposYR)->at(j)->ChangeTexture(1);
-			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(lastposYR)->at(j));
+			//Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(lastposYR)->at(j));
 		}
 		posx += 2;
 		viewSprite->at(lastposYR)->at(j)->SetPos(posx, posy + render->getCameraPos().y, 0);
@@ -291,6 +291,7 @@ void TileMap::Draw(){
 		}
 	}
 }
+
 
 
 void TileMap::Update(){
@@ -324,4 +325,47 @@ void TileMap::Update(){
 		UpdateViewY();
 		scrollY = 0;
 	}*/
+}
+
+
+
+bool TileMap::CheckCollisions(BoundingBox * bBox, Directions direc)
+{
+	for (int  i = 0; i < viewW; i++){
+		for (int j = 0; j < viewH; j++){
+			if (view->at(i)->at(j) == 1) {
+				switch (direc)
+				{
+				case Directions::Left:
+					if ((bBox->GetX() - bBox->GetWidth()) >= 
+						(viewSprite->at(i)->at(j)->GetPos().x) + bBox->GetWidth()) {
+						return true;
+					}else return false;
+				break;
+				case Directions::Rigth:
+					if ((bBox->GetX() - bBox->GetWidth()) <=
+						(viewSprite->at(i)->at(j)->GetPos().x)) {
+						return true;
+					}
+					else return false;
+				break;
+				case Directions::Up:
+					if ((bBox->GetY() + bBox->GetHeigth()) >=
+						(viewSprite->at(i)->at(j)->GetPos().y)) {
+						return true;
+					}
+					else return false;
+				break;
+				case Directions::Down:
+					if ((bBox->GetY() - (bBox->GetHeigth())) <=
+						(-(viewSprite->at(i)->at(j)->GetPos().y)) + bBox->GetHeigth()) {
+						return true;
+					}
+					else return false;
+				break;
+				}
+					
+			}
+		}
+	}
 }

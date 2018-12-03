@@ -27,7 +27,7 @@ bool Game::OnStart() {
 	spr2 = new Sprite(render, 4, 2);
 	spr2->SetMaterial(mat1);
 	spr2->LoadMaterial("SpriteSheet.bmp");
-	spr2->SetPos(0, -4.99, 0);
+	spr2->SetPos(0, 0, 0);
 	spr2->SetBoundingBox(2.0f, 2.0f, false, 20);
 	instance->SingUpToList(Layers::Player, spr2);
 	spr2->SetAnim(0, 7, 0.1f);
@@ -64,7 +64,10 @@ bool Game::OnUpdate() {
 	spr1->UpdAnim(deltaTime);
 	/*Translate*/
 	render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
-	spr2->Translate(speed* deltaTime,0 , 0);
+	if(!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Down))
+		spr2->Translate(0,-speed* deltaTime, 0);
+	if (!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Left))
+		spr2->Translate(speed * deltaTime,0, 0);
 	spr3->Translate(-speed * deltaTime ,0, 0);
 	
 	return true;
