@@ -41,8 +41,7 @@ void Renderer::setClearScreenColor(float r, float g, float b, float a){
 	glClearColor(r, g, b, a);
 }
 
-unsigned int Renderer::GenBuffer(float * buffer, int size)
-{
+unsigned int Renderer::GenBuffer(float * buffer, int size){
 	unsigned int vertexBuffer;
 	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -71,8 +70,7 @@ void Renderer::BindBuffer(unsigned int atribID, unsigned int vtxBuffer, unsigned
 	);
 }
 
-unsigned int Renderer::ChargeTexture(unsigned int width, unsigned int height, unsigned char * data)
-{
+unsigned int Renderer::ChargeTexture(unsigned int width, unsigned int height, unsigned char * data){
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
 
@@ -94,27 +92,23 @@ unsigned int Renderer::ChargeTexture(unsigned int width, unsigned int height, un
 	return textureID;
 }
 
-void Renderer::BindTexture(unsigned int texture, unsigned int textureID)
-{
+void Renderer::BindTexture(unsigned int texture, unsigned int textureID){
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniform1i(textureID, 0);
 }
 
-void Renderer::DrawBuffer(int size, int typeDraw)
-{
+void Renderer::DrawBuffer(int size, int typeDraw){
 	glDrawArrays(typeDraw, 0, size);
 }
 
 
-void Renderer::UpdateTexture(unsigned int textureID)
-{
+void Renderer::UpdateTexture(unsigned int textureID){
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
-void Renderer::DestroyBuffer(unsigned int buffer)
-{
+void Renderer::DestroyBuffer(unsigned int buffer){
 	glDeleteBuffers(1, &buffer);
 }
 
@@ -126,35 +120,29 @@ void Renderer::SwapBuffer(){
 	glfwSwapBuffers((GLFWwindow*) win);
 }
 
-void Renderer::UpdateWVP()
-{
+void Renderer::UpdateWVP(){
 	WVP = ProjectionMatrix * ViewMatrix * WorldMatrix;
 }
 
-glm::mat4 & Renderer::GetWVP()
-{
+glm::mat4 & Renderer::GetWVP(){
 	return WVP;
 }
 
-void Renderer::LoadIMatrix()
-{
+void Renderer::LoadIMatrix(){
 	WorldMatrix = glm::mat4(1.0f);
 }
 
-void Renderer::SetWMatrix(glm::mat4 matrix)
-{
+void Renderer::SetWMatrix(glm::mat4 matrix){
 	WorldMatrix = matrix;
 	UpdateWVP();
 }
 
-void Renderer::MultiplyWMatrix(glm::mat4 matrix)
-{
+void Renderer::MultiplyWMatrix(glm::mat4 matrix){
 	WorldMatrix *= matrix;
 	UpdateWVP();
 }
 
-glm::vec3 Renderer::getCameraPos()
-{
+glm::vec3 Renderer::getCameraPos(){
 	return camPos;
 }
 

@@ -22,7 +22,6 @@ void Tile::ChangeTexture(int i){
 }
 
 
-Tile::~Tile()
-{
+Tile::~Tile(){
 	delete textures;
 }

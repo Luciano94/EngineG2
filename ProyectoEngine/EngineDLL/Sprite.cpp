@@ -3,8 +3,7 @@
 
 Sprite::Sprite(Renderer * render, int columns, int rows): Shape(render){
 	onCollision = false;
-	vertex = new float[12]
-	{
+	vertex = new float[12]{
 		-1.0f, -1.0f, 0.f,
 		-1.0f,  1.0f, 0.f,
 		1.0f, -1.0f, 0.f,
@@ -37,13 +36,11 @@ void Sprite::SetAnim(int initF, int finishF, float timePerF){
 	anim->SetAnimation(initF, finishF, timePerF);
 }
 
-void Sprite::setCollision()
-{
+void Sprite::setCollision(){
 	onCollision = true;
 }
 
-bool Sprite::getCollision()
-{
+bool Sprite::getCollision(){
 	return onCollision;
 }
 

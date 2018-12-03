@@ -1,7 +1,6 @@
 #include "Shape.h"
 
-Shape::Shape(Renderer * render) :Entity(render)
-{
+Shape::Shape(Renderer * render) :Entity(render){
 	shouldDispose = false;
 	material = NULL;
 	bufferId = -1;
@@ -11,8 +10,7 @@ Shape::Shape(Renderer * render) :Entity(render)
 	colorVertexCount = -1;
 }
 
-void Shape::DrawMesh(int typeDraw)
-{
+void Shape::DrawMesh(int typeDraw){
 	render->LoadIMatrix();
 	render->SetWMatrix(WorldMatrix);
 
@@ -31,8 +29,7 @@ void Shape::DrawMesh(int typeDraw)
 	render->EndDraw(1);
 }
 
-void Shape::SetVertices(float * vertices, int count)
-{
+void Shape::SetVertices(float * vertices, int count){
 	Dispose();
 
 	vertexCount = count;
@@ -40,8 +37,7 @@ void Shape::SetVertices(float * vertices, int count)
 	bufferId = render->GenBuffer(vertices, sizeof(float)* count * 3);
 }
 
-void Shape::SetColorVertex(float * vertices, int count)
-{
+void Shape::SetColorVertex(float * vertices, int count){
 	DisposeColor();
 
 	colorVertexCount = count;
@@ -49,29 +45,25 @@ void Shape::SetColorVertex(float * vertices, int count)
 	colorBufferId = render->GenBuffer(vertices, sizeof(float)* count * 3);
 }
 
-void Shape::SetMaterial(Material * material)
-{
+void Shape::SetMaterial(Material * material){
 	this->material = material;
 }
 
-void Shape::Dispose()
-{
+void Shape::Dispose(){
 	if (shouldDispose) {
 		render->DestroyBuffer(bufferId);
 		shouldDispose = false;
 	}
 }
 
-void Shape::DisposeColor()
-{
+void Shape::DisposeColor(){
 	if (shouldDisposeColor) {
 		render->DestroyBuffer(colorBufferId);
 		shouldDisposeColor = false;
 	}
 }
 
-Shape::~Shape()
-{
+Shape::~Shape(){
 	Dispose();
 	DisposeColor();
 }

@@ -4,18 +4,15 @@ BoundingBox::BoundingBox(glm::vec2 pos, unsigned int width, unsigned int heigth,
 pos(pos), width(width), heigth(heigth), staticBox(setStatic), isCollision(false), mass(mass){
 }
 
-float BoundingBox::GetX()
-{
+float BoundingBox::GetX(){
 	return pos.x;
 }
 
-float BoundingBox::GetY()
-{
+float BoundingBox::GetY(){
 	return pos.y;
 }
 
-glm::vec2 BoundingBox::GetPos()
-{
+glm::vec2 BoundingBox::GetPos(){
 	return pos;
 }
 
@@ -24,35 +21,29 @@ void BoundingBox::SetPos(float x, float y){
 	pos.y = y;
 }
 
-float BoundingBox::GetWidth()
-{
+float BoundingBox::GetWidth(){
 	return width;
 }
 
-float BoundingBox::GetHeigth()
-{
+float BoundingBox::GetHeigth(){
 	return heigth;
 }
 
-bool BoundingBox::GetCollision()
-{
+bool BoundingBox::GetCollision(){
 	return isCollision;
 }
 
-float BoundingBox::GetMass()
-{
+float BoundingBox::GetMass(){
 	return mass;
 }
 
-void BoundingBox::SetCollision(bool value)
-{
+void BoundingBox::SetCollision(bool value){
 	isCollision = value;
 }
 
 BoundingBox::~BoundingBox(){
 }
 
-bool BoundingBox::isStatic()
-{
+bool BoundingBox::isStatic(){
 	return staticBox;
 }

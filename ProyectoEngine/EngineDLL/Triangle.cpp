@@ -3,14 +3,12 @@
 Triangle::Triangle(Renderer *render) :Shape(render)
 {
 
-	vertex = new float[9]
-	{
+	vertex = new float[9]{
 		-1.0f, -1.0f, 0.0f,
 		1.0f, -1.0f, 0.0f,
 		0.0f,  1.0f, 0.0f,
 	};
-	colorVertex = new float[9]
-	{
+	colorVertex = new float[9]{
 		-1.0f, -1.0f, 0.0f,
 		1.0f, -1.0f, 0.0f,
 		0.0f,  1.0f, 0.0f,
@@ -20,13 +18,11 @@ Triangle::Triangle(Renderer *render) :Shape(render)
 	SetColorVertex(colorVertex, 3);
 }
 
-Triangle::~Triangle()
-{
+Triangle::~Triangle(){
 	delete[] vertex;
 	delete[] colorVertex;
 }
 
-void Triangle::Draw()
-{
+void Triangle::Draw(){
 	DrawMesh(GL_TRIANGLE_STRIP);
 }

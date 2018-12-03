@@ -39,8 +39,7 @@ void Entity::SetScale(float x, float y, float z){
 	UpdateWorldMatrix();
 }
 
-void Entity::Translate(float x, float y, float z)
-{
+void Entity::Translate(float x, float y, float z){
 	if (bBox == NULL) {
 		pos[0] += x;
 		pos[1] += y;
@@ -57,8 +56,7 @@ void Entity::Translate(float x, float y, float z)
 	UpdateWorldMatrix();
 }
 
-void Entity::Rotate(float x, float y, float z)
-{
+void Entity::Rotate(float x, float y, float z){
 	rot[0] += x;
 	rot[1] += y;
 	rot[2] += z;
@@ -86,12 +84,10 @@ glm::vec3 Entity::GetScale(){
 	return scale;
 }
 
-Entity::~Entity()
-{
+Entity::~Entity(){
 }
 
-BoundingBox * Entity::getBoundingBox()
-{
+BoundingBox * Entity::getBoundingBox(){
 	return bBox;
 }
 

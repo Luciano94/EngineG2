@@ -2,8 +2,7 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 
-void Importer::LoadBMP(const char * bmpFile, Header &hed)
-{
+void Importer::LoadBMP(const char * bmpFile, Header &hed){
 	unsigned char header[54];
 
 	FILE * file;

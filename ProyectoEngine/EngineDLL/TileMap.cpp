@@ -232,8 +232,7 @@ void TileMap::UpdateViewY() {
 	else lastposY = 0;
 }
 
-void TileMap::UpdateViewYReverse()
-{
+void TileMap::UpdateViewYReverse(){
 }
 
 void TileMap::Draw(){

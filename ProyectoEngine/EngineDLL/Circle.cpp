@@ -1,13 +1,11 @@
 #include "Circle.h"
 
 
-void Circle::Draw()
-{
+void Circle::Draw(){
 	DrawMesh(GL_TRIANGLE_FAN);
 }
 
-Circle::Circle(Renderer * render, float rdio, int trCant):Shape(render)
-{
+Circle::Circle(Renderer * render, float rdio, int trCant):Shape(render){
 	cantOfTriangles = trCant;
 	radius = rdio;
 	vertexCount = cantOfTriangles * 3;
@@ -16,8 +14,7 @@ Circle::Circle(Renderer * render, float rdio, int trCant):Shape(render)
 	vertex = new float[vertexCount];
 	glm::vec3 vec;
 
-	for (int i = 0; i < vertexCount; i+=3)
-	{
+	for (int i = 0; i < vertexCount; i+=3){
 		vec = glm::vec3(cos(angle),sin(angle), 0) * radius;
 		vertex[i] = vec.x;
 		vertex[i + 1] = vec.y;
@@ -30,7 +27,6 @@ Circle::Circle(Renderer * render, float rdio, int trCant):Shape(render)
 
 }
 
-Circle::~Circle()
-{
+Circle::~Circle(){
 	delete[] vertex;
 }
