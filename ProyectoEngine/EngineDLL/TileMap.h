@@ -25,7 +25,9 @@ private:
 	float scrollX;
 	float scrollY;
 	int lastposX;
+	int lastposXR;
 	int lastposY;
+	int lastposYR;
 
 	vector<vector<Tile*>*> * viewSprite;
 	vector<vector<int>*> * view;

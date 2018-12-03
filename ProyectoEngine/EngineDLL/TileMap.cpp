@@ -116,7 +116,9 @@ void TileMap::LoadView() {
 	int posx;
 	int posy = 9;
 	lastposX = 0;
+	lastposXR = viewH - 1;
 	lastposY = 0;
+	lastposYR = viewW - 1;
 	for (int i = 0; i < viewW; i++) {
 		posx = -12;
 		for (int j = 0; j < viewH; j++) {
@@ -176,63 +178,110 @@ void TileMap::UpdateViewXReverse() {
 
 	//Update X
 	for (int i = 0; i < viewW; i++) {
-		for (int j = 1; j < viewH; j++) {
-			view->at(i)->at(j - 1) = view->at(i)->at(j);
+		for (int j = viewH-1; j <= 0; j--) {
+			view->at(i)->at(j + 1) = view->at(i)->at(j);
 		}
 	}
 	for (int i = 0; i < viewW; i++) {
 		int pos = level->at(i)->at(Xlvl);
-		view->at(i)->at(viewH - 1) = pos;
+		view->at(i)->at(0) = pos;
 	}
 	//volver a dibujar
-	posx = 12;
+	posx =  -10;
 	for (int j = 0; j < viewW; j++) {
-		if (view->at(j)->at(viewH - 1) == 0) {
-			viewSprite->at(j)->at(lastposX)->ChangeTexture(0);
+		if (view->at(j)->at(0) == 0) {
+			viewSprite->at(j)->at(lastposXR)->ChangeTexture(0);
 			Instance->SingUpToList(Layers::BckTile, viewSprite->at(j)->at(lastposX));
 		}
-		if (view->at(j)->at(viewH - 1) == 1) {
-			viewSprite->at(j)->at(lastposX)->ChangeTexture(1);
+		if (view->at(j)->at(0) == 1) {
+			viewSprite->at(j)->at(lastposXR)->ChangeTexture(1);
 			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(j)->at(lastposX));
 		}
-		viewSprite->at(j)->at(lastposX)->SetPos(posx + render->getCameraPos().x, posy, 0);
+		viewSprite->at(j)->at(lastposXR)->SetPos(posx + render->getCameraPos().x, posy, 0);
 		posy -= 2;
 	}
-	if (lastposX < viewH - 1) lastposX++;
-	else lastposX = 0;
+	if (lastposXR >= 0) lastposXR--;
+	else lastposXR = viewH-1;
 }
 
 void TileMap::UpdateViewY() {
 	int posx = 12;
-	int posy = 9;
+	int posy = 4;
 	//Update Y
-	for (int i = 1; i < viewW; i++) {
+	for (int i = viewW-1; i >= 1; i--) {
 		for (int j = 0; j < viewH; j++) {
-			view->at(i - 1)->at(j) = view->at(i)->at(j);
+			view->at(i)->at(j) = view->at(i-1)->at(j);
 		}
 	}
-	for (int i = 0; i < viewH; i++) {
-		int pos = level->at(i)->at(Ylvl);
-		view->at(viewW - 1)->at(i) = pos;
+	for (int i = viewH-1; i >= 1; i--) {
+		int pos = level->at(Ylvl)->at(i);
+		view->at(0)->at(i) = pos;
+	}
+	cout << "asdasd" << endl;
+	for (int i = 0; i < viewW; i++) {
+		for (int j = 0; j < viewH; j++) {
+			cout << view->at(i)->at(j);
+		}
+		cout << endl;
 	}
 	//volver a dibujar
-	for (int j = 0; j < viewH; j++) {
-		if (view->at(viewW - 1)->at(j) == 0) {
-			viewSprite->at(lastposY)->at(j)->ChangeTexture(0);
-			Instance->SingUpToList(Layers::BckTile, viewSprite->at(lastposY)->at(j));
+	posx = -12;
+	for (int j = viewH-1; j>=1; j--) {
+		if (view->at(lastposYR)->at(j) == 0) {
+			viewSprite->at(lastposYR)->at(j)->ChangeTexture(0);
+			Instance->SingUpToList(Layers::BckTile, viewSprite->at(lastposYR)->at(j));
 		}
-		if (view->at(viewW - 1)->at(j) == 1) {
-			viewSprite->at(lastposY)->at(j)->ChangeTexture(1);
-			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(lastposY)->at(j));
+		if (view->at(lastposYR)->at(j) == 1) {
+			viewSprite->at(lastposYR)->at(j)->ChangeTexture(1);
+			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(lastposYR)->at(j));
 		}
-		viewSprite->at(lastposY)->at(j)->SetPos(posx, posy + CurrentCameraPos.y, 0);
-		posy -= 2;
+		posx += 2;
+		viewSprite->at(lastposYR)->at(j)->SetPos(posx , posy + render->getCameraPos().y, 0);
+		cout<<"X: " << posx<<"Y: "<< posy - CurrentCameraPos.y << endl;
 	}
-	if (lastposY < viewH - 1) lastposY++;
+	if (lastposY < viewW - 1) lastposY++;
 	else lastposY = 0;
+	if (lastposYR >=0) lastposYR--;
+	else lastposYR = viewW-1;
 }
 
 void TileMap::UpdateViewYReverse(){
+	int posx = 12;
+	int posy = 4;
+	//Update Y
+	for (int i = viewW - 1; i >= 1; i--) {
+		for (int j = 0; j < viewH; j++) {
+			view->at(i)->at(j) = view->at(i - 1)->at(j);
+		}
+	}
+	for (int i = viewH - 1; i >= 1; i--) {
+		int pos = level->at(Ylvl)->at(i);
+		view->at(0)->at(i) = pos;
+	}
+	cout << "asdasd" << endl;
+	for (int i = 0; i < viewW; i++) {
+		for (int j = 0; j < viewH; j++) {
+			cout << view->at(i)->at(j);
+		}
+		cout << endl;
+	}
+	//volver a dibujar
+	posx = -12;
+	for (int j = viewH - 1; j >= 1; j--) {
+		if (view->at(lastposYR)->at(j) == 0) {
+			viewSprite->at(lastposYR)->at(j)->ChangeTexture(0);
+			Instance->SingUpToList(Layers::BckTile, viewSprite->at(lastposYR)->at(j));
+		}
+		if (view->at(lastposYR)->at(j) == 1) {
+			viewSprite->at(lastposYR)->at(j)->ChangeTexture(1);
+			Instance->SingUpToList(Layers::CollisionTile, viewSprite->at(lastposYR)->at(j));
+		}
+		posx += 2;
+		viewSprite->at(lastposYR)->at(j)->SetPos(posx, posy + render->getCameraPos().y, 0);
+		cout << "X: " << posx << "Y: " << posy - CurrentCameraPos.y << endl;
+	}
+	if (lastposY < viewW - 1) lastposY++;
+	else lastposY = 0;
 }
 
 void TileMap::Draw(){
@@ -258,19 +307,21 @@ void TileMap::Update(){
 	}else
 	if (scrollX <= -2) {
 		if (Xlvl < 0)Xlvl--;
-		UpdateViewX();
+		UpdateViewXReverse();
 		scrollX = 0;
 	}
 	//UpdateY
-	scrollY += DeltaCameraPos.y;
-	if (scrollY <= -2) {
+	/*scrollY += DeltaCameraPos.y;
+	cout << scrollY << endl;
+	if (scrollY >= 2) {
+		if (Ylvl < 0)Ylvl--;
+		//if (Ylvl > lvlW - 1)Ylvl++;
+		UpdateViewY();
+		scrollY = 0;
+	}//else
+/*	if (scrollY <= -2) {
 		if (Ylvl < 0)Ylvl--;
 		UpdateViewY();
 		scrollY = 0;
-	}else
-		if (scrollY >= 2) {
-			if (Ylvl > lvlH - 1)Ylvl++;
-			UpdateViewY();
-			scrollY = 0;
-		}
+	}*/
 }
