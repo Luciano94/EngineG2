@@ -14,13 +14,8 @@ Sprite::Sprite(Renderer * render, int columns, int rows): Shape(render){
 
 	anim = new Animation(columns, rows);
 
-	uvArray = anim->UpdateAnimation(0);/*new float[8]
-	{
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-	};*/
+	uvArray = anim->UpdateAnimation(0);
+
 	SetTextureVertex(uvArray, 4);
 
 }

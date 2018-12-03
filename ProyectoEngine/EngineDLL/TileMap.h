@@ -28,20 +28,24 @@ private:
 	int lastposY;
 
 	vector<vector<Tile*>*> * viewSprite;
+	vector<vector<int>*> * view;
+	int viewW;
+	int viewH;
 
 	vector<vector<int>*> * level;
-	vector<vector<int>*> * view;
 	int lvlW;
 	int lvlH;
 	int Xlvl;
 	int Ylvl;
+	
 	void ChargeSprite();
-
-	int * View;
-	int viewW;
-	int viewH;
 	void LoadView();
-	void UpdateView();
+	void LoadLevel(const char * filePath);
+	void UpdateViewX();
+	void UpdateViewXReverse();
+
+	void UpdateViewY();
+	void UpdateViewYReverse();
 
 
 public:
@@ -50,5 +54,4 @@ public:
 
 	void Draw();
 	void Update();
-	//void LoadLevel(const char* file);
 };

@@ -179,8 +179,6 @@ void Renderer::CameraTranslate(glm::vec3 pos){
 		glm::vec3(0, 1, 0)
 	);
 
-	WorldMatrix = glm::mat4(1.0f);
-
 	UpdateWVP();
 
 }

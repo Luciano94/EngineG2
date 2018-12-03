@@ -2,7 +2,7 @@
 
 bool Game::OnStart() {
 	i = 0;
-	speed = 2;
+	speed = 1;
 	CollisionManager * instance = CollisionManager::GetInstance();
 	
 	mat1 = new Material();
@@ -19,7 +19,7 @@ bool Game::OnStart() {
 	spr1->SetMaterial(mat2);
 	spr1->LoadMaterial("asteroid.bmp");
 	spr1->SetPos(0, 0, 0);
-	spr1->SetBoundingBox(2.0f, 2.0f, false, 100);
+	spr1->SetBoundingBox(2.0f, 2.0f, false, 10);
 	instance->SingUpToList(Layers::Player, spr1);
 	spr1->SetAnim(0, 63, 0.1f);
 	
@@ -27,7 +27,7 @@ bool Game::OnStart() {
 	spr2 = new Sprite(render, 4, 2);
 	spr2->SetMaterial(mat2);
 	spr2->LoadMaterial("SpriteSheet.bmp");
-	spr2->SetPos(0, 7, 0);
+	spr2->SetPos(0, -2.8, 0);
 	spr2->SetBoundingBox(2.0f, 2.0f, false, 20);
 	instance->SingUpToList(Layers::Player, spr2);
 	spr2->SetAnim(0, 7, 0.1f);
@@ -36,8 +36,8 @@ bool Game::OnStart() {
 	spr3 = new Sprite(render, 1, 1);
 	spr3->SetMaterial(mat2);
 	spr3->LoadMaterial("sample2.bmp");
-	spr3->SetPos(0, -10, 0);
-	spr3->SetBoundingBox(2.0f, 2.0f, false, 10);
+	spr3->SetPos(10,0, 0);
+	spr3->SetBoundingBox(2.0f, 2.0f, false, 100);
 	instance->SingUpToList(Layers::EnemyBullet, spr3);
 	
 	/*Sprite 4*/
@@ -49,12 +49,12 @@ bool Game::OnStart() {
 	instance->SingUpToList(Layers::EnemyBullet, spr4);
 	*/
 	/*Sprite 5*/
-	spr5 = new Sprite(render, 1, 1);
+	/*spr5 = new Sprite(render, 1, 1);
 	spr5->SetMaterial(mat2);
 	spr5->LoadMaterial("sample2.bmp");
 	spr5->SetPos(-10, 0, 0);
 	spr5->SetBoundingBox(2.0f, 2.0f, false, 10);
-	instance->SingUpToList(Layers::PlayerBullet, spr5);
+	instance->SingUpToList(Layers::PlayerBullet, spr5);*/
 	
 	cout << "Game::OnStart()" << endl;
 	return true;
@@ -62,14 +62,14 @@ bool Game::OnStart() {
 
 bool Game::OnStop() {
 	cout << "Game::OnStop()" << endl;
-
+	delete mat1;
 	delete mat2;
 
 	delete spr1;
 	delete spr2;
 	delete spr3;
 	//delete spr4;
-	delete spr5;
+	//delete spr5;
 	
 	return true;
 }
@@ -81,12 +81,12 @@ bool Game::OnUpdate() {
 	/*Animations*/
 	spr2->UpdAnim(deltaTime);
 	spr1->UpdAnim(deltaTime);
-	render->CameraTranslate(glm::vec3(0.5f * deltaTime, 0, 0));
 	/*Translate*/
-	spr2->Translate(0,-speed *  deltaTime, 0);
-	spr3->Translate(0, speed * deltaTime , 0);
+	render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
+	spr2->Translate(speed* deltaTime,0 , 0);
+	spr3->Translate(-speed * deltaTime ,0, 0);
 	//spr4->Translate(-speed * deltaTime * 2.0f,0, 0);
-	spr5->Translate( speed * deltaTime,0, 0);
+	//spr5->Translate( speed * deltaTime,0, 0);
 	
 	return true;
 }
@@ -97,7 +97,7 @@ void Game::OnDraw()
 	spr1->Draw();
 	spr2->Draw();
 	spr3->Draw();
-	spr5->Draw();
+	//spr5->Draw();
 	//spr4->Draw();
 }
 
