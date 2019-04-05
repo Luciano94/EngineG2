@@ -14,15 +14,22 @@ bool Renderer::Start(void* wnd) {
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
-	ProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.0f, 100.f);
+	
+	orthoMatrix = glm::ortho(-10.0f, 10.0f, 10.0f,
+							-10.0f, 0.0f, 100.f);
+
+	perspMatrix = glm::perspective(-10.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+
+	ProjectionMatrix = orthoMatrix;
 	
 	camPos = glm::vec3(0, 0, 0);
 	eyePos = glm::vec3(0, 0, 3);
+	upPos = glm::vec3(0, 1, 0);
 
 	ViewMatrix = glm::lookAt(
-		glm::vec3(0, 0, 3),
-		glm::vec3(0, 0, 0),
-		glm::vec3(0, 1, 0)
+		eyePos,
+		camPos,
+		upPos
 	);
 
 	WorldMatrix = glm::mat4(1.0f);
@@ -154,11 +161,52 @@ void Renderer::CameraTranslate(glm::vec3 pos){
 	ViewMatrix = glm::lookAt(
 		eyePos,
 		camPos,
-		glm::vec3(0, 1, 0)
+		upPos
 	);
 
 	UpdateWVP();
 
+}
+
+void Renderer::SetCameraType(CameraType _camType)
+{
+	camType = _camType;
+	switch (_camType){
+		case ortho:
+			ProjectionMatrix = orthoMatrix;
+			break;
+		case persp:
+			ProjectionMatrix = perspMatrix;
+			break;
+	}
+
+	UpdateWVP();
+}
+
+void Renderer::SetProjectionMatrixOrtho(float left, float right, float top, float bottom, float near, float far)
+{
+	if (camType == ortho) {
+		ProjectionMatrix = glm::ortho(left, right, bottom, top, near, far);
+		UpdateWVP();
+	}
+}
+
+void Renderer::SetProjectionMatrixPersp(float fov, float aspect, float near , float far)
+{
+	if (camType == persp) {
+		ProjectionMatrix =glm::perspective(fov, aspect, near, far);
+		UpdateWVP();
+	}
+}
+
+void Renderer::SetViewMatrix(glm::vec3 _eyePos, glm::vec3 _camPos, glm::vec3 _upPos)
+{
+	camPos = _camPos;
+	eyePos = _eyePos;
+	upPos = _upPos;
+	ViewMatrix = glm::lookAt(camPos, eyePos, upPos);
+
+	UpdateWVP();
 }
 
 Renderer::Renderer() {

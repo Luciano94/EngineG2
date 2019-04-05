@@ -28,4 +28,8 @@ enum Directions
 	Counts
 };
 
-
+enum CameraType {
+	ortho = 0,
+	persp,
+	count
+};

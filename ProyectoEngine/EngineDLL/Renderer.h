@@ -1,6 +1,7 @@
 #pragma once
 #include "Exports.h"
 #include "Window.h"
+#include "GlobalDefinitions.h"
 #include <iostream>
 #include<glm/glm.hpp>
 #include<glm\gtc\matrix_transform.hpp>
@@ -13,13 +14,18 @@ private:
 	unsigned int VertexArrayID;
 	unsigned int ColorVertexArrayID;
 
-	glm::vec3 eyePos;
-	glm::vec3 camPos;
-
 	glm::mat4 WorldMatrix;
 	glm::mat4 ViewMatrix;
 	glm::mat4 ProjectionMatrix;
 	glm::mat4 WVP;
+
+	/*Camera*/
+	glm::vec3 upPos;
+	glm::vec3 eyePos;
+	glm::vec3 camPos;
+	CameraType camType;
+	glm::mat4 perspMatrix;
+	glm::mat4 orthoMatrix;
 public:
 	bool Start(void* wnd);
 	bool Stop();
@@ -46,9 +52,16 @@ public:
 	void LoadIMatrix();
 	void SetWMatrix(glm::mat4 matrix);
 	void MultiplyWMatrix(glm::mat4 matrix);
+	
+	void SetCameraType(CameraType _camType);
+	void SetProjectionMatrixOrtho(float left, float right, float top, float bottom, float near, float far);
+	void SetProjectionMatrixPersp(float fov, float aspect, float near, float far);
+	void SetViewMatrix(glm::vec3 x, glm::vec3 y, glm::vec3 z);
+
 	/*CAMERA*/
 	glm::vec3 getCameraPos();
 	void CameraTranslate(glm::vec3 pos);
+	
 	Renderer();
 	~Renderer();
 };

@@ -15,6 +15,8 @@ bool GameBase::Start(int h, int w, char* name) {
 		return false;
 	if (!render->Start(window->getWin()))
 		return false;
+	render->SetCameraType(CameraType::persp);
+	//render->SetViewMatrix(glm::vec3(1, 1, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 	return OnStart();
 }
 
