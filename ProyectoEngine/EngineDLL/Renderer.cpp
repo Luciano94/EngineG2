@@ -156,7 +156,7 @@ glm::vec3 Renderer::getCameraPos(){
 void Renderer::CameraTranslate(glm::vec3 pos){
 	
 	camPos += pos;
-	eyePos += glm::vec3(pos.x, pos.y, 0);
+	eyePos += pos;
 
 	ViewMatrix = glm::lookAt(
 		eyePos,
