@@ -40,6 +40,9 @@ bool Game::OnStart() {
 	spr3->SetBoundingBox(2.0f, 2.0f, false, 100);
 	instance->SingUpToList(Layers::EnemyBullet, spr3);
 	
+	/*Camera*/
+	camera = new Camera(render);
+
 	cout << "Game::OnStart()" << endl;
 	return true;
 }
@@ -62,14 +65,16 @@ bool Game::OnUpdate() {
 	/*Animations*/
 	spr2->UpdAnim(deltaTime);
 	spr1->UpdAnim(deltaTime);
-	/*Translate*/
-	//render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
+	/*Translations*/
 	if(!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Down))
 		spr2->Translate(0,-speed* deltaTime, 0);
 	if (!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Left))
 		spr2->Translate(speed * deltaTime,0, 0);
 	spr3->Translate(-speed * deltaTime ,0, 0);
-	
+	/*Rotations*/
+	camera->Roll(deltaTime);
+	camera->Pitch(deltaTime);
+	camera->Yaw(deltaTime);
 	return true;
 }
 

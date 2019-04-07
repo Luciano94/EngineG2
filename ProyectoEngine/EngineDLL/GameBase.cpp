@@ -15,7 +15,6 @@ bool GameBase::Start(int h, int w, char* name) {
 		return false;
 	if (!render->Start(window->getWin()))
 		return false;
-	camera = new Camera(render);
 	return OnStart();
 }
 
@@ -24,7 +23,6 @@ void GameBase::Loop() {
 	render->setClearScreenColor(0.2f, 0.2f, 0.5f, 0.0f);
 	while (looping && !window->ShouldClose()) {
 		getDeltaTime();
-		camera->Pitch(1 * deltaTime);
 		looping = OnUpdate();
 		render->ClearScreen();
 		OnDraw();

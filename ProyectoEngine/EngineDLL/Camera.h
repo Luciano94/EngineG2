@@ -10,8 +10,11 @@ class ENGINEDLL_API Camera{
 private:
 	Renderer * renderPtr;
 	CameraType camType;
-	glm::mat4 perspMatrix;
-	glm::mat4 orthoMatrix;
+
+	float pitch;
+	float yaw;
+	float roll;
+
 	glm::vec3 camPos;
 	glm::vec3 eyePos;
 	glm::vec3 upPos;
@@ -24,7 +27,6 @@ public:
 	void Pitch(float degrees);
 	void Yaw(float degrees);
 	void Roll(float degrees);
-	void Rotate(glm::vec4 rotation);
 
 	Camera(Renderer * _renderPrt);
 	~Camera();

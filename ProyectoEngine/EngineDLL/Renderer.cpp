@@ -168,6 +168,15 @@ void Renderer::CameraTranslate(glm::vec3 pos){
 
 }
 
+void Renderer::CameraRotate(glm::vec3 rot)
+{
+	ViewMatrix = glm::rotate(ViewMatrix, rot.y, glm::vec3(-1.0f, 0.0f, 0.0f));
+	ViewMatrix = glm::rotate(ViewMatrix, rot.x, glm::vec3(0.0f, 1.0f, 0.0f));
+	ViewMatrix = glm::rotate(ViewMatrix, rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	WorldMatrix= glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
+	UpdateWVP();
+}
+
 void Renderer::SetCameraType(CameraType _camType)
 {
 	camType = _camType;
@@ -205,9 +214,10 @@ void Renderer::SetViewMatrix(glm::vec3 _eyePos, glm::vec3 _camPos, glm::vec3 _up
 	eyePos = _eyePos;
 	upPos = _upPos;
 	ViewMatrix = glm::lookAt(camPos, eyePos, upPos);
-
+	WorldMatrix = glm::mat4(1.0f);
 	UpdateWVP();
 }
+
 
 Renderer::Renderer() {
 }

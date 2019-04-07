@@ -8,6 +8,7 @@
 #include "TileMap.h"
 #include "Material.h"
 #include "Importer.h"
+#include "Camera.h"
 #include <iostream>
 
 using namespace std;
@@ -27,6 +28,7 @@ private:
 	
 	Material * mat1;
 
+	Camera * camera;
 protected:
 	bool OnStart() override;
 	bool OnStop() override;

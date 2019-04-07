@@ -61,6 +61,7 @@ public:
 	/*CAMERA*/
 	glm::vec3 getCameraPos();
 	void CameraTranslate(glm::vec3 pos);
+	void CameraRotate(glm::vec3 rot);
 	
 	Renderer();
 	~Renderer();

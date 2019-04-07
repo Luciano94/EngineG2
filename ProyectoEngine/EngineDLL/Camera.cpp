@@ -8,8 +8,12 @@ Camera::Camera(Renderer * _renderPrt)
 	renderPtr = _renderPrt;
 
 	camPos = glm::vec3(0, 0, 0);
-	eyePos = glm::vec3(0, 0, 3);
+	eyePos = glm::vec3(0, 0, 6);
 	upPos = glm::vec3(0, 1, 0);
+
+	roll = 0.0f;
+	pitch = 0.0f;
+	yaw = -90.0f;
 	
 	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
 	renderPtr->SetCameraType(CameraType::persp);
@@ -39,21 +43,17 @@ void Camera::Translate(glm::vec3 direction)
 
 void Camera::Pitch(float degrees)
 {
-	upPos.x += degrees;
-	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
+	renderPtr->CameraRotate(glm::vec3(0, degrees, 0));
 }
 
 void Camera::Yaw(float degrees)
 {
-	eyePos.y += degrees;
-	//upPos.y += degrees;
-	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
+	renderPtr->CameraRotate(glm::vec3(degrees, 0, 0));
 }
 
 void Camera::Roll(float degrees)
 {
-	eyePos.x += degrees;
-	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
+	renderPtr->CameraRotate(glm::vec3(0, 0, degrees));
 }
 
 Camera::~Camera()

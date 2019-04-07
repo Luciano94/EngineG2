@@ -2,7 +2,6 @@
 #include <iostream>
 #include "Exports.h"
 #include "Renderer.h"
-#include "Camera.h"
 #include "Window.h"
 #include "typeDef.h"
 #include <GLFW/glfw3.h>
@@ -15,7 +14,6 @@ private:
 	double lastFrame;
 protected:
 	Renderer * render;
-	Camera * camera;
 	virtual bool OnStart() = 0;
 	virtual bool OnStop() = 0;
 	virtual bool OnUpdate() = 0;
