@@ -7,53 +7,45 @@ Camera::Camera(Renderer * _renderPrt)
 {
 	renderPtr = _renderPrt;
 
-	camPos = glm::vec3(0, 0, 0);
-	eyePos = glm::vec3(0, 0, 6);
-	upPos = glm::vec3(0, 1, 0);
-
-	roll = 0.0f;
-	pitch = 0.0f;
-	yaw = -90.0f;
-	
-	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
+	vMatrix = renderPtr->getVMatrix();
 	renderPtr->SetCameraType(CameraType::persp);
 	renderPtr->SetProjectionMatrixPersp(-10.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 }
 
 void Camera::Walk(float dir)
 {
-	camPos.z += dir;
-	eyePos.z += dir;
-	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
+	vMatrix = glm::translate(vMatrix, glm::vec3(0.0f, 0.0f, dir));
+	renderPtr->setVMatrix(vMatrix);
 }
 
 void Camera::Starfe(float dir)
 {
-	camPos.x += dir;
-	eyePos.x += dir;
-	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
+	vMatrix = glm::translate(vMatrix, glm::vec3(0.0f, dir, 0.0f));
+	renderPtr->setVMatrix(vMatrix);
 }
 
 void Camera::Translate(glm::vec3 direction)
 {
-	camPos += direction;
-	eyePos += direction;
-	renderPtr->SetViewMatrix(camPos, eyePos, upPos);
+	vMatrix = glm::translate(vMatrix, direction);
+	renderPtr->setVMatrix(vMatrix);
 }
 
 void Camera::Pitch(float degrees)
 {
-	renderPtr->CameraRotate(glm::vec3(0, degrees, 0));
+	vMatrix = glm::rotate(vMatrix, degrees, glm::vec3(0.0f, 1.0f, 0.0f));
+	renderPtr->setVMatrix(vMatrix);
 }
 
 void Camera::Yaw(float degrees)
 {
-	renderPtr->CameraRotate(glm::vec3(degrees, 0, 0));
+	vMatrix = glm::rotate(vMatrix, degrees, glm::vec3(-1.0f, 0.0f, 0.0f));
+	renderPtr->setVMatrix(vMatrix);
 }
 
 void Camera::Roll(float degrees)
 {
-	renderPtr->CameraRotate(glm::vec3(0, 0, degrees));
+	vMatrix = glm::rotate(vMatrix, degrees, glm::vec3(0.0f, 0.0f, 1.0f));
+	renderPtr->setVMatrix(vMatrix);
 }
 
 Camera::~Camera()

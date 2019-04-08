@@ -177,6 +177,17 @@ void Renderer::CameraRotate(glm::vec3 rot)
 	UpdateWVP();
 }
 
+void Renderer::setVMatrix(glm::mat4 vM)
+{
+	ViewMatrix = vM;
+	UpdateWVP();
+}
+
+glm::mat4 Renderer::getVMatrix()
+{
+	return ViewMatrix;
+}
+
 void Renderer::SetCameraType(CameraType _camType)
 {
 	camType = _camType;

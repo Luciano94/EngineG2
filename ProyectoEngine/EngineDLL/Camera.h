@@ -11,13 +11,7 @@ private:
 	Renderer * renderPtr;
 	CameraType camType;
 
-	float pitch;
-	float yaw;
-	float roll;
-
-	glm::vec3 camPos;
-	glm::vec3 eyePos;
-	glm::vec3 upPos;
+	glm::mat4 vMatrix;
 
 public:
 	void Walk(float dir);

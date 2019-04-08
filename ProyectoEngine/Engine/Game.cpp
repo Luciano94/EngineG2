@@ -13,7 +13,9 @@ bool Game::OnStart() {
 
 	/*Tileset*/
 	tilesito = new TileMap("MatrixLevel.csv", 800, 600, render, mat1);
-	
+	/*Input*/
+	input = Input::getInstance();
+	input->SetWindowContext(window);
 	/*Sprite 1*/	
 	spr1 = new Sprite(render, 8, 8);
 	spr1->SetMaterial(mat1);
@@ -59,6 +61,7 @@ bool Game::OnStop() {
 }
 
 bool Game::OnUpdate() {
+	input->PollEvents();
 	i++;
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
 	tilesito->Update();
@@ -72,9 +75,20 @@ bool Game::OnUpdate() {
 		spr2->Translate(speed * deltaTime,0, 0);
 	spr3->Translate(-speed * deltaTime ,0, 0);
 	/*Rotations*/
-	camera->Roll(deltaTime);
-	camera->Pitch(deltaTime);
-	camera->Yaw(deltaTime);
+	if(input->isInput(GLFW_KEY_E))
+		camera->Roll(deltaTime);
+	if (input->isInput(GLFW_KEY_Q))
+		camera->Pitch(deltaTime);
+	if (input->isInput(GLFW_KEY_R))
+		camera->Yaw(deltaTime);
+	if (input->isInput(GLFW_KEY_W))
+		camera->Walk(deltaTime);
+	if (input->isInput(GLFW_KEY_S))
+		camera->Walk(-deltaTime);
+	if (input->isInput(GLFW_KEY_A))
+		camera->Starfe(deltaTime);
+	if (input->isInput(GLFW_KEY_D))
+		camera->Starfe(-deltaTime);
 	return true;
 }
 

@@ -9,10 +9,10 @@
 using namespace std;
 class ENGINEDLL_API GameBase {
 private:
-	Window * window;
 	double currentFrame;
 	double lastFrame;
 protected:
+	Window * window;
 	Renderer * render;
 	virtual bool OnStart() = 0;
 	virtual bool OnStop() = 0;

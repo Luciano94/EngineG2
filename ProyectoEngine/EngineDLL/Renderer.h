@@ -62,6 +62,8 @@ public:
 	glm::vec3 getCameraPos();
 	void CameraTranslate(glm::vec3 pos);
 	void CameraRotate(glm::vec3 rot);
+	void setVMatrix(glm::mat4 vM);
+	glm::mat4 getVMatrix();
 	
 	Renderer();
 	~Renderer();
