@@ -75,12 +75,19 @@ bool Game::OnUpdate() {
 		spr2->Translate(speed * deltaTime,0, 0);
 	spr3->Translate(-speed * deltaTime ,0, 0);
 	/*Rotations*/
-	if(input->isInput(GLFW_KEY_E))
+	if(input->isInput(GLFW_KEY_Q))
 		camera->Roll(deltaTime);
-	if (input->isInput(GLFW_KEY_Q))
+	if (input->isInput(GLFW_KEY_E))
+		camera->Roll(-deltaTime);
+	if (input->isInput(GLFW_KEY_LEFT))
 		camera->Pitch(deltaTime);
-	if (input->isInput(GLFW_KEY_R))
+	if (input->isInput(GLFW_KEY_RIGHT))
+		camera->Pitch(-deltaTime);
+	if (input->isInput(GLFW_KEY_UP))
 		camera->Yaw(deltaTime);
+	if (input->isInput(GLFW_KEY_DOWN))
+		camera->Yaw(-deltaTime);
+
 	if (input->isInput(GLFW_KEY_W))
 		camera->Walk(deltaTime);
 	if (input->isInput(GLFW_KEY_S))
