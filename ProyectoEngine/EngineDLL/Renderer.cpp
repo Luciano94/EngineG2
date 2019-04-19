@@ -15,15 +15,14 @@ bool Renderer::Start(void* wnd) {
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
 	
-	orthoMatrix = glm::ortho(-10.0f, 10.0f, 10.0f,
-							-10.0f, 0.0f, 100.f);
+	orthoMatrix = glm::ortho(-10.0f, 10.0f, 10.0f, -10.0f, 0.0f, 100.f);
 
-	perspMatrix = glm::perspective(-10.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+	perspMatrix = glm::perspective(glm::radians(100.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
 	ProjectionMatrix = orthoMatrix;
 	
-	camPos = glm::vec3(0, 0, 0);
 	eyePos = glm::vec3(0, 0, 3);
+	camPos = glm::vec3(0, 0, 0);
 	upPos = glm::vec3(0, 1, 0);
 
 	ViewMatrix = glm::lookAt(

@@ -2,7 +2,7 @@
 
 bool Game::OnStart() {
 	/*velocity of the objects*/
-	speed = 1;
+	speed = 2.0f;
 
 	/*Collision Manager*/
 	CollisionManager * instance = CollisionManager::GetInstance();
@@ -74,28 +74,38 @@ bool Game::OnUpdate() {
 	if (!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Left))
 		spr2->Translate(speed * deltaTime,0, 0);
 	spr3->Translate(-speed * deltaTime ,0, 0);
+	
 	/*Rotations*/
-	if(input->isInput(GLFW_KEY_Q))
-		camera->Roll(deltaTime);
-	if (input->isInput(GLFW_KEY_E))
-		camera->Roll(-deltaTime);
-	if (input->isInput(GLFW_KEY_LEFT))
-		camera->Pitch(deltaTime);
-	if (input->isInput(GLFW_KEY_RIGHT))
-		camera->Pitch(-deltaTime);
-	if (input->isInput(GLFW_KEY_UP))
-		camera->Yaw(deltaTime);
-	if (input->isInput(GLFW_KEY_DOWN))
-		camera->Yaw(-deltaTime);
+	if (input->isInput(GLFW_KEY_Q))
+		camera->Rotate(glm::vec3(0, 0, speed * deltaTime));
 
+	if (input->isInput(GLFW_KEY_E))
+		camera->Rotate(glm::vec3(0, 0, speed * -deltaTime));
+
+	if (input->isInput(GLFW_KEY_UP))
+		camera->Rotate(glm::vec3(0,speed * -deltaTime, 0));
+
+	if (input->isInput(GLFW_KEY_DOWN))
+
+		camera->Rotate(glm::vec3(0, speed * deltaTime, 0));
+	if (input->isInput(GLFW_KEY_LEFT))
+		camera->Rotate(glm::vec3( speed * deltaTime,0, 0));
+
+	if (input->isInput(GLFW_KEY_RIGHT))
+		camera->Rotate(glm::vec3( speed * -deltaTime,0, 0));
+
+/*Translations*/
 	if (input->isInput(GLFW_KEY_W))
-		camera->Walk(deltaTime);
+		camera->Translate(glm::vec3(0, 0, speed * deltaTime));
+
 	if (input->isInput(GLFW_KEY_S))
-		camera->Walk(-deltaTime);
+		camera->Translate(glm::vec3(0, 0, speed * -deltaTime));
+
 	if (input->isInput(GLFW_KEY_A))
-		camera->Starfe(deltaTime);
+		camera->Translate(glm::vec3(speed * deltaTime, 0, 0));
+
 	if (input->isInput(GLFW_KEY_D))
-		camera->Starfe(-deltaTime);
+		camera->Translate(glm::vec3(-speed * deltaTime, 0, 0));
 	return true;
 }
 

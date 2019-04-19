@@ -13,6 +13,12 @@ private:
 
 	glm::mat4 vMatrix;
 
+	glm::vec4 x;
+	glm::vec4 y;
+	glm::vec4 z;
+
+	glm::vec4 camPos;
+
 public:
 	void Walk(float dir);
 	void Starfe(float dir);
@@ -21,6 +27,7 @@ public:
 	void Pitch(float degrees);
 	void Yaw(float degrees);
 	void Roll(float degrees);
+	void Rotate(glm::vec3 rotation);
 
 	Camera(Renderer * _renderPrt);
 	~Camera();
