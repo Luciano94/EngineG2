@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "GlobalDefinitions.h"
 #include <iostream>
+#include <vector>
 #include<glm/glm.hpp>
 #include<glm\gtc\matrix_transform.hpp>
 
@@ -64,6 +65,10 @@ public:
 	void CameraRotate(glm::vec3 rot);
 	void setVMatrix(glm::mat4 vM);
 	glm::mat4 getVMatrix();
+
+	/*Mesh*/
+	unsigned int GenMeshBuffer(vector<unsigned int> indices);
+	void BindMeshBuffer(vector<unsigned int> indices, unsigned int vtxBuffer);
 	
 	Renderer();
 	~Renderer();

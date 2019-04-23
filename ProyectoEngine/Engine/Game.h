@@ -10,6 +10,7 @@
 #include "Importer.h"
 #include "Input.h"
 #include "Camera.h"
+#include "Shape.h"
 #include <iostream>
 
 using namespace std;

@@ -56,6 +56,7 @@ unsigned int Renderer::GenBuffer(float * buffer, int size){
 }
 
 
+
 void Renderer::BeginDraw(unsigned int atribID) {
 	glEnableVertexAttribArray(atribID);
 }
@@ -228,6 +229,23 @@ void Renderer::SetViewMatrix(glm::vec3 _eyePos, glm::vec3 _camPos, glm::vec3 _up
 	UpdateWVP();
 }
 
+unsigned int Renderer::GenMeshBuffer(vector<unsigned int> indices) {
+	unsigned int elementbuffer;
+	glGenBuffers(1, &elementbuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	return elementbuffer;
+}
+
+void Renderer::BindMeshBuffer(vector<unsigned int> indices, unsigned int vtxBuffer) {
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vtxBuffer);
+	glDrawElements(
+		GL_TRIANGLES,      // mode
+		indices.size(),    // count
+		GL_UNSIGNED_INT,   // type
+		(void*)0           // element array buffer offset
+	);
+}
 
 Renderer::Renderer() {
 }
