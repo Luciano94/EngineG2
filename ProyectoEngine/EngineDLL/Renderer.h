@@ -67,8 +67,8 @@ public:
 	glm::mat4 getVMatrix();
 
 	/*Mesh*/
-	unsigned int GenMeshBuffer(int * indices, int size);
-	void BindMeshBuffer(int * indices, int size, unsigned int vtxBuffer);
+	unsigned int GenMeshBuffer(unsigned int * indices, int size);
+	void DrawIndexMesh(unsigned int * indices, int size, unsigned int indexBuffer);
 	
 	Renderer();
 	~Renderer();

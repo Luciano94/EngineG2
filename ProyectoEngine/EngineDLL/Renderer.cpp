@@ -14,6 +14,11 @@ bool Renderer::Start(void* wnd) {
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
+	
+	// Enable Z buffer
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
 
 	
 	orthoMatrix = glm::ortho(-10.0f, 10.0f, 10.0f, -10.0f, 0.0f, 100.f);
@@ -121,7 +126,7 @@ void Renderer::DestroyBuffer(unsigned int buffer){
 }
 
 void Renderer::ClearScreen(){
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::SwapBuffer(){
@@ -230,17 +235,16 @@ void Renderer::SetViewMatrix(glm::vec3 _eyePos, glm::vec3 _camPos, glm::vec3 _up
 	UpdateWVP();
 }
 
-unsigned int Renderer::GenMeshBuffer(int * indices, int size) {
+unsigned int Renderer::GenMeshBuffer(unsigned int * indices, int size) {
 	unsigned int elementbuffer;
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
 	return elementbuffer;
 }
 
-void Renderer::BindMeshBuffer(int * indices, int size, unsigned int vtxBuffer){
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vtxBuffer);
+void Renderer::DrawIndexMesh(unsigned int * indices, int size, unsigned int indexBuffer){
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 	glDrawElements(
 		GL_TRIANGLES,		// mode
 		size,				// count

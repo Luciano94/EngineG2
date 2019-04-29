@@ -29,6 +29,25 @@ void Shape::DrawMesh(int typeDraw){
 	render->EndDraw(1);
 }
 
+void Shape::DrawIndexMesh(unsigned int * indices,int indexCount, unsigned int indexBufferID){
+	render->LoadIMatrix();
+	render->SetWMatrix(WorldMatrix);
+
+	if (material != NULL) {
+		material->BindProgram();
+		material->Bind("WVP");
+		material->SetMatrixProperty(render->GetWVP());
+	}
+
+	render->BeginDraw(0);
+	render->BindBuffer(0, bufferId, 3);
+	render->BeginDraw(1);
+	render->BindBuffer(1, colorBufferId, 3);
+	render->DrawIndexMesh(indices, indexCount, indexBufferID);
+	render->EndDraw(0);
+	render->EndDraw(1);
+}
+
 void Shape::SetVertices(float * vertices, int count){
 	Dispose();
 

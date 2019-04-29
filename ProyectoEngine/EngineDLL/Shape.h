@@ -25,6 +25,7 @@ public:
 	Shape(Renderer * render);
 	virtual void Draw() = 0;
 	void DrawMesh(int typeDraw);
+	void DrawIndexMesh(unsigned int * indices, int indexCount, unsigned int indexBufferID);
 	void SetVertices(float * vertices, int count);
 	void SetColorVertex(float * vertices, int count);
 	void SetMaterial(Material* material);

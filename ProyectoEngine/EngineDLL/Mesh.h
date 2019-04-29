@@ -10,7 +10,7 @@ private:
 
 	float * vertex;
 	float * colorVertex;
-	int * indices;
+	unsigned int * indices;
 
 	int vertexCount;
 	int colorCount;
@@ -26,8 +26,7 @@ public:
 	~Mesh();
 
 	void DisposeIndex();
-	void SetIndexVertex(int * indices, int count);
+	void SetIndexVertex(unsigned int * indices, int count);
 	void Draw();
-	//void DrawMesh(int typeDraw);
 };
 

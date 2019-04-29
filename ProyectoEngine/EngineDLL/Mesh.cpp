@@ -25,7 +25,7 @@ Mesh::Mesh(Renderer * render) :Shape(render){
 		-1.0, -1.0, -1.0,
 		 1.0, -1.0, -1.0,
 		 1.0,  1.0, -1.0,
-		-1.0,  1.0, -1.0,
+		-1.0,  1.0, -1.0
 	};
 	SetVertices(vertex, vertexCount);
 
@@ -39,11 +39,11 @@ Mesh::Mesh(Renderer * render) :Shape(render){
 		1.0, 0.0, 0.0,
 		0.0, 1.0, 0.0,
 		0.0, 0.0, 1.0,
-		1.0, 1.0, 1.0,
+		1.0, 1.0, 1.0
 	};
 	SetColorVertex(colorVertex, colorCount);
 
-	indices = new int[indexCount * 3]{
+	indices = new unsigned int[indexCount * 3]{
 		// front
 		0, 1, 2,
 		2, 3, 0,
@@ -74,17 +74,16 @@ void Mesh::DisposeIndex() {
 	}
 }
 
-void Mesh::SetIndexVertex(int * indices, int count){
+void Mesh::SetIndexVertex(unsigned int * indices, int count){
 	DisposeIndex();
 
 	indexCount = count;
-	shouldDisposeColor = true;
-	indexBufferID = render->GenMeshBuffer(indices, sizeof(int)* count * 3);
-	render->BindMeshBuffer(indices,count,bufferId);
+	shouldDispouseIndices = true;
+	indexBufferID = render->GenMeshBuffer(indices, sizeof(int) * indexCount * 3);
 }
 
 void Mesh::Draw(){
-	DrawMesh(GL_TRIANGLES);
+	DrawIndexMesh(indices,indexCount * 3,indexBufferID);
 }
 
 
