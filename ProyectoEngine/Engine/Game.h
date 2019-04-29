@@ -4,7 +4,7 @@
 #include "Triangle.h"
 #include "Square.h"
 #include "Circle.h"
-#include "Sprite.h"
+#include "Mesh.h"
 #include "TileMap.h"
 #include "Material.h"
 #include "Importer.h"
@@ -24,9 +24,7 @@ private:
 	float rotZ;
 	float posX;
 
-	Sprite * spr1;
-	Sprite * spr2;
-	Sprite * spr3;
+	Mesh * mesh1;
 	
 	Material * mat1;
 

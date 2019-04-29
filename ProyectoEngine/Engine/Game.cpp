@@ -14,6 +14,15 @@ bool Game::OnStart() {
 	/*Camera*/
 	camera = new Camera(render);
 
+	/*Mesh*/
+	mat1 = new Material();
+	unsigned int programID = mat1->LoadShaders("vColor.glsl", "fColor.glsl");
+
+	mesh1 = new Mesh(render);
+	mesh1->SetMaterial(mat1);
+	mesh1->SetPos(0, 0, 0);
+	//mesh1->SetBoundingBox(2.0f, 2.0f, false, 10);
+
 	cout << "Game::OnStart()" << endl;
 	return true;
 }
@@ -65,6 +74,7 @@ bool Game::OnUpdate() {
 
 void Game::OnDraw()
 {
+	mesh1->Draw();
 }
 
 Game::Game() {

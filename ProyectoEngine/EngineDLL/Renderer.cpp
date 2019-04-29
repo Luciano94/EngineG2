@@ -14,10 +14,11 @@ bool Renderer::Start(void* wnd) {
 
 	glGenVertexArrays(1, &VertexArrayID);
 	glBindVertexArray(VertexArrayID);
+
 	
 	orthoMatrix = glm::ortho(-10.0f, 10.0f, 10.0f, -10.0f, 0.0f, 100.f);
 
-	perspMatrix = glm::perspective(glm::radians(100.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	perspMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
 
 	ProjectionMatrix = orthoMatrix;
 	
@@ -229,23 +230,25 @@ void Renderer::SetViewMatrix(glm::vec3 _eyePos, glm::vec3 _camPos, glm::vec3 _up
 	UpdateWVP();
 }
 
-unsigned int Renderer::GenMeshBuffer(vector<unsigned int> indices) {
+unsigned int Renderer::GenMeshBuffer(int * indices, int size) {
 	unsigned int elementbuffer;
 	glGenBuffers(1, &elementbuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 	return elementbuffer;
 }
 
-void Renderer::BindMeshBuffer(vector<unsigned int> indices, unsigned int vtxBuffer) {
+void Renderer::BindMeshBuffer(int * indices, int size, unsigned int vtxBuffer){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vtxBuffer);
 	glDrawElements(
-		GL_TRIANGLES,      // mode
-		indices.size(),    // count
-		GL_UNSIGNED_INT,   // type
-		(void*)0           // element array buffer offset
+		GL_TRIANGLES,		// mode
+		size,				// count
+		GL_UNSIGNED_INT,	// type
+		(void*)0			// element array buffer offset
 	);
 }
+
 
 Renderer::Renderer() {
 }

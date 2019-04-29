@@ -1,18 +1,33 @@
 #pragma once
-#include "Entity.h"
-#include <vector>
-class ENGINEDLL_API Mesh: public Entity
+#include "Shape.h"
+
+class ENGINEDLL_API Mesh : public Shape
 {
 private:
 	unsigned int bufferId;
-	float * vertex;
-	int vertexCount;
-	bool shouldDispose;
+	unsigned int colorBufferID;
+	unsigned int indexBufferID;
 
-	std::vector<unsigned int> indices;
+	float * vertex;
+	float * colorVertex;
+	int * indices;
+
+	int vertexCount;
+	int colorCount;
+	int indexCount;
+
+	bool shouldDispose;
+	bool shouldDispouseColor;
+	bool shouldDispouseIndices;
+
 
 public:
 	Mesh(Renderer * render);
 	~Mesh();
+
+	void DisposeIndex();
+	void SetIndexVertex(int * indices, int count);
+	void Draw();
+	//void DrawMesh(int typeDraw);
 };
 
