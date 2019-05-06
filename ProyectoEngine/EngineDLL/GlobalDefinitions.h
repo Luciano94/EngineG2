@@ -33,3 +33,17 @@ enum CameraType {
 	persp,
 	count
 };
+
+struct Header
+{
+	unsigned int dataPos;
+	unsigned int width, height;
+	unsigned int imageSize;
+	unsigned char * data;
+};
+
+struct MeshData {
+	float * vertexArray;
+	float * uvArray;
+	unsigned int * indexArray;
+};

@@ -26,6 +26,10 @@ void Importer::LoadBMP(const char * bmpFile, Header &hed){
 	fclose(file);
 }
 
+void Importer::LoadMesh(const char * fbxFile, MeshData & mesh){
+
+}
+
 bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
 {
 	if (!bmpFile) { 
