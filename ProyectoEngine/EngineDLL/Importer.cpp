@@ -1,6 +1,9 @@
 #include "Importer.h"
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h> 
+#include <assimp/postprocess.h>
 
 void Importer::LoadBMP(const char * bmpFile, Header &hed){
 	unsigned char header[54];
@@ -27,7 +30,24 @@ void Importer::LoadBMP(const char * bmpFile, Header &hed){
 }
 
 void Importer::LoadMesh(const char * fbxFile, MeshData & mesh){
+	// Create an instance of the Importer class
+	Assimp::Importer importer;
+	// And have it read the given file with some example postprocessing
+	// Usually - if speed is not the most important aspect for you - you'll 
+	// propably to request more postprocessing than we do in this example.
+	const aiScene* scene = importer.ReadFile(fbxFile,
+		aiProcess_CalcTangentSpace |
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_SortByPType);
 
+	// If the import failed, report it
+	if (!scene){
+		return;
+	}
+	if (scene->HasMeshes()) {
+		scene->mMeshes;
+	}
 }
 
 bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
