@@ -22,7 +22,7 @@ bool Game::OnStart() {
 	mesh1->SetMaterial(mat1);
 	mesh1->LoadMaterial("ArmaTex.bmp");
 	mesh1->SetPos(0, 0, 0);
-	mesh1->SetScale(0.01f, 0.01f, 0.01f);
+	mesh1->SetScale(0.1f, 0.1f, 0.1f);
 
 	cout << "Game::OnStart()" << endl;
 	return true;

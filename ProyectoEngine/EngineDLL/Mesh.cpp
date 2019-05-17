@@ -3,37 +3,44 @@
 
 
 Mesh::Mesh(Renderer * render, const char* fbxFile) :Shape(render){
-	shouldDispose = false;
-	shouldDispouseTexture = false;
-	shouldDispouseIndices = false;
-
-	bufferId = -1;
-	uvBufferID = -1;
+	mesh = new vector<meshes>();
+	meshInfo = new vector<MeshData>();
+	Importer::LoadMesh(fbxFile, meshInfo);
+	mesh->resize(meshInfo->size());
+		
 	texID = -1;
-	indexBufferID = -1;
-	Importer::LoadMesh(fbxFile, mesh);
 
-	vertexCount = mesh.vertexArray->size();
-	indexCount = mesh.indexArray->size();
-	uvCount = mesh.uvArray->size();
+	for (size_t i = 0; i < mesh->size(); i++) {
+		mesh->at(i).shouldDispose = false;
+		mesh->at(i).shouldDispouseIndices = false;
 
-	vertex = new float[vertexCount];
-	for (size_t i = 0; i < vertexCount; i++){
-		vertex[i] = mesh.vertexArray->at(i);
+		mesh->at(i).bufferId = -1;
+		mesh->at(i).uvBufferID = -1;
+		mesh->at(i).indexBufferID = -1;
+		mesh->at(i).vertexCount = meshInfo->at(i).vertexArray->size();
+		mesh->at(i).indexCount = meshInfo->at(i).indexArray->size();
+		mesh->at(i).uvCount = meshInfo->at(i).uvArray->size();
+
+		mesh->at(i).vertex = new float[mesh->at(i).vertexCount];
+		for (size_t j = 0; j < mesh->at(i).vertexCount; j++){
+			mesh->at(i).vertex[j] = meshInfo->at(i).vertexArray->at(j);
+		}
+		SetVertices(i);
+
+		mesh->at(i).uvVertex = new float[mesh->at(i).uvCount];
+		for (size_t j = 0; j < mesh->at(i).uvCount; j++) {
+			mesh->at(i).uvVertex[j] = meshInfo->at(i).uvArray->at(j);
+		}
+		SetTextureVertex(i);
+
+		mesh->at(i).indices = new unsigned int[mesh->at(i).indexCount];
+		for (size_t j = 0; j < mesh->at(i).indexCount; j++) {
+			mesh->at(i).indices[j] = meshInfo->at(i).indexArray->at(j);
+		}
+		SetIndexVertex(i);
 	}
-	SetVertices(vertex, vertexCount / 3);
 
-	uvVertex = new float[uvCount];
-	for (size_t i = 0; i < uvCount; i++) {
-		uvVertex[i] = mesh.uvArray->at(i);
-	}
-	SetTextureVertex(uvVertex, uvCount /2);
-
-	indices = new unsigned int[indexCount];
-	for (size_t i = 0; i < indexCount; i++) {
-		indices[i] = mesh.indexArray->at(i);
-	}
-	SetIndexVertex(indices, indexCount / 3);
+	delete meshInfo;
 
 }
 
@@ -43,38 +50,59 @@ void Mesh::LoadMaterial(const char * bmpFile) {
 	material->BindTexture("myTextureSampler");
 }
 
-void Mesh::SetTextureVertex(float * vertices, int count) {
+void Mesh::SetVertices(int index) {
+	Dispose();
+
+	mesh->at(index).shouldDispose = true;
+	mesh->at(index).bufferId = render->GenBuffer(mesh->at(index).vertex, 
+								sizeof(float)* mesh->at(index).vertexCount);
+}
+
+void Mesh::SetTextureVertex(int index) {
 	DisposeTexture();
 
-	uvCount = count;
-	shouldDispouseTexture = true;
-	uvBufferID = render->GenBuffer(vertices, sizeof(float)* count * 2);
+	mesh->at(index).shouldDispouseTexture = true;
+	mesh->at(index).uvBufferID = render->GenBuffer(mesh->at(index).uvVertex, 
+								sizeof(float)* mesh->at(index).uvCount);
+}
+
+void Mesh::SetIndexVertex(int index){
+	DisposeIndex();
+
+	mesh->at(index).shouldDispouseIndices = true;
+	mesh->at(index).indexBufferID = render->GenMeshBuffer(mesh->at(index).indices,
+									sizeof(int) * mesh->at(index).indexCount);
 }
 
 void Mesh::DisposeIndex() {
-	if (shouldDispouseIndices) {
-		render->DestroyBuffer(indexBufferID);
-		shouldDispouseIndices = false;
-	}
+
 }
 
 void Mesh::DisposeTexture(){
-	if (shouldDispouseIndices) {
-		render->DestroyBuffer(uvBufferID);
-		shouldDispouseIndices = false;
-	}
+
 }
 
-void Mesh::SetIndexVertex(unsigned int * indices, int count){
-	DisposeIndex();
-
-	indexCount = count;
-	shouldDispouseIndices = true;
-	indexBufferID = render->GenMeshBuffer(indices, sizeof(int) * indexCount * 3);
-}
 
 void Mesh::Draw(){
-	DrawIndexMesh(indices,indexCount * 3,indexBufferID, uvBufferID, texID);
+	for (size_t i = 0; i < mesh->size(); i++){
+		render->LoadIMatrix();
+		render->SetWMatrix(WorldMatrix);
+
+		if (material != NULL) {
+			material->BindProgram();
+			material->Bind("WVP");
+			material->SetMatrixProperty(render->GetWVP());
+		}
+
+		render->BindTexture(texID, mesh->at(i).uvBufferID);
+		render->BeginDraw(0);
+		render->BindBuffer(0, mesh->at(i).bufferId, 3);
+		render->BeginDraw(1);
+		render->BindBuffer(1, mesh->at(i).uvBufferID, 2);
+		render->DrawIndexMesh(mesh->at(i).indices, mesh->at(i).indexCount, mesh->at(i).indexBufferID);
+		render->EndDraw(0);
+		render->EndDraw(1);
+	}
 }
 
 

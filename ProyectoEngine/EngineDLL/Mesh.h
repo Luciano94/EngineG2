@@ -3,12 +3,10 @@
 #include "GlobalDefinitions.h"
 #include "Importer.h"
 
-class ENGINEDLL_API Mesh : public Shape
+struct meshes
 {
-private:
 	unsigned int bufferId;
 	unsigned int uvBufferID;
-	unsigned int texID;
 	unsigned int indexBufferID;
 
 	float * vertex;
@@ -20,14 +18,24 @@ private:
 	unsigned int indexCount;
 
 	bool shouldDispose;
-	bool shouldDispouseTexture;
 	bool shouldDispouseIndices;
+	bool shouldDispouseTexture;
+};
 
-	MeshData mesh;
+class ENGINEDLL_API Mesh : public Shape
+{
+private:
+
+	unsigned int texID;
+
+	vector<meshes> * mesh;
+
+	vector<MeshData> * meshInfo;
 	Header texHed;
 
-	void SetTextureVertex(float * vertices, int count);
-	void SetIndexVertex(unsigned int * indices, int count);
+	void SetTextureVertex(int index);
+	void SetIndexVertex(int index);
+	void SetVertices(int index);
 	void DisposeIndex();
 	void DisposeTexture();
 public:

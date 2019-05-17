@@ -51,7 +51,7 @@ bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
 	return true;
 }
 
-void Importer::LoadMesh(const char * fbxFile, MeshData & mesh){
+void Importer::LoadMesh(const char * fbxFile, std::vector<MeshData> * meshes){
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
 	// And have it read the given file with some example postprocessing
@@ -67,10 +67,13 @@ void Importer::LoadMesh(const char * fbxFile, MeshData & mesh){
 	if (!scene){
 		return;
 	}
-	if (scene->HasMeshes()) {
-		scene->mMeshes;
-		InitMesh(scene->mMeshes[0], mesh);
-		//InitMaterial(scene->mMaterials[0], mesh);
+	if (!scene->HasMeshes()) {
+		return;
+	}
+
+	meshes->resize(scene->mNumMeshes);
+	for (size_t i = 0; i < scene->mNumMeshes; i++){
+		InitMesh(scene->mMeshes[i], meshes->at(i));
 	}
 }
 
@@ -101,10 +104,5 @@ void Importer::InitMesh(const aiMesh* paiMesh, MeshData & mesh)
 		mesh.indexArray->push_back(Face.mIndices[1]);
 		mesh.indexArray->push_back(Face.mIndices[2]);
 	}
-}
-
-bool Importer::InitMaterial(aiMaterial * pMaterial, MeshData & mesh)
-{
-	return false;
 }
 
