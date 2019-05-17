@@ -1,4 +1,7 @@
 #pragma once
+#include <vector>
+#include<glm/glm.hpp>
+#include<glm\gtc\matrix_transform.hpp>
 
 #define GL_POINTS                         0x0000
 #define GL_LINES                          0x0001
@@ -43,7 +46,7 @@ struct Header
 };
 
 struct MeshData {
-	float * vertexArray;
-	float * uvArray;
-	unsigned int * indexArray;
+	std::vector<float> * vertexArray;
+	std::vector<float> * uvArray;
+	std::vector<unsigned int> * indexArray;
 };

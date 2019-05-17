@@ -11,7 +11,7 @@ Camera::Camera(Renderer * _renderPrt)
 	y = glm::vec4(0, 1, 0, 0);
 	z = glm::vec4(0, 0, 1, 0);
 
-	camPos = glm::vec4(0, 0, -5, 1);
+	camPos = glm::vec4(0, 0, -50, 1);
 
 	vMatrix = glm::lookAt(
 		(glm::vec3)camPos,
@@ -21,7 +21,7 @@ Camera::Camera(Renderer * _renderPrt)
 
 
 	renderPtr->SetCameraType(CameraType::persp);
-	renderPtr->SetProjectionMatrixPersp(glm::radians(100.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+	renderPtr->SetProjectionMatrixPersp(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 10000.0f);
 	renderPtr->setVMatrix(vMatrix);
 }
 

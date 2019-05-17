@@ -1,32 +1,40 @@
 #pragma once
 #include "Shape.h"
+#include "GlobalDefinitions.h"
+#include "Importer.h"
 
 class ENGINEDLL_API Mesh : public Shape
 {
 private:
 	unsigned int bufferId;
-	unsigned int colorBufferID;
+	unsigned int uvBufferID;
+	unsigned int texID;
 	unsigned int indexBufferID;
 
 	float * vertex;
-	float * colorVertex;
+	float * uvVertex;
 	unsigned int * indices;
 
-	int vertexCount;
-	int colorCount;
-	int indexCount;
+	unsigned int vertexCount;
+	unsigned int uvCount;
+	unsigned int indexCount;
 
 	bool shouldDispose;
-	bool shouldDispouseColor;
+	bool shouldDispouseTexture;
 	bool shouldDispouseIndices;
 
+	MeshData mesh;
+	Header texHed;
 
+	void SetTextureVertex(float * vertices, int count);
+	void SetIndexVertex(unsigned int * indices, int count);
+	void DisposeIndex();
+	void DisposeTexture();
 public:
-	Mesh(Renderer * render);
+	Mesh(Renderer * render, const char * fbxFile);
+	void LoadMaterial(const char * bmpFile);
 	~Mesh();
 
-	void DisposeIndex();
-	void SetIndexVertex(unsigned int * indices, int count);
 	void Draw();
 };
 

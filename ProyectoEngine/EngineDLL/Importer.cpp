@@ -1,6 +1,8 @@
 #include "Importer.h"
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
+#include<glm/glm.hpp>
+#include<glm\gtc\matrix_transform.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h> 
 #include <assimp/postprocess.h>
@@ -29,6 +31,26 @@ void Importer::LoadBMP(const char * bmpFile, Header &hed){
 	fclose(file);
 }
 
+bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
+{
+	if (!bmpFile) {
+		printf("Image could not be opened\n");
+		return false;
+	}
+
+	if (fread(header, 1, 54, bmpFile) != 54) {
+		printf("Not a correct BMP file\n");
+		return false;
+	}
+
+	if (header[0] != 'B' || header[1] != 'M') {
+		printf("Not a correct BMP file\n");
+		return false;
+	}
+
+	return true;
+}
+
 void Importer::LoadMesh(const char * fbxFile, MeshData & mesh){
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
@@ -47,27 +69,42 @@ void Importer::LoadMesh(const char * fbxFile, MeshData & mesh){
 	}
 	if (scene->HasMeshes()) {
 		scene->mMeshes;
+		InitMesh(scene->mMeshes[0], mesh);
+		//InitMaterial(scene->mMaterials[0], mesh);
 	}
 }
 
-bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
+void Importer::InitMesh(const aiMesh* paiMesh, MeshData & mesh)
 {
-	if (!bmpFile) { 
-		printf("Image could not be opened\n");
-		return false;
-	}
+	mesh.vertexArray = new std::vector<float>();
+	mesh.uvArray = new std::vector<float>();
+	mesh.indexArray = new std::vector<unsigned int>();
 
-	if (fread(header, 1, 54, bmpFile) != 54) { 
-		printf("Not a correct BMP file\n");
-		return false;
-	}
+	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
-	if (header[0] != 'B' || header[1] != 'M') {
-		printf("Not a correct BMP file\n");
-		return false;
-	}
+	for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
+		const aiVector3D* pPos = &(paiMesh->mVertices[i]);
+		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
+		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
-	return true;
+		mesh.vertexArray->push_back(pPos->x);
+		mesh.vertexArray->push_back(pPos->y);
+		mesh.vertexArray->push_back(pPos->z);
+		mesh.uvArray->push_back(pTexCoord->x);
+		mesh.uvArray->push_back(pTexCoord->y);
+
+	}
+	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
+		const aiFace& Face = paiMesh->mFaces[i];
+		assert(Face.mNumIndices == 3);
+		mesh.indexArray->push_back(Face.mIndices[0]);
+		mesh.indexArray->push_back(Face.mIndices[1]);
+		mesh.indexArray->push_back(Face.mIndices[2]);
+	}
 }
 
+bool Importer::InitMaterial(aiMaterial * pMaterial, MeshData & mesh)
+{
+	return false;
+}
 

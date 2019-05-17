@@ -2,7 +2,7 @@
 
 bool Game::OnStart() {
 	/*velocity of the objects*/
-	speed = 2.0f;
+	speed = 20.0f;
 
 	/*Collision Manager*/
 	CollisionManager * instance = CollisionManager::GetInstance();	
@@ -16,12 +16,13 @@ bool Game::OnStart() {
 
 	/*Mesh*/
 	mat1 = new Material();
-	unsigned int programID = mat1->LoadShaders("vColor.glsl", "fColor.glsl");
+	unsigned int programID = mat1->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
 
-	mesh1 = new Mesh(render);
+	mesh1 = new Mesh(render, "Arma.fbx");
 	mesh1->SetMaterial(mat1);
+	mesh1->LoadMaterial("ArmaTex.bmp");
 	mesh1->SetPos(0, 0, 0);
-	//mesh1->SetBoundingBox(2.0f, 2.0f, false, 10);
+	mesh1->SetScale(0.01f, 0.01f, 0.01f);
 
 	cout << "Game::OnStart()" << endl;
 	return true;
@@ -37,7 +38,8 @@ bool Game::OnUpdate() {
 	input->PollEvents();
 	i++;
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
-	
+/*Mesh Transforms*/
+	mesh1->Rotate(0, deltaTime, 0);
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
 		camera->Rotate(glm::vec3(0, 0, speed * deltaTime));
