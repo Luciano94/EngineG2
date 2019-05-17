@@ -65,7 +65,8 @@ void Camera::Translate(glm::vec3 direction)
 
 void Camera::Pitch(float degrees)
 {
-	z = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(1.0f, 0.0f, 0.0f)) * z;
+	z = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(x.x, x.y, x.z)) * z;
+	y = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(x.x, x.y, x.z)) * y;
 
 	vMatrix = glm::lookAt(
 		(glm::vec3)camPos,
@@ -78,8 +79,8 @@ void Camera::Pitch(float degrees)
 
 void Camera::Yaw(float degrees)
 {
-	z = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(0.0f, 1.0f, 0.0f)) * z;
-	x = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(0.0f, 1.0f, 0.0f)) * x;
+	z = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(y.x, y.y, y.z)) * z;
+	x = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(y.x, y.y, y.z)) * x;
 
 	vMatrix = glm::lookAt(
 		(glm::vec3)camPos,
@@ -92,8 +93,8 @@ void Camera::Yaw(float degrees)
 
 void Camera::Roll(float degrees)
 {
-	x = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(0.0f, 0.0f, 1.0f)) * x;
-	y = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(0.0f, 0.0f, 1.0f)) * y;
+	x = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(z.x, z.y, z.z)) * x;
+	y = glm::rotate(glm::mat4(1.0f), degrees, glm::vec3(z.x, z.y, z.z)) * y;
 
 	vMatrix = glm::lookAt(
 		(glm::vec3)camPos,

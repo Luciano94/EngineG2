@@ -42,22 +42,22 @@ bool Game::OnUpdate() {
 	mesh1->Rotate(0, deltaTime, 0);
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
-		camera->Rotate(glm::vec3(0, 0, speed * deltaTime));
+		camera->Rotate(glm::vec3(0, 0, deltaTime));
 
 	if (input->isInput(GLFW_KEY_E))
-		camera->Rotate(glm::vec3(0, 0, speed * -deltaTime));
+		camera->Rotate(glm::vec3(0, 0, -deltaTime));
 
 	if (input->isInput(GLFW_KEY_UP))
-		camera->Rotate(glm::vec3(0,speed * -deltaTime, 0));
+		camera->Rotate(glm::vec3(0, -deltaTime, 0));
 
 	if (input->isInput(GLFW_KEY_DOWN))
 
-		camera->Rotate(glm::vec3(0, speed * deltaTime, 0));
+		camera->Rotate(glm::vec3(0,  deltaTime, 0));
 	if (input->isInput(GLFW_KEY_LEFT))
-		camera->Rotate(glm::vec3( speed * deltaTime,0, 0));
+		camera->Rotate(glm::vec3( deltaTime,0, 0));
 
 	if (input->isInput(GLFW_KEY_RIGHT))
-		camera->Rotate(glm::vec3( speed * -deltaTime,0, 0));
+		camera->Rotate(glm::vec3(  -deltaTime,0, 0));
 
 /*Translations*/
 	if (input->isInput(GLFW_KEY_W))
