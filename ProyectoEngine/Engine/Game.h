@@ -25,6 +25,7 @@ private:
 	float posX;
 
 	Mesh * mesh1;
+	Mesh * mesh2;
 	
 	Material * mat1;
 
