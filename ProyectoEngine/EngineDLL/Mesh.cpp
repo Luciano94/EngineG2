@@ -99,7 +99,7 @@ void Mesh::Draw(){
 		render->BindBuffer(0, mesh->at(i).bufferId, 3);
 		render->BeginDraw(1);
 		render->BindBuffer(1, mesh->at(i).uvBufferID, 2);
-		render->DrawIndexMesh(mesh->at(i).indices, mesh->at(i).indexCount, mesh->at(i).indexBufferID);
+		render->DrawIndexMesh(mesh->at(i).indexCount, mesh->at(i).indexBufferID);
 		render->EndDraw(0);
 		render->EndDraw(1);
 	}

@@ -243,7 +243,7 @@ unsigned int Renderer::GenMeshBuffer(unsigned int * indices, int size) {
 	return elementbuffer;
 }
 
-void Renderer::DrawIndexMesh(unsigned int * indices, int size, unsigned int indexBuffer){
+void Renderer::DrawIndexMesh(int size, unsigned int indexBuffer){
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 	glDrawElements(
 		GL_TRIANGLES,		// mode

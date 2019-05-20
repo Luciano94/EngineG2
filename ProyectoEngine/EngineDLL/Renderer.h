@@ -68,7 +68,7 @@ public:
 
 	/*Mesh*/
 	unsigned int GenMeshBuffer(unsigned int * indices, int size);
-	void DrawIndexMesh(unsigned int * indices, int size, unsigned int indexBuffer);
+	void DrawIndexMesh(int size, unsigned int indexBuffer);
 	
 	Renderer();
 	~Renderer();
