@@ -13,8 +13,11 @@ void Importer::LoadBMP(const char * bmpFile, Header &hed){
 	FILE * file;
 	fopen_s(&file, bmpFile, "rb");
 	
-	if (!bmpCorrectFormat(header, file))
-		hed.data = NULL;
+	if (!bmpCorrectFormat(header, file)) {
+		fopen_s(&file, "Default.bmp", "rb");
+		if(bmpCorrectFormat(header, file))
+			printf("Default image opened\n");
+	}
 
 	hed.dataPos = *(int*)&(header[0x0A]);
 	hed.imageSize = *(int*)&(header[0x22]);
