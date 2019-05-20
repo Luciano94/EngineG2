@@ -36,7 +36,10 @@ bool Game::OnStart() {
 
 bool Game::OnStop() {
 	cout << "Game::OnStop()" << endl;
-
+	delete mat1;
+	delete mesh1;
+	delete mesh2;
+	delete camera;
 	return true;
 }
 

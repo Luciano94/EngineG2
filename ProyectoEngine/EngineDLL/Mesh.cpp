@@ -22,7 +22,7 @@ Mesh::Mesh(Renderer * render, const char* fbxFile) :Shape(render){
 		mesh->at(i).uvCount = meshInfo->at(i).uvArray->size();
 
 		mesh->at(i).vertex = new float[mesh->at(i).vertexCount];
-		for (size_t j = 0; j < mesh->at(i).vertexCount; j++){
+		for (size_t j = 0; j < mesh->at(i).vertexCount; j++) {
 			mesh->at(i).vertex[j] = meshInfo->at(i).vertexArray->at(j);
 		}
 		SetVertices(i);
@@ -39,9 +39,6 @@ Mesh::Mesh(Renderer * render, const char* fbxFile) :Shape(render){
 		}
 		SetIndexVertex(i);
 	}
-
-	delete meshInfo;
-
 }
 
 void Mesh::LoadMaterial(const char * bmpFile) {
@@ -107,5 +104,11 @@ void Mesh::Draw(){
 
 
 Mesh::~Mesh(){
-	DisposeIndex();
+	for (size_t i = 0; i < mesh->size(); i++) {
+		delete[] mesh->at(i).vertex;
+		delete[] mesh->at(i).uvVertex;
+		delete[] mesh->at(i).indices;
+	}
+	delete mesh;
+	delete meshInfo;
 }
