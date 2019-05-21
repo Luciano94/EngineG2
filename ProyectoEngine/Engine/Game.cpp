@@ -14,19 +14,12 @@ bool Game::OnStart() {
 	/*Camera*/
 	camera = new Camera(render);
 
-	/*Mesh*/
-	mat1 = new Material();
-	unsigned int programID = mat1->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
-
-	mesh1 = new Mesh(render, "Arma2.fbx");
-	mesh1->SetMaterial(mat1);
-	mesh1->LoadMaterial("ArmaTex2.bmp");
+	/*Mesh 1*/
+	mesh1 = new Mesh(render, "Arma2.fbx", "ArmaTex2.bmp");
 	mesh1->SetPos(0, 0, 0);
 	mesh1->SetRot(0, 0, 90);
-
-	mesh2 = new Mesh(render, "Arma.fbx");
-	mesh2->SetMaterial(mat1);
-	mesh2->LoadMaterial("ArmaTex.bmp");
+	/*Mesh 2*/
+	mesh2 = new Mesh(render, "Arma.fbx", "ArmaTex.bmp");
 	mesh2->SetPos(10, 0, 0);
 	mesh2->SetScale(0.05f, 0.05f, 0.05f);
 

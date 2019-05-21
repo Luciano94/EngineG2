@@ -2,13 +2,11 @@
 
 
 
-Mesh::Mesh(Renderer * render, const char* fbxFile) :Shape(render){
+Mesh::Mesh(Renderer * render, const char* fbxFile, const char * textureFile) :Shape(render){
 	mesh = new vector<meshes>();
 	meshInfo = new vector<MeshData>();
 	Importer::LoadMesh(fbxFile, meshInfo);
 	mesh->resize(meshInfo->size());
-		
-	texID = -1;
 
 	for (size_t i = 0; i < mesh->size(); i++) {
 		mesh->at(i).shouldDispose = false;
@@ -38,10 +36,14 @@ Mesh::Mesh(Renderer * render, const char* fbxFile) :Shape(render){
 			mesh->at(i).indices[j] = meshInfo->at(i).indexArray->at(j);
 		}
 		SetIndexVertex(i);
+
+		mesh->at(i).material = new Material();
+		mesh->at(i).programID = mesh->at(i).material->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
+		LoadMaterial(textureFile, mesh->at(i).texID, mesh->at(i).material);
 	}
 }
 
-void Mesh::LoadMaterial(const char * bmpFile) {
+void Mesh::LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material) {
 	Importer::LoadBMP(bmpFile, texHed);
 	texID = render->ChargeTexture(texHed.width, texHed.height, texHed.data);
 	material->BindTexture("myTextureSampler");
@@ -85,13 +87,13 @@ void Mesh::Draw(){
 		render->LoadIMatrix();
 		render->SetWMatrix(WorldMatrix);
 
-		if (material != NULL) {
-			material->BindProgram();
-			material->Bind("WVP");
-			material->SetMatrixProperty(render->GetWVP());
+		if (mesh->at(i).material != NULL) {
+			mesh->at(i).material->BindProgram();
+			mesh->at(i).material->Bind("WVP");
+			mesh->at(i).material->SetMatrixProperty(render->GetWVP());
 		}
 
-		render->BindTexture(texID, mesh->at(i).uvBufferID);
+		render->BindTexture(mesh->at(i).texID, mesh->at(i).uvBufferID);
 		render->BeginDraw(0);
 		render->BindBuffer(0, mesh->at(i).bufferId, 3);
 		render->BeginDraw(1);
@@ -108,6 +110,7 @@ Mesh::~Mesh(){
 		delete[] mesh->at(i).vertex;
 		delete[] mesh->at(i).uvVertex;
 		delete[] mesh->at(i).indices;
+		delete mesh->at(i).material;
 	}
 	delete mesh;
 	delete meshInfo;

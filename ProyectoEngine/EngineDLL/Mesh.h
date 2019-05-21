@@ -8,10 +8,14 @@ struct meshes
 	unsigned int bufferId;
 	unsigned int uvBufferID;
 	unsigned int indexBufferID;
+	unsigned int texID;
 
 	float * vertex;
 	float * uvVertex;
 	unsigned int * indices;
+
+	Material * material;
+	unsigned int programID;
 
 	unsigned int vertexCount;
 	unsigned int uvCount;
@@ -39,8 +43,8 @@ private:
 	void DisposeIndex();
 	void DisposeTexture();
 public:
-	Mesh(Renderer * render, const char * fbxFile);
-	void LoadMaterial(const char * bmpFile);
+	Mesh(Renderer * render, const char* fbxFile, const char * textureFile);
+	void LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material);
 	~Mesh();
 
 	void Draw();
