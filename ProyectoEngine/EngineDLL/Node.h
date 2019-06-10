@@ -1,22 +1,29 @@
 #pragma once
 #include "Exports.h"
 #include "Component.h"
+#include "Renderer.h"
 #include <list>
+#include<glm/glm.hpp>
+#include<glm\gtc\matrix_transform.hpp>
 
 class ENGINEDLL_API Node
 {
 private:
+	Renderer * render;
+
 	std::list<Component> * components;
 	std::list<Node> * nodes;
+
+	glm::mat4 ViewMatrix;
 public:
-	Node();
+	Node(Renderer * render);
 	~Node();
 
 	void addComponent(Component * comp);
 	void removeComponent(int index);
 	void removeChild(int index);
 	void addChild(Node * node);
-	void update(float deltaTime);
+	void update(float deltaTime, glm::mat4 ViewMatrix);
 	void draw();
 };
 
