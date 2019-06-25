@@ -2,7 +2,8 @@
 
 
 
-Component::Component()
+Component::Component(ComponentsType _type):
+type(_type)
 {
 }
 

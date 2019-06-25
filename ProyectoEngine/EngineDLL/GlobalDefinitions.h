@@ -50,3 +50,9 @@ struct MeshData {
 	std::vector<float> * uvArray;
 	std::vector<unsigned int> * indexArray;
 };
+
+enum ComponentsType {
+	Mesh = 0,
+	Transform,
+	nullComponent,
+};
