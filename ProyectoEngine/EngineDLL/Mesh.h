@@ -1,5 +1,6 @@
 #pragma once
 #include "Shape.h"
+#include <list>
 #include "GlobalDefinitions.h"
 #include "Importer.h"
 
