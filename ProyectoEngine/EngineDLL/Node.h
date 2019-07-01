@@ -19,11 +19,11 @@ public:
 	Node(Renderer * render);
 	~Node();
 
-	void addComponent(Component * comp);
+	void addComponent(Component comp);
 	void removeComponent(int index);
 	Component getComponent(ComponentsType type);
 	void removeChild(int index);
-	void addChild(Node * node);
+	void addChild(Node node);
 	void update(float deltaTime, glm::mat4 ViewMatrix);
 	void draw();
 };

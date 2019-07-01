@@ -7,7 +7,6 @@
 class ENGINEDLL_API Component
 {
 private:
-	glm::mat4 ViewMatrix;
 	ComponentsType type;
 public:
 	void update(float deltaTime, glm::mat4 ViewMatrix);

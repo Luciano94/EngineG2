@@ -52,7 +52,10 @@ struct MeshData {
 };
 
 enum ComponentsType {
-	Mesh = 0,
+	MeshRender = 0,
+	CameraComponent,
+	ColliderComponent,
+	ScriptComponent,
 	Transform,
-	nullComponent,
+	nullComponent
 };
