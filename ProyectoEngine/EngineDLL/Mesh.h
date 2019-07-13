@@ -1,5 +1,5 @@
 #pragma once
-#include "Shape.h"
+#include "Component.h"
 #include <list>
 #include "GlobalDefinitions.h"
 #include "Importer.h"
@@ -27,7 +27,7 @@ struct meshes
 	bool shouldDispouseTexture;
 };
 
-class ENGINEDLL_API Mesh : public Shape
+class ENGINEDLL_API Mesh : public Component
 {
 private:
 

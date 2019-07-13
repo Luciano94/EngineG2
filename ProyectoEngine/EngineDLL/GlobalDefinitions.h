@@ -51,7 +51,7 @@ struct MeshData {
 	std::vector<unsigned int> * indexArray;
 };
 
-enum ComponentsType {
+enum ComponentsType{
 	MeshRender = 0,
 	CameraComponent,
 	ColliderComponent,

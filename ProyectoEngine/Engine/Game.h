@@ -11,6 +11,7 @@
 #include "Input.h"
 #include "Camera.h"
 #include "Shape.h"
+#include "Node.h"
 #include <iostream>
 
 using namespace std;
@@ -31,6 +32,10 @@ private:
 
 	Camera * camera;
 	Input * input;
+
+	Node * grandfather;
+	Node * father;
+
 protected:
 	bool OnStart() override;
 	bool OnStop() override;

@@ -14,6 +14,19 @@ bool Game::OnStart() {
 	/*Camera*/
 	camera = new Camera(render);
 
+	/*nodes*/
+	grandfather = new Node(render);
+	father = new Node(render);
+	father->addChild(new Node(render));
+	father->addChild(new Node(render));
+	father->addChild(new Node(render));
+	father->addChild(new Node(render));
+
+	grandfather->addChild(father);
+
+
+	grandfather->update(deltaTime, render->getVMatrix(), 0);
+
 	/*Mesh 1*/
 	mesh1 = new Mesh(render, "Arma2.fbx", "ArmaTex2.bmp");
 	mesh1->SetPos(0, 0, 0);

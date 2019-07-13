@@ -3,8 +3,9 @@
 
 
 
-Camera::Camera(Renderer * _renderPrt)
+Camera::Camera(Renderer * _renderPrt): Component(render)
 {
+	type: ComponentsType::CameraComponent;
 	renderPtr = _renderPrt;
 
 	x = glm::vec4(1, 0, 0, 0);

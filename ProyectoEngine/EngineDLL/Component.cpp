@@ -2,16 +2,17 @@
 
 
 
-Component::Component(ComponentsType _type):
-type(_type)
+Component::Component(Renderer * render) :
+Entity(render),
+type(ComponentsType::nullComponent)
 {
 }
 
-void Component::update(float deltaTime, glm::mat4 ViewMatrix)
+void Component::Update(float deltaTime, glm::mat4 ViewMatrix)
 {
 }
 
-void Component::draw()
+void Component::Draw()
 {
 }
 

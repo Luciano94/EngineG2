@@ -12,7 +12,7 @@ private:
 	Renderer * render;
 
 	std::list<Component> * components;
-	std::list<Node> * nodes;
+	std::list<Node *> * nodes;
 
 	glm::mat4 ViewMatrix;
 public:
@@ -23,8 +23,8 @@ public:
 	void removeComponent(int index);
 	Component getComponent(ComponentsType type);
 	void removeChild(int index);
-	void addChild(Node node);
-	void update(float deltaTime, glm::mat4 ViewMatrix);
+	void addChild(Node * node);
+	void update(float deltaTime, glm::mat4 ViewMatrix, int i);
 	void draw();
 };
 

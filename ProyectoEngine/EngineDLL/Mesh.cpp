@@ -2,7 +2,9 @@
 
 
 
-Mesh::Mesh(Renderer * render, const char* fbxFile, const char * textureFile) :Shape(render){
+Mesh::Mesh(Renderer * render, const char* fbxFile, const char * textureFile) :Component(render){
+	type = ComponentsType::MeshRender;
+
 	mesh = new vector<meshes>();
 	meshInfo = new vector<MeshData>();
 	Importer::LoadMesh(fbxFile, meshInfo);
@@ -50,7 +52,6 @@ void Mesh::LoadMaterial(const char * bmpFile, unsigned int &texID, Material * ma
 }
 
 void Mesh::SetVertices(int index) {
-	Dispose();
 
 	mesh->at(index).shouldDispose = true;
 	mesh->at(index).bufferId = render->GenBuffer(mesh->at(index).vertex, 
@@ -103,6 +104,7 @@ void Mesh::Draw(){
 		render->EndDraw(1);
 	}
 }
+
 
 
 Mesh::~Mesh(){

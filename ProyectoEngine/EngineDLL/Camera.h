@@ -2,11 +2,12 @@
 #include "Renderer.h"
 #include "Exports.h"
 #include "Window.h"
+#include "Component.h"
 #include "GlobalDefinitions.h"
 #include <glm/glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
-class ENGINEDLL_API Camera{
+class ENGINEDLL_API Camera: public Component{
 private:
 	Renderer * renderPtr;
 	CameraType camType;
