@@ -16,14 +16,14 @@ void Node::addComponent(Component * comp)
 {
 }
 
-Component Node::getComponent(ComponentsType type)
+void Node::getComponent(ComponentsType type)
 {
-	for (std::list<Component>::iterator it = components->begin(); it != components->end(); ++it)
+	/*for (std::list<Component>::iterator it = components->begin(); it != components->end(); ++it)
 	{
 		if (it->getComponentType == type)
 			return *it;
 	}
-	return Component(ComponentsType::nullComponent);
+	return Component(ComponentsType::nullComponent);*/
 }
 
 void Node::removeComponent(int index)

@@ -52,7 +52,7 @@ struct MeshData {
 };
 
 enum ComponentsType {
-	Mesh = 0,
+	MeshRender = 0,
 	Transform,
 	nullComponent,
 };

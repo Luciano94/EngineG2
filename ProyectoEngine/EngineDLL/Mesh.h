@@ -1,7 +1,20 @@
 #pragma once
+#pragma warning(disable: 4251)
 #include "Shape.h"
 #include "GlobalDefinitions.h"
 #include "Importer.h"
+
+namespace physx
+{
+	class PxFoundation;
+	class PxPhysics;
+	class PxScene;
+	class PxActor;
+	class PxTransform;
+	class PxRigidActor;
+	class PxCapsuleGeometry;
+	class PxMaterial;
+}
 
 struct meshes
 {
@@ -9,6 +22,7 @@ struct meshes
 	unsigned int uvBufferID;
 	unsigned int indexBufferID;
 	unsigned int texID;
+
 
 	float * vertex;
 	float * uvVertex;

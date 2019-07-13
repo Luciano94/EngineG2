@@ -21,7 +21,7 @@ public:
 
 	void addComponent(Component * comp);
 	void removeComponent(int index);
-	Component getComponent(ComponentsType type);
+	void getComponent(ComponentsType type);
 	void removeChild(int index);
 	void addChild(Node * node);
 	void update(float deltaTime, glm::mat4 ViewMatrix);
