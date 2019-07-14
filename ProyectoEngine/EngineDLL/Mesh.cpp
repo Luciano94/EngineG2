@@ -8,7 +8,6 @@ Mesh::Mesh(Renderer * render, const char* fbxFile, const char * _textureFile, No
 	meshStruct = new meshes;
 	meshInfo = new MeshData();
 	//Importer::LoadMesh(fbxFile,textureFile, rootNode, render);
-
 	//for (size_t i = 0; i < mesh->size(); i++) {
 	meshStruct->shouldDispose = false;
 	meshStruct->shouldDispouseIndices = false;
@@ -51,6 +50,7 @@ void Mesh::setMeshData(MeshData * m)
 	meshStruct->material = new Material();
 	meshStruct->programID = meshStruct->material->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
 	LoadMaterial(textureFile, meshStruct->texID, meshStruct->material);
+
 }
 
 void Mesh::LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material) {
@@ -92,8 +92,8 @@ void Mesh::DisposeTexture(){
 
 
 void Mesh::Draw(){
-	render->LoadIMatrix();
-	render->SetWMatrix(WorldMatrix);
+	//render->LoadIMatrix();
+	//render->SetWMatrix(WorldMatrix);
 
 	if (meshStruct->material != NULL) {
 		meshStruct->material->BindProgram();

@@ -51,9 +51,16 @@ public:
 	void UpdateWVP();
 	glm::mat4& GetWVP();
 	void LoadIMatrix();
-	void SetWMatrix(glm::mat4 matrix);
 	void MultiplyWMatrix(glm::mat4 matrix);
 	
+	void SetWMatrix(glm::mat4 wMatrix);
+	void setVMatrix(glm::mat4 vM);
+	void SetPMatrix(glm::mat4 pMatrix);
+	glm::mat4 getVMatrix();
+	glm::mat4 getWMatrix();
+	glm::mat4 getPMatrix();
+
+
 	void SetCameraType(CameraType _camType);
 	void SetProjectionMatrixOrtho(float left, float right, float top, float bottom, float near, float far);
 	void SetProjectionMatrixPersp(float fov, float aspect, float near, float far);
@@ -63,8 +70,6 @@ public:
 	glm::vec3 getCameraPos();
 	void CameraTranslate(glm::vec3 pos);
 	void CameraRotate(glm::vec3 rot);
-	void setVMatrix(glm::mat4 vM);
-	glm::mat4 getVMatrix();
 
 	/*Mesh*/
 	unsigned int GenMeshBuffer(unsigned int * indices, int size);

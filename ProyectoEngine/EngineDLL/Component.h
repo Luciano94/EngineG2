@@ -11,7 +11,7 @@ class ENGINEDLL_API Component: public Entity
 public:
 	ComponentsType type;
 
-	void Update(float deltaTime, glm::mat4 ViewMatrix);
+	void Update();
 	void Draw();
 	Component(Renderer * render);
 	~Component();

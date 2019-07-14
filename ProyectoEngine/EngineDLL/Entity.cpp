@@ -111,3 +111,7 @@ void Entity::SetPos(float x, float y, float z){
 void Entity::SetBoundingBox(float width, float heigth, bool isStatic, float bulk){
 	bBox = new BoundingBox(glm::vec2(pos.x, pos.y), width, heigth, isStatic, bulk);
 }
+
+glm::mat4 Entity::GetWorldMatrix() {
+	return WorldMatrix;
+}

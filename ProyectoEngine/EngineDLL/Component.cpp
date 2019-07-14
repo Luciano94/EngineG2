@@ -6,9 +6,10 @@ Component::Component(Renderer * render) :
 Entity(render),
 type(ComponentsType::nullComponent)
 {
+	cout << "Component" << endl;
 }
 
-void Component::Update(float deltaTime, glm::mat4 ViewMatrix)
+void Component::Update()
 {
 }
 

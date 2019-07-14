@@ -74,22 +74,31 @@ void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootN
 	if (!scene->HasMeshes()) {
 		return;
 	}
-
+	cout << scene->mRootNode->mNumChildren << endl;
 	ProcessNodes(fbxFile, textFile, rootNode, scene->mRootNode, scene, render);
+
+	//for (size_t i = 0; i < rootNode->getComponents()->size(); i++)
+	//{
+	//	Component * comp = rootNode->getComponent(i);
+	//	Node * newNode = new Node(render);
+	//	newNode->addComponent(comp);
+	//	rootNode->addChild(newNode);
+	//}
+	//rootNode->getComponents()->clear();
 }
 
 void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * rootNode, 
 							aiNode * node, const aiScene * scene,Renderer * render)
 {
-	for (int i = 0; i < node->mNumMeshes; i++) {
+	for (int i = 0; i < (int)node->mNumMeshes; i++) {
 		Mesh * mesh = new Mesh(render, fbxFile, textFile, rootNode);
 		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh);
-		rootNode->addComponent((Component*)mesh);
+		Node * child = new Node(render);
+		child->addComponent((Component*)mesh);
+		rootNode->addChild(child);
 	}
-	Node * child = new Node(render);
-	rootNode->addChild(child);
 
-	for (int i = 0; i < node->mNumChildren; i++) {
+	for (int i = 0; i < (int)node->mNumChildren; i++) {
 		ProcessNodes(fbxFile, textFile, rootNode, node->mChildren[i], scene, render);
 	}
 }

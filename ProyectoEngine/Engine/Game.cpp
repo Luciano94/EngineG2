@@ -17,20 +17,18 @@ bool Game::OnStart() {
 	/*nodes*/
 	theAbuelo = new Node(render);
 	thePadre = new Node(render);
-
-	theAbuelo->addChild(thePadre);
-	Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", theAbuelo, render);
-	//theAbuelo->addComponent(new Mesh(render, "Arma.fbx", "ArmaTex.bmp", theAbuelo));
+	//theHijo = new Node(render);
+	/*creo la jerarquia*/
 	theAbuelo->addComponent(camera);
-
-	/*Mesh 1*/
-	/*mesh1 = new Mesh(render, "Arma2.fbx", "ArmaTex2.bmp");
-	mesh1->SetPos(0, 0, 0);
-	mesh1->SetRot(0, 0, 90);
-	/*Mesh 2*/
-	/*mesh2 = new Mesh(render, "Arma.fbx", "ArmaTex.bmp");
-	mesh2->SetPos(10, 0, 0);
-	mesh2->SetScale(0.05f, 0.05f, 0.05f);*/
+	theAbuelo->addChild(thePadre);
+	//thePadre->addChild(theHijo);
+	/*cargo los modelos*/
+	Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", thePadre, render);
+	//Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", theHijo, render);
+	/*seteo la escala y posicion*/
+	thePadre->SetScale(0.05f, 0.05f, 0.05f);
+	//theHijo->SetScale(15, 15, 15);
+	thePadre->SetPos(0, 0, -10);
 
 	cout << "Game::OnStart()" << endl;
 	return true;
@@ -38,10 +36,9 @@ bool Game::OnStart() {
 
 bool Game::OnStop() {
 	cout << "Game::OnStop()" << endl;
-	delete mat1;
-	delete mesh1;
-	delete mesh2;
-	delete camera;
+	//delete theHijo;
+	delete thePadre;
+	delete theAbuelo;
 	return true;
 }
 
@@ -49,10 +46,10 @@ bool Game::OnUpdate() {
 	input->PollEvents();
 	i++;
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
-/*Mesh Transforms*/
-	//grandfather->update(deltaTime, render->getVMatrix(), 0);
-	//mesh1->Rotate(0, deltaTime, 0);
-	//mesh2->Rotate(0, deltaTime, 0);
+/*Node Transforms*/
+	theAbuelo->Update();
+	thePadre->Rotate(0, deltaTime, 0);
+	//theHijo->Rotate(deltaTime, 0, 0);
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
 		camera->Rotate(glm::vec3(0, 0, deltaTime));
@@ -89,10 +86,10 @@ bool Game::OnUpdate() {
 
 void Game::OnDraw()
 {
-
-	theAbuelo->draw();
-	//mesh1->Draw();
-	//mesh2->Draw();
+	//thePadre->Draw();
+	//cout << thePadre->getComponent(1)->type << endl;
+	thePadre->getNode(1)->Draw();
+	//theHijo->Draw();
 }
 
 Game::Game() {

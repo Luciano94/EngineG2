@@ -150,6 +150,33 @@ void Renderer::SetWMatrix(glm::mat4 matrix){
 	UpdateWVP();
 }
 
+void Renderer::setVMatrix(glm::mat4 vM)
+{
+	ViewMatrix = vM;
+	UpdateWVP();
+}
+
+void Renderer::SetPMatrix(glm::mat4 pMatrix)
+{
+	ProjectionMatrix = pMatrix;
+	UpdateWVP();
+}
+
+glm::mat4 Renderer::getVMatrix()
+{
+	return ViewMatrix;
+}
+
+glm::mat4 Renderer::getWMatrix()
+{
+	return WorldMatrix;
+}
+
+glm::mat4 Renderer::getPMatrix()
+{
+	return ProjectionMatrix;
+}
+
 void Renderer::MultiplyWMatrix(glm::mat4 matrix){
 	WorldMatrix *= matrix;
 	UpdateWVP();
@@ -181,17 +208,6 @@ void Renderer::CameraRotate(glm::vec3 rot)
 	ViewMatrix = glm::rotate(ViewMatrix, rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
 	WorldMatrix= glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
 	UpdateWVP();
-}
-
-void Renderer::setVMatrix(glm::mat4 vM)
-{
-	ViewMatrix = vM;
-	UpdateWVP();
-}
-
-glm::mat4 Renderer::getVMatrix()
-{
-	return ViewMatrix;
 }
 
 void Renderer::SetCameraType(CameraType _camType)

@@ -34,6 +34,7 @@ public:
 	void Translate(float x, float y, float z);
 	void Rotate(float x, float y, float z);
 
+	glm::mat4 GetWorldMatrix();
 	glm::vec3 GetPos();
 	glm::vec3 GetRot();
 	glm::vec3 GetScale();
