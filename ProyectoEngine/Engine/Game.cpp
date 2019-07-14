@@ -15,26 +15,22 @@ bool Game::OnStart() {
 	camera = new Camera(render);
 
 	/*nodes*/
-	grandfather = new Node(render);
-	father = new Node(render);
-	father->addChild(new Node(render));
-	father->addChild(new Node(render));
-	father->addChild(new Node(render));
-	father->addChild(new Node(render));
+	theAbuelo = new Node(render);
+	thePadre = new Node(render);
 
-	grandfather->addChild(father);
-
-
-	grandfather->update(deltaTime, render->getVMatrix(), 0);
+	theAbuelo->addChild(thePadre);
+	Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", theAbuelo, render);
+	//theAbuelo->addComponent(new Mesh(render, "Arma.fbx", "ArmaTex.bmp", theAbuelo));
+	theAbuelo->addComponent(camera);
 
 	/*Mesh 1*/
-	mesh1 = new Mesh(render, "Arma2.fbx", "ArmaTex2.bmp");
+	/*mesh1 = new Mesh(render, "Arma2.fbx", "ArmaTex2.bmp");
 	mesh1->SetPos(0, 0, 0);
 	mesh1->SetRot(0, 0, 90);
 	/*Mesh 2*/
-	mesh2 = new Mesh(render, "Arma.fbx", "ArmaTex.bmp");
+	/*mesh2 = new Mesh(render, "Arma.fbx", "ArmaTex.bmp");
 	mesh2->SetPos(10, 0, 0);
-	mesh2->SetScale(0.05f, 0.05f, 0.05f);
+	mesh2->SetScale(0.05f, 0.05f, 0.05f);*/
 
 	cout << "Game::OnStart()" << endl;
 	return true;
@@ -54,8 +50,9 @@ bool Game::OnUpdate() {
 	i++;
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
 /*Mesh Transforms*/
-	mesh1->Rotate(0, deltaTime, 0);
-	mesh2->Rotate(0, deltaTime, 0);
+	//grandfather->update(deltaTime, render->getVMatrix(), 0);
+	//mesh1->Rotate(0, deltaTime, 0);
+	//mesh2->Rotate(0, deltaTime, 0);
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
 		camera->Rotate(glm::vec3(0, 0, deltaTime));
@@ -92,8 +89,10 @@ bool Game::OnUpdate() {
 
 void Game::OnDraw()
 {
-	mesh1->Draw();
-	mesh2->Draw();
+
+	theAbuelo->draw();
+	//mesh1->Draw();
+	//mesh2->Draw();
 }
 
 Game::Game() {

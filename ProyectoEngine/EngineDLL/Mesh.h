@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Node.h"
 #include <list>
 #include "GlobalDefinitions.h"
 #include "Importer.h"
@@ -33,21 +34,23 @@ private:
 
 	unsigned int texID;
 
-	vector<meshes> * mesh;
-
-	vector<MeshData> * meshInfo;
+	meshes * meshStruct;
+	const char * textureFile;
+	MeshData * meshInfo;
 	Header texHed;
 
-	void SetTextureVertex(int index);
-	void SetIndexVertex(int index);
-	void SetVertices(int index);
+	void SetTextureVertex();
+	void SetIndexVertex();
+	void SetVertices();
 	void DisposeIndex();
 	void DisposeTexture();
 public:
-	Mesh(Renderer * render, const char* fbxFile, const char * textureFile);
-	void LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material);
+	Mesh(Renderer * render, const char* fbxFile, const char * _textureFile, Node * rootNode);
 	~Mesh();
 
-	void Draw();
+	MeshData * getMeshData();
+	void setMeshData(MeshData * m);
+	void LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material);
+	void Draw() override;
 };
 

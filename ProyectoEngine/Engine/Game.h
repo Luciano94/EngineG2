@@ -33,8 +33,9 @@ private:
 	Camera * camera;
 	Input * input;
 
-	Node * grandfather;
-	Node * father;
+	Node * theAbuelo;
+	Node * thePadre;
+	Node * theHijo;
 
 protected:
 	bool OnStart() override;

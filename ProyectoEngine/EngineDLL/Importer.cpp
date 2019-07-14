@@ -1,8 +1,9 @@
 #include "Importer.h"
+#include "Mesh.h"
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
-#include<glm/glm.hpp>
-#include<glm\gtc\matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h> 
 #include <assimp/postprocess.h>
@@ -54,7 +55,7 @@ bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
 	return true;
 }
 
-void Importer::LoadMesh(const char * fbxFile, std::vector<MeshData> * meshes){
+void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootNode, Renderer * render){
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
 	// And have it read the given file with some example postprocessing
@@ -74,17 +75,31 @@ void Importer::LoadMesh(const char * fbxFile, std::vector<MeshData> * meshes){
 		return;
 	}
 
-	meshes->resize(scene->mNumMeshes);
-	for (size_t i = 0; i < scene->mNumMeshes; i++){
-		InitMesh(scene->mMeshes[i], meshes->at(i));
+	ProcessNodes(fbxFile, textFile, rootNode, scene->mRootNode, scene, render);
+}
+
+void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * rootNode, 
+							aiNode * node, const aiScene * scene,Renderer * render)
+{
+	for (int i = 0; i < node->mNumMeshes; i++) {
+		Mesh * mesh = new Mesh(render, fbxFile, textFile, rootNode);
+		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh);
+		rootNode->addComponent((Component*)mesh);
+	}
+	Node * child = new Node(render);
+	rootNode->addChild(child);
+
+	for (int i = 0; i < node->mNumChildren; i++) {
+		ProcessNodes(fbxFile, textFile, rootNode, node->mChildren[i], scene, render);
 	}
 }
 
-void Importer::InitMesh(const aiMesh* paiMesh, MeshData & mesh)
+void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshLoco)
 {
-	mesh.vertexArray = new std::vector<float>();
-	mesh.uvArray = new std::vector<float>();
-	mesh.indexArray = new std::vector<unsigned int>();
+	MeshData * mesh = meshLoco->getMeshData();
+	mesh->vertexArray = new std::vector<float>();
+	mesh->uvArray = new std::vector<float>();
+	mesh->indexArray = new std::vector<unsigned int>();
 
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
 
@@ -93,19 +108,22 @@ void Importer::InitMesh(const aiMesh* paiMesh, MeshData & mesh)
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
 		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
-		mesh.vertexArray->push_back(pPos->x);
-		mesh.vertexArray->push_back(pPos->y);
-		mesh.vertexArray->push_back(pPos->z);
-		mesh.uvArray->push_back(pTexCoord->x);
-		mesh.uvArray->push_back(pTexCoord->y);
+		mesh->vertexArray->push_back(pPos->y);
+		mesh->vertexArray->push_back(pPos->x);
+		mesh->vertexArray->push_back(pPos->z);
+		mesh->uvArray->push_back(pTexCoord->x);
+		mesh->uvArray->push_back(pTexCoord->y);
 
 	}
+
 	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
 		const aiFace& Face = paiMesh->mFaces[i];
 		assert(Face.mNumIndices == 3);
-		mesh.indexArray->push_back(Face.mIndices[0]);
-		mesh.indexArray->push_back(Face.mIndices[1]);
-		mesh.indexArray->push_back(Face.mIndices[2]);
+		mesh->indexArray->push_back(Face.mIndices[0]);
+		mesh->indexArray->push_back(Face.mIndices[1]);
+		mesh->indexArray->push_back(Face.mIndices[2]);
 	}
+
+	meshLoco->setMeshData(mesh);
 }
 
