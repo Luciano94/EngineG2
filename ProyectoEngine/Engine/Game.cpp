@@ -15,11 +15,15 @@ bool Game::OnStart() {
 	camera = new Camera(render);
 
 	/*nodes*/
+	chuckNorris = new Node(render);
 	theAbuelo = new Node(render);
 	thePadre = new Node(render);
+	theCamarografo = new Node(render);
+	theCamarografo->addComponent(camera);
+	chuckNorris->addChild(theCamarografo);
+	chuckNorris->addChild(theAbuelo);
 	//theHijo = new Node(render);
 	/*creo la jerarquia*/
-	theAbuelo->addComponent(camera);
 	theAbuelo->addChild(thePadre);
 	//thePadre->addChild(theHijo);
 	/*cargo los modelos*/
@@ -30,6 +34,7 @@ bool Game::OnStart() {
 	//theHijo->SetScale(15, 15, 15);
 	thePadre->SetPos(0, 0, -10);
 
+	setScene(chuckNorris);
 	cout << "Game::OnStart()" << endl;
 	return true;
 }
@@ -47,8 +52,9 @@ bool Game::OnUpdate() {
 	i++;
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
 /*Node Transforms*/
-	theAbuelo->Update();
-	thePadre->Rotate(0, deltaTime, 0);
+	theAbuelo->Rotate(0, 0, deltaTime);
+	thePadre->getNode(1)->Rotate(0, deltaTime, 0);
+	thePadre->Rotate(deltaTime, 0, 0);
 	//theHijo->Rotate(deltaTime, 0, 0);
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
@@ -88,7 +94,6 @@ void Game::OnDraw()
 {
 	//thePadre->Draw();
 	//cout << thePadre->getComponent(1)->type << endl;
-	thePadre->getNode(1)->Draw();
 	//theHijo->Draw();
 }
 

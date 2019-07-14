@@ -32,7 +32,8 @@ private:
 
 	Camera * camera;
 	Input * input;
-
+	Node * chuckNorris;
+	Node * theCamarografo;
 	Node * theAbuelo;
 	Node * thePadre;
 	Node * theHijo;
