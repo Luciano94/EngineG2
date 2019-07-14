@@ -96,6 +96,9 @@
     <ClInclude Include="Node.h">
       <Filter>Archivos de encabezado\Node</Filter>
     </ClInclude>
+    <ClInclude Include="BoundingCube.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameBase.cpp">
@@ -163,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Archivos de origen\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingCube.cpp">
+      <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

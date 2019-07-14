@@ -18,20 +18,23 @@ using namespace std;
 class Game : public GameBase {
 private:
 
-	TileMap * tilesito;
+	//TileMap * tilesito;
 
 	int i;
 	float speed;
 	float rotZ;
 	float posX;
+	bool isMinScale;
 
-	Mesh * mesh1;
-	Mesh * mesh2;
+	//Mesh * mesh1;
+	//Mesh * mesh2;
 	
 	Material * mat1;
 
 	Camera * camera;
+
 	Input * input;
+
 	Node * chuckNorris;
 	Node * theCamarografo;
 	Node * theAbuelo;

@@ -3,6 +3,7 @@
 #include "Component.h"
 #include "Renderer.h"
 #include "Entity.h"
+#include "Mesh.h"
 #include <vector>
 #include<glm/glm.hpp>
 #include<glm\gtc\matrix_transform.hpp>
@@ -17,6 +18,8 @@ private:
 	vector<Component *> * components;
 	vector<Node *> * nodes;
 public:
+	
+
 	Node(Renderer * render);
 	~Node();
 

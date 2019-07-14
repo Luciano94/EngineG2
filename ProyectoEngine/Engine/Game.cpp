@@ -13,25 +13,30 @@ bool Game::OnStart() {
 	
 	/*Camera*/
 	camera = new Camera(render);
+	//render->setCamera(camera);
 
+	/*Aux Values*/
+	isMinScale = true; //Es true cuando el nodo tiene la escala minima 
 	/*nodes*/
 	chuckNorris = new Node(render);
 	theAbuelo = new Node(render);
 	thePadre = new Node(render);
 	theCamarografo = new Node(render);
-	theCamarografo->addComponent(camera);
+	theHijo = new Node(render);
+
+	/*creo la jerarquia*/
 	chuckNorris->addChild(theCamarografo);
 	chuckNorris->addChild(theAbuelo);
-	//theHijo = new Node(render);
-	/*creo la jerarquia*/
 	theAbuelo->addChild(thePadre);
-	//thePadre->addChild(theHijo);
+	thePadre->addChild(theHijo);
+
 	/*cargo los modelos*/
-	Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", thePadre, render);
-	//Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", theHijo, render);
+	theCamarografo->addComponent(camera);
+	Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", thePadre, render, camera);
+	Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", theHijo, render, camera);
+
 	/*seteo la escala y posicion*/
 	thePadre->SetScale(0.05f, 0.05f, 0.05f);
-	//theHijo->SetScale(15, 15, 15);
 	thePadre->SetPos(0, 0, -10);
 
 	setScene(chuckNorris);
@@ -41,9 +46,11 @@ bool Game::OnStart() {
 
 bool Game::OnStop() {
 	cout << "Game::OnStop()" << endl;
-	//delete theHijo;
+	delete theHijo;
 	delete thePadre;
 	delete theAbuelo;
+	delete theCamarografo;
+	delete chuckNorris;
 	return true;
 }
 
@@ -52,10 +59,10 @@ bool Game::OnUpdate() {
 	i++;
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
 /*Node Transforms*/
-	theAbuelo->Rotate(0, 0, deltaTime);
 	thePadre->getNode(1)->Rotate(0, deltaTime, 0);
 	thePadre->Rotate(deltaTime, 0, 0);
-	//theHijo->Rotate(deltaTime, 0, 0);
+
+
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
 		camera->Rotate(glm::vec3(0, 0, deltaTime));
@@ -92,9 +99,6 @@ bool Game::OnUpdate() {
 
 void Game::OnDraw()
 {
-	//thePadre->Draw();
-	//cout << thePadre->getComponent(1)->type << endl;
-	//theHijo->Draw();
 }
 
 Game::Game() {

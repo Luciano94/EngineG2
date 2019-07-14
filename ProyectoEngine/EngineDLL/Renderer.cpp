@@ -28,12 +28,12 @@ bool Renderer::Start(void* wnd) {
 	ProjectionMatrix = orthoMatrix;
 	
 	eyePos = glm::vec3(0, 0, 3);
-	camPos = glm::vec3(0, 0, 0);
+	camPosition = glm::vec3(0, 0, 0);
 	upPos = glm::vec3(0, 1, 0);
 
 	ViewMatrix = glm::lookAt(
 		eyePos,
-		camPos,
+		camPosition,
 		upPos
 	);
 
@@ -182,18 +182,28 @@ void Renderer::MultiplyWMatrix(glm::mat4 matrix){
 	UpdateWVP();
 }
 
+/*void Renderer::setCamera(Camera * cam)
+{
+	this->cam = cam;
+}
+
+Camera * Renderer::getActualCamera()
+{
+	return cam;
+}*/
+
 glm::vec3 Renderer::getCameraPos(){
-	return camPos;
+	return camPosition;
 }
 
 void Renderer::CameraTranslate(glm::vec3 pos){
 	
-	camPos += pos;
+	camPosition += pos;
 	eyePos += pos;
 
 	ViewMatrix = glm::lookAt(
 		eyePos,
-		camPos,
+		camPosition,
 		upPos
 	);
 
@@ -212,7 +222,7 @@ void Renderer::CameraRotate(glm::vec3 rot)
 
 void Renderer::SetCameraType(CameraType _camType)
 {
-	camType = _camType;
+	camT = _camType;
 	switch (_camType){
 		case ortho:
 			ProjectionMatrix = orthoMatrix;
@@ -227,7 +237,7 @@ void Renderer::SetCameraType(CameraType _camType)
 
 void Renderer::SetProjectionMatrixOrtho(float left, float right, float top, float bottom, float near, float far)
 {
-	if (camType == ortho) {
+	if (camT == ortho) {
 		ProjectionMatrix = glm::ortho(left, right, bottom, top, near, far);
 		UpdateWVP();
 	}
@@ -235,7 +245,7 @@ void Renderer::SetProjectionMatrixOrtho(float left, float right, float top, floa
 
 void Renderer::SetProjectionMatrixPersp(float fov, float aspect, float near , float far)
 {
-	if (camType == persp) {
+	if (camT == persp) {
 		ProjectionMatrix =glm::perspective(fov, aspect, near, far);
 		UpdateWVP();
 	}
@@ -243,10 +253,10 @@ void Renderer::SetProjectionMatrixPersp(float fov, float aspect, float near , fl
 
 void Renderer::SetViewMatrix(glm::vec3 _eyePos, glm::vec3 _camPos, glm::vec3 _upPos)
 {
-	camPos = _camPos;
+	camPosition = _camPos;
 	eyePos = _eyePos;
 	upPos = _upPos;
-	ViewMatrix = glm::lookAt(camPos, eyePos, upPos);
+	ViewMatrix = glm::lookAt(camPosition, eyePos, upPos);
 	WorldMatrix = glm::mat4(1.0f);
 	UpdateWVP();
 }

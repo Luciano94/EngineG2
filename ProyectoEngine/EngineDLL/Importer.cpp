@@ -1,5 +1,6 @@
 #include "Importer.h"
 #include "Mesh.h"
+#include "Node.h"
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 #include <glm/glm.hpp>
@@ -55,7 +56,7 @@ bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
 	return true;
 }
 
-void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootNode, Renderer * render){
+void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootNode, Renderer * render, Camera * cam){
 	// Create an instance of the Importer class
 	Assimp::Importer importer;
 	// And have it read the given file with some example postprocessing
@@ -74,36 +75,44 @@ void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootN
 	if (!scene->HasMeshes()) {
 		return;
 	}
-	cout << scene->mRootNode->mNumChildren << endl;
-	ProcessNodes(fbxFile, textFile, rootNode, scene->mRootNode, scene, render);
+	glm::vec3 mins = glm::vec3(0,0,0);
+	glm::vec3 maxs= glm::vec3(0, 0, 0);
+	ProcessNodes(fbxFile, textFile, rootNode, scene->mRootNode, scene, render, mins, maxs, cam);
 
-	//for (size_t i = 0; i < rootNode->getComponents()->size(); i++)
-	//{
-	//	Component * comp = rootNode->getComponent(i);
-	//	Node * newNode = new Node(render);
-	//	newNode->addComponent(comp);
-	//	rootNode->addChild(newNode);
-	//}
-	//rootNode->getComponents()->clear();
+	glm::vec3 bbVertices[8] =
+	{
+		glm::vec3(mins.x, mins.y, mins.z),
+		glm::vec3(mins.x, maxs.y, mins.z),
+		glm::vec3(mins.x, mins.y, maxs.z),
+		glm::vec3(mins.x, maxs.y, maxs.z),
+		glm::vec3(maxs.x, mins.y, mins.z),
+		glm::vec3(maxs.x, maxs.y, mins.z),
+		glm::vec3(maxs.x, mins.y, maxs.z),
+		glm::vec3(maxs.x, maxs.y, maxs.z)
+	};
+	if (rootNode->getNode(0)->getComponent(ComponentsType::MeshRender) != nullptr) {
+		((Mesh *)rootNode->getNode(0)->getComponent(ComponentsType::MeshRender))->bCube->setVertex(bbVertices);
+	}
 }
 
 void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * rootNode, 
-							aiNode * node, const aiScene * scene,Renderer * render)
+							aiNode * node, const aiScene * scene,Renderer * render, 
+							glm::vec3 &mins, glm::vec3 &maxs, Camera * cam)
 {
 	for (int i = 0; i < (int)node->mNumMeshes; i++) {
-		Mesh * mesh = new Mesh(render, fbxFile, textFile, rootNode);
-		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh);
+		Mesh * mesh = new Mesh(render, textFile, cam);
+		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh, mins, maxs);
 		Node * child = new Node(render);
 		child->addComponent((Component*)mesh);
 		rootNode->addChild(child);
 	}
 
 	for (int i = 0; i < (int)node->mNumChildren; i++) {
-		ProcessNodes(fbxFile, textFile, rootNode, node->mChildren[i], scene, render);
+		ProcessNodes(fbxFile, textFile, rootNode, node->mChildren[i], scene, render, mins, maxs, cam);
 	}
 }
 
-void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshLoco)
+void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshLoco, glm::vec3 &mins, glm::vec3 &maxs)
 {
 	MeshData * mesh = meshLoco->getMeshData();
 	mesh->vertexArray = new std::vector<float>();
@@ -117,11 +126,25 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshLoco)
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
 		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
+		if (pPos->x < mins.x)
+			mins.x = pPos->x;
+		if (pPos->x > maxs.x)
+			maxs.x = pPos->x;
+		if (pPos->y < mins.y)
+			mins.y = pPos->y;
+		if (pPos->y > maxs.y)
+			maxs.y = pPos->y;
+		if (pPos->z < mins.z)
+			mins.z = pPos->z;
+		if (pPos->z > maxs.z)
+			maxs.z = pPos->z;
+
 		mesh->vertexArray->push_back(pPos->y);
 		mesh->vertexArray->push_back(pPos->x);
 		mesh->vertexArray->push_back(pPos->z);
 		mesh->uvArray->push_back(pTexCoord->x);
 		mesh->uvArray->push_back(pTexCoord->y);
+
 
 	}
 

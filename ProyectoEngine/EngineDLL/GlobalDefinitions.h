@@ -59,3 +59,5 @@ enum ComponentsType{
 	Transform,
 	nullComponent
 };
+
+enum States { OUTSIDE, INTERSECT, INSIDE };

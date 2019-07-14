@@ -2,11 +2,13 @@
 
 
 
-Mesh::Mesh(Renderer * render, const char* fbxFile, const char * _textureFile, Node * rootNode) :Component(render){
+Mesh::Mesh(Renderer * render, const char * _textureFile, Camera * cam) :Component(render){
 	type = ComponentsType::MeshRender;
 	textureFile = _textureFile;
 	meshStruct = new meshes;
 	meshInfo = new MeshData();
+	this->cam = cam;
+	bCube = new BoundingCube(render);
 	//Importer::LoadMesh(fbxFile,textureFile, rootNode, render);
 	//for (size_t i = 0; i < mesh->size(); i++) {
 	meshStruct->shouldDispose = false;
@@ -91,24 +93,30 @@ void Mesh::DisposeTexture(){
 }
 
 
-void Mesh::Draw(){
+void Mesh::Draw() {
 	//render->LoadIMatrix();
 	//render->SetWMatrix(WorldMatrix);
+	if (cam->boxInFrustum(bCube) == States::INSIDE ||
+		cam->boxInFrustum(bCube) == States::INTERSECT) {
+		cout << "La tenes INSIDE" << endl;
+		if (meshStruct->material != NULL) {
+			meshStruct->material->BindProgram();
+			meshStruct->material->Bind("WVP");
+			meshStruct->material->SetMatrixProperty(render->GetWVP());
+		}
 
-	if (meshStruct->material != NULL) {
-		meshStruct->material->BindProgram();
-		meshStruct->material->Bind("WVP");
-		meshStruct->material->SetMatrixProperty(render->GetWVP());
+		render->BindTexture(meshStruct->texID, meshStruct->uvBufferID);
+		render->BeginDraw(0);
+		render->BindBuffer(0, meshStruct->bufferId, 3);
+		render->BeginDraw(1);
+		render->BindBuffer(1, meshStruct->uvBufferID, 2);
+		render->DrawIndexMesh(meshStruct->indexCount, meshStruct->indexBufferID);
+		render->EndDraw(0);
+		render->EndDraw(1);
 	}
-
-	render->BindTexture(meshStruct->texID, meshStruct->uvBufferID);
-	render->BeginDraw(0);
-	render->BindBuffer(0, meshStruct->bufferId, 3);
-	render->BeginDraw(1);
-	render->BindBuffer(1, meshStruct->uvBufferID, 2);
-	render->DrawIndexMesh(meshStruct->indexCount, meshStruct->indexBufferID);
-	render->EndDraw(0);
-	render->EndDraw(1);
+	else {
+		cout << "La tenes OUTSIDE" << endl;
+	}
 }
 
 

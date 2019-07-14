@@ -29,6 +29,7 @@ Component * Node::getComponent(ComponentsType type)
 		if (components->at(i)->type == type)
 			return components->at(i);
 	}
+	return nullptr;
 }
 
 void Node::removeComponent(int index)

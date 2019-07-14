@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
+#include "BoundingCube.h"
 #include "Node.h"
+#include "Camera.h"
 #include <list>
 #include "GlobalDefinitions.h"
 #include "Importer.h"
@@ -44,8 +46,12 @@ private:
 	void SetVertices();
 	void DisposeIndex();
 	void DisposeTexture();
+	Camera * cam;
 public:
-	Mesh(Renderer * render, const char* fbxFile, const char * _textureFile, Node * rootNode);
+
+	BoundingCube * bCube;
+
+	Mesh(Renderer * render, const char * _textureFile, Camera * cam);
 	~Mesh();
 
 	MeshData * getMeshData();

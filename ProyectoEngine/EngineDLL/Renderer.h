@@ -6,9 +6,9 @@
 #include <vector>
 #include<glm/glm.hpp>
 #include<glm\gtc\matrix_transform.hpp>
+//#include "Camera.h"
 
 using namespace std;
-
 class ENGINEDLL_API Renderer {
 private:
 	void* win;
@@ -20,11 +20,11 @@ private:
 	glm::mat4 ProjectionMatrix;
 	glm::mat4 WVP;
 
-	/*Camera*/
+	//Camera * cam;
 	glm::vec3 upPos;
 	glm::vec3 eyePos;
-	glm::vec3 camPos;
-	CameraType camType;
+	glm::vec3 camPosition;
+	CameraType camT;
 	glm::mat4 perspMatrix;
 	glm::mat4 orthoMatrix;
 public:
@@ -67,6 +67,8 @@ public:
 	void SetViewMatrix(glm::vec3 x, glm::vec3 y, glm::vec3 z);
 
 	/*CAMERA*/
+	//void setCamera(Camera * cam);
+	//Camera * getActualCamera();
 	glm::vec3 getCameraPos();
 	void CameraTranslate(glm::vec3 pos);
 	void CameraRotate(glm::vec3 rot);
