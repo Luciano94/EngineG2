@@ -9,11 +9,11 @@
 class ENGINEDLL_API BoundingCube
 {
 private:
-	glm::vec3 Cube[8];
+	glm::vec3 Cube[CUBE_VERTEX];
 	Renderer * renderPtr;
 public:
 	glm::vec3 getVertex(int index);
-	void setVertex(glm::vec3 _cube[8]);
+	void setVertex(glm::vec3 _cube[CUBE_VERTEX]);
 	BoundingCube(Renderer * render);
 	~BoundingCube();
 };

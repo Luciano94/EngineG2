@@ -10,7 +10,7 @@
 #define GL_TRIANGLES                      0x0004
 #define GL_TRIANGLE_STRIP                 0x0005
 #define GL_TRIANGLE_FAN                   0x0006
-
+#define CUBE_VERTEX						  8
 enum Layers
 {
 	Player = 0,
@@ -60,4 +60,10 @@ enum ComponentsType{
 	nullComponent
 };
 
-enum States { OUTSIDE, INTERSECT, INSIDE };
+/*Camera*/
+
+enum States { 
+	OUTSIDE, 
+	INTERSECT, 
+	INSIDE 
+};

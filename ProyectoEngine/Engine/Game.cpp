@@ -59,7 +59,9 @@ bool Game::OnUpdate() {
 	//CollisionManager::GetInstance()->UpdatePhysicsBox();
 
 /*Node Transforms*/
+	//Roto al cargador del arma
 	thePadre->getNode(1)->Rotate(0, deltaTime, 0);
+	//Roto el cuerpo del arma
 	thePadre->Rotate(deltaTime, 0, 0);
 
 

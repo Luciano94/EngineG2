@@ -193,7 +193,7 @@ int Camera::boxInFrustum(BoundingCube * boundingCube)
 			float dist = glm::dot(planeNormal, vertexPosition) + pl[i].w;
 			if (dist < 0.0f)
 				break;
-			if (j == 7)
+			if (j == CUBE_VERTEX - 1)
 				allOutsideCurrentPlane = true;
 		}
 		if (allOutsideCurrentPlane)
