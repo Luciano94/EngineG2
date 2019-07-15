@@ -7,7 +7,6 @@
 #include "GlobalDefinitions.h"
 #include <glm/glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
-#define ANG2RAD 3.14159265358979323846/180.0
 
 class ENGINEDLL_API Camera: public Component{
 private:
@@ -50,11 +49,7 @@ public:
 	void setCamInternals();
 	void setCamDef();
 	glm::vec4 generatePlane(glm::vec3 normal, glm::vec3 point);
-	int pointInFrustum(glm::vec3 &p);
 	int boxInFrustum(BoundingCube * BundingCube);
-	bool isInsideFrustum(BoundingCube* boundingBox);
-
-	/*int sphereInFrustum(Vec3 &p, float raio);*/
 
 	Camera(Renderer * _renderPrt);
 	~Camera();

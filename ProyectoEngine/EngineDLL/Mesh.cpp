@@ -1,7 +1,5 @@
 #include "Mesh.h"
 
-
-
 Mesh::Mesh(Renderer * render, const char * _textureFile, Camera * cam) :Component(render){
 	type = ComponentsType::MeshRender;
 	textureFile = _textureFile;
@@ -9,8 +7,7 @@ Mesh::Mesh(Renderer * render, const char * _textureFile, Camera * cam) :Componen
 	meshInfo = new MeshData();
 	this->cam = cam;
 	bCube = new BoundingCube(render);
-	//Importer::LoadMesh(fbxFile,textureFile, rootNode, render);
-	//for (size_t i = 0; i < mesh->size(); i++) {
+
 	meshStruct->shouldDispose = false;
 	meshStruct->shouldDispouseIndices = false;
 			
@@ -94,11 +91,10 @@ void Mesh::DisposeTexture(){
 
 
 void Mesh::Draw() {
-	//render->LoadIMatrix();
-	//render->SetWMatrix(WorldMatrix);
 	if (cam->boxInFrustum(bCube) == States::INSIDE ||
 		cam->boxInFrustum(bCube) == States::INTERSECT) {
-		cout << "La tenes INSIDE" << endl;
+		
+		cout <<"INSIDE"<< endl;
 		if (meshStruct->material != NULL) {
 			meshStruct->material->BindProgram();
 			meshStruct->material->Bind("WVP");
@@ -115,7 +111,7 @@ void Mesh::Draw() {
 		render->EndDraw(1);
 	}
 	else {
-		cout << "La tenes OUTSIDE" << endl;
+		cout << "OUTSIDE" << endl;
 	}
 }
 
@@ -128,4 +124,5 @@ Mesh::~Mesh(){
 	delete meshStruct->material;
 	delete meshStruct;
 	delete meshInfo;
+	delete bCube;
 }

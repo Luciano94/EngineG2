@@ -1,13 +1,11 @@
 #pragma once
 #include "Exports.h"
-//#include "Node.h"
 #include "GlobalDefinitions.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h> 
 #include <assimp/postprocess.h>
 #include <fstream>
 #include <vector>
-//#include "Mesh.h"
 
 class Mesh;
 class Node;

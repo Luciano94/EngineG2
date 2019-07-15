@@ -13,10 +13,7 @@ bool Game::OnStart() {
 	
 	/*Camera*/
 	camera = new Camera(render);
-	//render->setCamera(camera);
 
-	/*Aux Values*/
-	isMinScale = true; //Es true cuando el nodo tiene la escala minima 
 	/*nodes*/
 	chuckNorris = new Node(render);
 	theAbuelo = new Node(render);
@@ -51,13 +48,16 @@ bool Game::OnStop() {
 	delete theAbuelo;
 	delete theCamarografo;
 	delete chuckNorris;
+	delete camera;
+
 	return true;
 }
 
 bool Game::OnUpdate() {
 	input->PollEvents();
-	i++;
-	CollisionManager::GetInstance()->UpdatePhysicsBox();
+	//i++;
+	//CollisionManager::GetInstance()->UpdatePhysicsBox();
+
 /*Node Transforms*/
 	thePadre->getNode(1)->Rotate(0, deltaTime, 0);
 	thePadre->Rotate(deltaTime, 0, 0);
