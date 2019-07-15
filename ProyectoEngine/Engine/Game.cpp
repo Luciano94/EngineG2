@@ -15,26 +15,31 @@ bool Game::OnStart() {
 	camera = new Camera(render);
 
 	/*nodes*/
-	chuckNorris = new Node(render);
-	theAbuelo = new Node(render);
-	thePadre = new Node(render);
-	theCamarografo = new Node(render);
-	theHijo = new Node(render);
+	chuckNorris = new Node(render); //Scene node
+	weaponsNode = new Node(render);
+	mFourNode = new Node(render);
+	cameraNode = new Node(render);
+	rifleNode = new Node(render);
+	pistolNode = new Node(render);
 
 	/*creo la jerarquia*/
-	chuckNorris->addChild(theCamarografo);
-	chuckNorris->addChild(theAbuelo);
-	theAbuelo->addChild(thePadre);
-	thePadre->addChild(theHijo);
+	chuckNorris->addChild(cameraNode);
+	chuckNorris->addChild(weaponsNode);
+	chuckNorris->addChild(pistolNode);
+	weaponsNode->addChild(mFourNode);
+	mFourNode->addChild(rifleNode);
 
 	/*cargo los modelos*/
-	theCamarografo->addComponent(camera);
-	Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", thePadre, render, camera);
-	Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", theHijo, render, camera);
+	cameraNode->addComponent(camera);
+	Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", mFourNode, render, camera);
+	Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", rifleNode, render, camera);
+	Importer::LoadMesh("weapon.fbx", "weapon.bmp", pistolNode, render, camera);
 
 	/*seteo la escala y posicion*/
-	thePadre->SetScale(0.05f, 0.05f, 0.05f);
-	thePadre->SetPos(0, 0, -10);
+	chuckNorris->SetPos(0, 0, 0);
+	mFourNode->SetScale(0.05f, 0.05f, 0.05f);
+	mFourNode->SetPos(0, 0, -10);
+	rifleNode->SetScale(10, 10, 10);
 
 	setScene(chuckNorris);
 	cout << "Game::OnStart()" << endl;
@@ -43,10 +48,10 @@ bool Game::OnStart() {
 
 bool Game::OnStop() {
 	cout << "Game::OnStop()" << endl;
-	delete theHijo;
-	delete thePadre;
-	delete theAbuelo;
-	delete theCamarografo;
+	delete rifleNode;
+	delete mFourNode;
+	delete weaponsNode;
+	delete cameraNode;
 	delete chuckNorris;
 	delete camera;
 
@@ -60,10 +65,11 @@ bool Game::OnUpdate() {
 
 /*Node Transforms*/
 	//Roto al cargador del arma
-	thePadre->getNode(1)->Rotate(0, deltaTime, 0);
+	mFourNode->getNode(1)->Rotate(0, deltaTime, 0);
 	//Roto el cuerpo del arma
-	thePadre->Rotate(deltaTime, 0, 0);
-
+	mFourNode->Rotate(deltaTime, 0, 0);
+	//roto la pistola y sus nodos
+	pistolNode->Rotate(0, deltaTime, 0);
 
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))

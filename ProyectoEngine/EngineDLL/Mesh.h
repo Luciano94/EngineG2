@@ -9,6 +9,8 @@
 
 struct meshes
 {
+	const char * fbxFile;
+
 	unsigned int bufferId;
 	unsigned int uvBufferID;
 	unsigned int indexBufferID;

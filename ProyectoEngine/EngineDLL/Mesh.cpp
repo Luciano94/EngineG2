@@ -7,7 +7,7 @@ Mesh::Mesh(Renderer * render, const char * _textureFile, Camera * cam) :Componen
 	meshInfo = new MeshData();
 	this->cam = cam;
 	bCube = new BoundingCube(render);
-
+	meshStruct->fbxFile = textureFile;
 	meshStruct->shouldDispose = false;
 	meshStruct->shouldDispouseIndices = false;
 			
@@ -94,7 +94,7 @@ void Mesh::Draw() {
 	if (cam->boxInFrustum(bCube) == States::INSIDE ||
 		cam->boxInFrustum(bCube) == States::INTERSECT) {
 		
-		cout <<"INSIDE"<< endl;
+		//cout <<"INSIDE"<< endl;
 		if (meshStruct->material != NULL) {
 			meshStruct->material->BindProgram();
 			meshStruct->material->Bind("WVP");
@@ -111,7 +111,7 @@ void Mesh::Draw() {
 		render->EndDraw(1);
 	}
 	else {
-		cout << "OUTSIDE" << endl;
+		cout << "OUTSIDE	>>"<< meshStruct->fbxFile << endl;
 	}
 }
 

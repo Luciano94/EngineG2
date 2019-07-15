@@ -18,7 +18,7 @@ private:
 	//BMP
 	static bool bmpCorrectFormat(unsigned char header[], FILE *bmpFile);
 	//Mesh
-	static void InitMesh(const aiMesh* paiMesh, Mesh* mesh, glm::vec3 &mins, glm::vec3 &maxs);
+	static void InitMesh(const aiMesh* paiMesh, Mesh* meshComponent, glm::vec3 &mins, glm::vec3 &maxs);
 	static void ProcessNodes(const char * fbxFile, const char * textFile, Node * rootNode, 
 							aiNode * node, const aiScene * scene, Renderer * render, 
 							glm::vec3 &mins, glm::vec3 &maxs, Camera * cam);

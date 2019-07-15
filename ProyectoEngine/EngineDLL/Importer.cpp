@@ -112,9 +112,9 @@ void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * 
 	}
 }
 
-void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshLoco, glm::vec3 &mins, glm::vec3 &maxs)
+void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, glm::vec3 &mins, glm::vec3 &maxs)
 {
-	MeshData * mesh = meshLoco->getMeshData();
+	MeshData * mesh = meshComponent->getMeshData();
 	mesh->vertexArray = new std::vector<float>();
 	mesh->uvArray = new std::vector<float>();
 	mesh->indexArray = new std::vector<unsigned int>();
@@ -156,6 +156,6 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshLoco, glm::vec3 &mins,
 		mesh->indexArray->push_back(Face.mIndices[2]);
 	}
 
-	meshLoco->setMeshData(mesh);
+	meshComponent->setMeshData(mesh);
 }
 

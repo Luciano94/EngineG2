@@ -36,10 +36,11 @@ private:
 	Input * input;
 
 	Node * chuckNorris;
-	Node * theCamarografo;
-	Node * theAbuelo;
-	Node * thePadre;
-	Node * theHijo;
+	Node * cameraNode;
+	Node * weaponsNode;
+	Node * mFourNode;
+	Node * rifleNode;
+	Node * pistolNode;
 
 protected:
 	bool OnStart() override;
