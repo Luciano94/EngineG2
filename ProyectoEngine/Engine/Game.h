@@ -14,7 +14,7 @@ using namespace std;
 class Game : public GameBase {
 private:
 
-	TileMap * tilesito;
+	Tilemap * tilesito;
 
 	int i;
 	float speed;
@@ -26,6 +26,7 @@ private:
 	Sprite * spr3;
 	
 	Material * mat1;
+	Material * mat2;
 
 protected:
 	bool OnStart() override;

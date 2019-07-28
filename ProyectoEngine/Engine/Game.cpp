@@ -11,8 +11,33 @@ bool Game::OnStart() {
 	mat1 = new Material();
 	unsigned int programID = mat1->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
 
+	/*Tilemap Material*/
+	mat2 = new Material();
+	unsigned int TileprogramID = mat2->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
+
+	/*Collider Tiles*/
+	vector<int> * colliderTiles = new vector<int>();
+	colliderTiles->push_back(19);
+	colliderTiles->push_back(20);
+	colliderTiles->push_back(21);
+	colliderTiles->push_back(22);
+	colliderTiles->push_back(23);
+	colliderTiles->push_back(24);
+	colliderTiles->push_back(25);
+	colliderTiles->push_back(26);
+	colliderTiles->push_back(27);
+	colliderTiles->push_back(28);
+	colliderTiles->push_back(29);
+	colliderTiles->push_back(30);
+	colliderTiles->push_back(31);
+	colliderTiles->push_back(32);
+	colliderTiles->push_back(33);
+	colliderTiles->push_back(34);
+
 	/*Tileset*/
-	tilesito = new TileMap("MatrixLevel.csv", 800, 600, render, mat1);
+	tilesito = new Tilemap(render, 40, 41, "mapv3.csv", 10.0f, 7.0f, 10.0f, 2.0f, colliderTiles);
+	tilesito->LoadTexture("mapv3.bmp");
+	tilesito->SetMaterial(mat2);
 	
 	/*Sprite 1*/	
 	spr1 = new Sprite(render, 8, 8);
@@ -58,17 +83,17 @@ bool Game::OnStop() {
 bool Game::OnUpdate() {
 	i++;
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
-	tilesito->Update();
+	//tilesito->Update();
 	/*Animations*/
 	spr2->UpdAnim(deltaTime);
 	spr1->UpdAnim(deltaTime);
 	/*Translate*/
-	render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
-	if(!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Down))
+	//render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
+	/*if(!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Down))
 		spr2->Translate(0,-speed* deltaTime, 0);
 	if (!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Left))
 		spr2->Translate(speed * deltaTime,0, 0);
-	spr3->Translate(-speed * deltaTime ,0, 0);
+	spr3->Translate(-speed * deltaTime ,0, 0);*/
 	
 	return true;
 }

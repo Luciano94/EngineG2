@@ -1,360 +1,186 @@
-#include "TileMap.h"
+#include "Tilemap.h"
+
+Tilemap::Tilemap(Renderer* _renderer, float _tilemapWidth, float _tilemapHeight, const char* _filename, 
+				float _cantTilesX, float _cantTilesY, float _tileOffset, float _tileSize, 
+				vector<int>* _colliderTiles) : Sprite(_renderer) {
+
+	filename = _filename;
+	tilemapWidth = _tilemapWidth;
+	tilemapHeight = _tilemapHeight;
+	cantTilesX = _cantTilesX;
+	cantTilesY = _cantTilesY;
+	tileOffset = _tileOffset;
+	tileSize = _tileSize;
+	vertexCount = _tilemapWidth * _tilemapHeight * 4 * 3;
+	cantUVvertex = _tilemapWidth * _tilemapHeight * 4 * 2;
 
 
+	mapIds = new vector<int>();
+	LoadMapIDs(_filename);
+	tilesWithCollides = new vector<int>();
+	tilesWithCollides = _colliderTiles;
+	tilesColliderData = new vector<TileColliderData>();
+	int aux = 0;
+	for (int i = 0; i < _tilemapHeight; i++) {
+		for (int j = 0; j < _tilemapWidth; j++) {
 
+			int col = j * 2;
+			int row = i * 2;
 
+			vertexArrayPos.push_back(-tileOffset + col);
+			vertexArrayPos.push_back(tileOffset - row);
+			vertexArrayPos.push_back(0.0f);
 
-TileMap::TileMap( const char * filePath, int winW, int winH, Renderer * render, Material * material){
+			vertexArrayPos.push_back(-tileOffset + col);
+			vertexArrayPos.push_back((tileOffset - tileSize) - row);
+			vertexArrayPos.push_back(0.0f);
 
-	LoadLevel(filePath);
+			vertexArrayPos.push_back(-(tileOffset - tileSize) + col);
+			vertexArrayPos.push_back((tileOffset - tileSize) - row);
+			vertexArrayPos.push_back(0.0f);
 
-	//demas cosas
-	scrollX = 0;
-	scrollY = 0;
+			vertexArrayPos.push_back(-(tileOffset - tileSize) + col);
+			vertexArrayPos.push_back(tileOffset - row);
+			vertexArrayPos.push_back(0.0f);
 
-	this->render = render;
-	this->material = material;
+			for (int k = 0; k < tilesWithCollides->size(); k++) {
+				if (mapIds->at(aux) == tilesWithCollides->at(k)) {
+					TileColliderData colliderAux;
 
-	Instance = CollisionManager::GetInstance();
-	LastCameraPos = CurrentCameraPos = DeltaCameraPos = glm::vec3(0,0,0);
+					colliderAux.positionY = (tileOffset - row) - tileSize;
+					colliderAux.positionX = (-tileOffset + col);
+					//cout << colliderAux.positionX << " - " << colliderAux.positionY << endl;
+					colliderAux.height = tileSize;
+					colliderAux.width = tileSize;
+					tilesColliderData->push_back(colliderAux);
+				}
+			}
 
-	int tileW = 256 / 4;
-	int tileH = 256 / 4;
+			aux++;
 
-	viewW = (winW / tileW) + 4;
-	viewH = (winH / tileH) + 4;
+		}
+	}
+	float* p = &vertexArrayPos[0];
 
-	Xlvl = viewH;
-	Ylvl = viewW;
+	uvArray = new float[cantUVvertex];
+	LoadUVs();
 
-	view = new vector<vector<int>*>(viewW);
-	for (int i = 0; i < viewW; i++)
-		view->at(i) = new vector<int>(viewH);
+	SetTilemapVertex(p, vertexCount);
 
-	viewSprite = new vector<vector<Tile*>*>(viewW);
-	for (int i = 0; i < viewW; i++)
-		viewSprite->at(i) = new vector<Tile*>(viewH);
-	ChargeSprite();
-	LoadView();
+	SetTextures(uvArray, cantUVvertex);
 }
 
-void TileMap::LoadLevel(const char * filePath){
-	//cargar archivo;
+Tilemap::~Tilemap() {
+
+}
+
+void Tilemap::SetTextures(float* vertex, int cant) {
+
+	textureID = render->GenBuffer(vertex, sizeof(float)* cant);
+}
+
+void Tilemap::LoadTexture(const char* name) {
+	Importer::LoadBMP(name, texture);
+	uvBufferID = render->ChargeTexture(texture.width, texture.height, texture.data);
+}
+
+void Tilemap::DrawMesh(int typeDraw) {
+	render->LoadIMatrix();
+	render->SetWMatrix(WorldMatrix);
+
+	if (material != NULL) {
+		material->BindProgram();
+		material->Bind("WVP");
+		material->SetMatrixProperty(render->GetWVP());
+	}
+
+	render->BindTexture(textureID, uvBufferID);
+	render->BeginDraw(0);
+	render->BindBuffer(0, bufferId, 3);
+	render->BeginDraw(1);
+	render->BindBuffer(1, textureID, 2);
+	render->DrawBuffer(vertexCount, typeDraw);
+	render->EndDraw(0);
+	render->EndDraw(1);
+}
+
+void Tilemap::Draw() {
+	DrawMesh(PRIMITIVE_QUAD);
+}
+
+void Tilemap::LoadMapIDs(const char* _file) {
 	string buffer;
-	ifstream file(filePath);
-	lvlW = 1;
-	lvlH = 1;
-	getline(file, buffer);
-	for (int i = 0; i < buffer.length(); i++) {
-		if (buffer[i] == ',')
-			lvlW++;
-	}
-	while (getline(file, buffer)) {
-		lvlH++;
-	}
-	file.clear();
-	file.seekg(0, std::ios::beg);
+	ifstream tileFile(_file);
 
-	level = new vector<vector<int>*>(lvlW);
-	for (int i = 0; i < lvlW; i++) {
-		level->at(i) = new vector<int>(lvlH);
-	}
-	if (file.is_open()) {
-		for (int i = 0; i < lvlW; i++) {
-			getline(file, buffer);
-			int levelW = 0;
-			for (int j = 0; j < buffer.length(); j++) {
-				switch (buffer[j]) {
-				case '0':
-					level->at(i)->at(levelW) = 1;
-					levelW++;
-					break;
-				case '1':
-					level->at(i)->at(levelW) = 0;
-					levelW++;
-					break;
-				}
-			}
-		}
-	}
-	file.close();
-}
-
-void TileMap::ChargeSprite() {
-	for (int i = 0; i < viewW; i++){
-		for (int j = 0; j < viewH; j++){
-			viewSprite->at(i)->at(j) = new Tile(render, 1, 1);
-			viewSprite->at(i)->at(j)->SetMaterial(material);
-			viewSprite->at(i)->at(j)->AddTexture("Empty.bmp");
-			viewSprite->at(i)->at(j)->AddTexture("Pastito.bmp");
-		}
+	while (getline(tileFile, buffer, ',')) {
+		mapIds->push_back(stoi(buffer));
 	}
 }
 
-TileMap::~TileMap() {
-	//ViewSprite
-	for (int i = 0; i < viewW; i++){
-		for (int j = 0; j < viewH; j++){
-			delete viewSprite->at(i)->at(j);
-		}
-		delete viewSprite->at(i);
-	}
-	//Level
-	for (int i = 0; i < lvlW; i++) {
-		delete level->at(i);
-	}
-	delete level;
-	//View
-	for (int i = 0; i < viewW; i++){
-		delete view->at(i);
-	}
-	delete view;
-}
+void Tilemap::LoadUVs() {
+	float textureW = 1 / cantTilesX;
+	float textureH = 1 / cantTilesY;
 
-void TileMap::LoadView() {
-	int posx;
-	int posy = 9;
-	lastposX = 0;
-	lastposXR = viewH - 1;
-	lastposY = 0;
-	lastposYR = viewW - 1;
-	for (int i = 0; i < viewW; i++) {
-		posx = -12;
-		for (int j = 0; j < viewH; j++) {
-				view->at(i)->at(j) = level->at(i)->at(j);
-				if (view->at(i)->at(j) == 0) {
-					viewSprite->at(i)->at(j)->ChangeTexture(0);
-				}
-				if (view->at(i)->at(j) == 1) {
-					viewSprite->at(i)->at(j)->ChangeTexture(1);
-				}
-				posx += 2;
-				viewSprite->at(i)->at(j)->SetPos(posx, posy, 0);
-		}
-		posy -= 2;
-	}
-}
+	int idIndex = 0;
 
+	for (int i = 0; i < cantUVvertex; i = i + 8) {
+		uvArray[i] = 0.0f;
+		uvArray[i + 1] = 1.0f;
 
+		uvArray[i + 2] = 0.0f;
+		uvArray[i + 3] = 1.0f - textureH;
 
-void TileMap::UpdateViewX() {
-	int posx;
-	int posy = 9;
+		uvArray[i + 4] = textureW;
+		uvArray[i + 5] = 1.0f - textureH;
 
-	//Update X
-	for (int i = 0; i < viewW; i++) {
-		for (int j = 1; j < viewH; j++){
-			view->at(i)->at(j-1) = view->at(i)->at(j);
-		}
-	}
-	for (int i = 0; i < viewW; i++) {
-		int pos = level->at(i)->at(Xlvl);
-		view->at(i)->at(viewH - 1) = pos;
-	}
-	//volver a dibujar
-	posx = 12;
-	for (int j = 0; j < viewW; j++) {
-		if (view->at(j)->at(viewH-1) == 0) {
-			viewSprite->at(j)->at(lastposX)->ChangeTexture(0);
-		}
-		if (view->at(j)->at(viewH - 1) == 1) {
-			viewSprite->at(j)->at(lastposX)->ChangeTexture(1);
-		}
-		viewSprite->at(j)->at(lastposX)->SetPos(posx + render->getCameraPos().x, posy, 0);
-		posy -= 2;
-	}
-	if (lastposX < viewH-1) lastposX++;
-	else lastposX = 0;
-}
+		uvArray[i + 6] = textureW;
+		uvArray[i + 7] = 1.0f;
 
-void TileMap::UpdateViewXReverse() {
-	int posx;
-	int posy = 9;
+		int row = 0;
+		int column = mapIds->at(idIndex);
 
-	//Update X
-	for (int i = 0; i < viewW; i++) {
-		for (int j = viewH-1; j <= 0; j--) {
-			view->at(i)->at(j + 1) = view->at(i)->at(j);
+		while (column >= cantTilesX) {
+			column -= cantTilesX;
+			row++;
 		}
-	}
-	for (int i = 0; i < viewW; i++) {
-		int pos = level->at(i)->at(Xlvl);
-		view->at(i)->at(0) = pos;
-	}
-	//volver a dibujar
-	posx =  -10;
-	for (int j = 0; j < viewW; j++) {
-		if (view->at(j)->at(0) == 0) {
-			viewSprite->at(j)->at(lastposXR)->ChangeTexture(0);
-		}
-		if (view->at(j)->at(0) == 1) {
-			viewSprite->at(j)->at(lastposXR)->ChangeTexture(1);
-		}
-		viewSprite->at(j)->at(lastposXR)->SetPos(posx + render->getCameraPos().x, posy, 0);
-		posy -= 2;
-	}
-	if (lastposXR >= 0) lastposXR--;
-	else lastposXR = viewH-1;
-}
 
-void TileMap::UpdateViewY() {
-	int posx = 12;
-	int posy = 4;
-	//Update Y
-	for (int i = viewW-1; i >= 1; i--) {
-		for (int j = 0; j < viewH; j++) {
-			view->at(i)->at(j) = view->at(i-1)->at(j);
-		}
-	}
-	for (int i = viewH-1; i >= 1; i--) {
-		int pos = level->at(Ylvl)->at(i);
-		view->at(0)->at(i) = pos;
-	}
-	cout << "asdasd" << endl;
-	for (int i = 0; i < viewW; i++) {
-		for (int j = 0; j < viewH; j++) {
-			cout << view->at(i)->at(j);
-		}
-		cout << endl;
-	}
-	//volver a dibujar
-	posx = -12;
-	for (int j = viewH-1; j>=1; j--) {
-		if (view->at(lastposYR)->at(j) == 0) {
-			viewSprite->at(lastposYR)->at(j)->ChangeTexture(0);
-		}
-		if (view->at(lastposYR)->at(j) == 1) {
-			viewSprite->at(lastposYR)->at(j)->ChangeTexture(1);
-		}
-		posx += 2;
-		viewSprite->at(lastposYR)->at(j)->SetPos(posx , posy + render->getCameraPos().y, 0);
-		cout<<"X: " << posx<<"Y: "<< posy - CurrentCameraPos.y << endl;
-	}
-	if (lastposY < viewW - 1) lastposY++;
-	else lastposY = 0;
-	if (lastposYR >=0) lastposYR--;
-	else lastposYR = viewW-1;
-}
+		uvArray[i] += textureW * column;
+		uvArray[i + 1] -= textureH * row;
 
-void TileMap::UpdateViewYReverse(){
-	int posx = 12;
-	int posy = 4;
-	//Update Y
-	for (int i = viewW - 1; i >= 1; i--) {
-		for (int j = 0; j < viewH; j++) {
-			view->at(i)->at(j) = view->at(i - 1)->at(j);
-		}
-	}
-	for (int i = viewH - 1; i >= 1; i--) {
-		int pos = level->at(Ylvl)->at(i);
-		view->at(0)->at(i) = pos;
-	}
-	cout << "asdasd" << endl;
-	for (int i = 0; i < viewW; i++) {
-		for (int j = 0; j < viewH; j++) {
-			cout << view->at(i)->at(j);
-		}
-		cout << endl;
-	}
-	//volver a dibujar
-	posx = -12;
-	for (int j = viewH - 1; j >= 1; j--) {
-		if (view->at(lastposYR)->at(j) == 0) {
-			viewSprite->at(lastposYR)->at(j)->ChangeTexture(0);
-		}
-		if (view->at(lastposYR)->at(j) == 1) {
-			viewSprite->at(lastposYR)->at(j)->ChangeTexture(1);
-		}
-		posx += 2;
-		viewSprite->at(lastposYR)->at(j)->SetPos(posx, posy + render->getCameraPos().y, 0);
-		cout << "X: " << posx << "Y: " << posy - CurrentCameraPos.y << endl;
-	}
-	if (lastposY < viewW - 1) lastposY++;
-	else lastposY = 0;
-}
+		uvArray[i + 2] += textureW * column;
+		uvArray[i + 3] -= textureH * row;
 
-void TileMap::Draw(){
-	for (int i = 0; i < viewW; i++) {
-		for (int j = 0; j < viewH; j++) {
-			viewSprite->at(i)->at(j)->Draw();
-		}
+		uvArray[i + 4] += textureW * column;
+		uvArray[i + 5] -= textureH * row;
+
+		uvArray[i + 6] += textureW * column;
+		uvArray[i + 7] -= textureH * row;
+
+		idIndex++;
 	}
 }
 
-
-
-void TileMap::Update(){
-	//Calculate deltaCamera
-	CurrentCameraPos = render->getCameraPos();
-	DeltaCameraPos =  CurrentCameraPos - LastCameraPos;
-	LastCameraPos = CurrentCameraPos;
-	//UpdateX
-	scrollX += DeltaCameraPos.x;
-	if (scrollX >= 2) {
-		if (Xlvl < lvlW - 1)Xlvl++;
-		UpdateViewX();
-		scrollX = 0;
-	}else
-	if (scrollX <= -2) {
-		if (Xlvl < 0)Xlvl--;
-		UpdateViewXReverse();
-		scrollX = 0;
-	}
-	//UpdateY
-	/*scrollY += DeltaCameraPos.y;
-	cout << scrollY << endl;
-	if (scrollY >= 2) {
-		if (Ylvl < 0)Ylvl--;
-		//if (Ylvl > lvlW - 1)Ylvl++;
-		UpdateViewY();
-		scrollY = 0;
-	}//else
-/*	if (scrollY <= -2) {
-		if (Ylvl < 0)Ylvl--;
-		UpdateViewY();
-		scrollY = 0;
-	}*/
+void Tilemap::SetTilemapVertex(float* _vertex, int _cant) {
+	bufferId = render->GenBuffer(_vertex, sizeof(float) * _cant);
 }
 
 
+bool Tilemap::NextTileIsCollider(float _playerTranslationX, float _playerTranslationY, float _playerHeight, float _playerWidht) {
 
-bool TileMap::CheckCollisions(BoundingBox * bBox, Directions direc)
-{
-	for (int  i = 0; i < viewW; i++){
-		for (int j = 0; j < viewH; j++){
-			if (view->at(i)->at(j) == 1) {
-				switch (direc)
-				{
-				case Directions::Left:
-					if ((bBox->GetX() - bBox->GetWidth()) >= 
-						(viewSprite->at(i)->at(j)->GetPos().x) + bBox->GetWidth()) {
-						return true;
-					}else return false;
-				break;
-				case Directions::Rigth:
-					if ((bBox->GetX() - bBox->GetWidth()) <=
-						(viewSprite->at(i)->at(j)->GetPos().x)) {
-						return true;
-					}
-					else return false;
-				break;
-				case Directions::Up:
-					if ((bBox->GetY() + bBox->GetHeigth()) >=
-						(viewSprite->at(i)->at(j)->GetPos().y)) {
-						return true;
-					}
-					else return false;
-				break;
-				case Directions::Down:
-					if ((bBox->GetY() - (bBox->GetHeigth())) <=
-						(-(viewSprite->at(i)->at(j)->GetPos().y)) + bBox->GetHeigth()) {
-						return true;
-					}
-					else return false;
-				break;
-				}
-					
-			}
+	float col = (((_playerTranslationX - GetPos().x) / tileSize) * tileSize) + GetPos().x;
+	float row = (((_playerTranslationY + GetPos().y) / tileSize) * tileSize) - GetPos().y;
+
+	for (int i = 0; i < tilesColliderData->size(); i++) {
+		if (((col + (_playerWidht / 2)) >= tilesColliderData->at(i).positionX) && ((col - (_playerWidht / 2)) <= tilesColliderData->at(i).positionX + tilesColliderData->at(i).width) && (row + (_playerHeight / 2) >= tilesColliderData->at(i).positionY) && (row - (_playerHeight / 2) <= tilesColliderData->at(i).positionY + tilesColliderData->at(i).height)) {
+			return true;
 		}
+	}
+	return false;
+}
+
+void Tilemap::UpdateTilemapColliderPosition(float _diferenceX, float _diferenceY) {
+	for (int i = 0; i < tilesColliderData->size(); i++) {
+		tilesColliderData->at(i).positionX += _diferenceX;
+		tilesColliderData->at(i).positionY += _diferenceY;
 	}
 }

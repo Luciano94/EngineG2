@@ -1,60 +1,52 @@
 #pragma once
+#include "Exports.h"
+#include "Renderer.h"
+#include "Material.h"
+#include "Sprite.h"
+#include <vector>
 #include <fstream>
 #include <iostream>
-#include <vector>
 #include <string>
-#include "CollisionManager.h" 
-#include "Exports.h"
-#include "Tile.h"
 
 
-using namespace std;
 
-
-class ENGINEDLL_API TileMap
-{
+class ENGINEDLL_API Tilemap : public Sprite {
 private:
+	const char* filename;
+	int tilemapWidth;
+	int tilemapHeight;
+	int cantUVvertex;
+	float cantTilesX;
+	float cantTilesY;
+	float tileOffset;
+	float tileSize;
+	vector<int>* mapIds;
+	vector<float> vertexArrayPos;
+	vector<vector<int>> bidimensionalIDs;
+	vector<int>* tilesWithCollides;
 
-	Renderer * render;
-	Material * material;
-	CollisionManager * Instance;
-	glm::vec3 LastCameraPos;
-	glm::vec3 CurrentCameraPos;
-	glm::vec3 DeltaCameraPos;
+	struct TileColliderData {
+		float positionX;
+		float width;
+		float positionY;
+		float height;
+	};
 
-	float scrollX;
-	float scrollY;
-	int lastposX;
-	int lastposXR;
-	int lastposY;
-	int lastposYR;
-
-	vector<vector<Tile*>*> * viewSprite;
-	vector<vector<int>*> * view;
-	int viewW;
-	int viewH;
-
-	vector<vector<int>*> * level;
-	int lvlW;
-	int lvlH;
-	int Xlvl;
-	int Ylvl;
-	
-	void ChargeSprite();
-	void LoadView();
-	void LoadLevel(const char * filePath);
-	void UpdateViewX();
-	void UpdateViewXReverse();
-
-	void UpdateViewY();
-	void UpdateViewYReverse();
-
-
+	vector<TileColliderData>* tilesColliderData;
 public:
-	TileMap(const char * filePath, int winW, int winH, Renderer * render, Material * mat);
-	~TileMap();
+	Tilemap(Renderer* _renderer, float _tilemapWidth, float _tilemapHeight, const char* _filename, 
+	float _cantTilesX, float _cantTilesY, float _tileOffset, float _tileSize, vector<int>* _colliderTiles);
+	
+	~Tilemap();
+	void Draw() override;
+	void DrawMesh(int _drawType);
+	void SetTextures(float* vertex, int cant);
+	void LoadTexture(const char* name);
+	void LoadUVs();
+	void LoadMapIDs(const char* file);
+	void SetTilemapVertex(float* vertex, int cant);
 
-	void Draw();
-	void Update();
-	bool CheckCollisions(BoundingBox * bBox, Directions direc);
+	bool NextTileIsCollider(float _playerTranslationX, float _playerTranslationY, float _playerHight, float _playerWidht);
+
+	void UpdateTilemapColliderPosition(float _diferenceX, float _diferenceY);
 };

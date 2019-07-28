@@ -9,14 +9,33 @@ Sprite::Sprite(Renderer * render, int columns, int rows): Shape(render){
 		1.0f, -1.0f, 0.f,
 		1.0f,  1.0f, 0.f
 	};
+
+
 	SetVertices(vertex, 4);
 
+	hasAnimation = true;
 	anim = new Animation(columns, rows);
-
 	uvArray = anim->UpdateAnimation(0);
 
 	SetTextureVertex(uvArray, 4);
+}
 
+Sprite::Sprite(Renderer * render): Shape(render){
+	onCollision = false;
+	vertex = new float[12]{
+		-1.0f, -1.0f, 0.f,
+		-1.0f,  1.0f, 0.f,
+		1.0f, -1.0f, 0.f,
+		1.0f,  1.0f, 0.f
+	};
+
+
+	SetVertices(vertex, 4);
+
+	hasAnimation = false;
+	//uvArray = anim->UpdateAnimation(0);
+
+	//SetTextureVertex(uvArray, 4);
 }
 
 void Sprite::SetTextureVertex(float * vertices, int count){
@@ -28,8 +47,10 @@ void Sprite::SetTextureVertex(float * vertices, int count){
 }
 
 void Sprite::UpdAnim(float deltaTime){
-	uvArray = anim->UpdateAnimation(deltaTime);
-	SetTextureVertex(uvArray, 4);
+	if (hasAnimation) {
+		uvArray = anim->UpdateAnimation(deltaTime);
+		SetTextureVertex(uvArray, 4);
+	}
 }
 
 void Sprite::SetAnim(int initF, int finishF, float timePerF){

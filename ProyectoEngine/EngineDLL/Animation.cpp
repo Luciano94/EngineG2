@@ -24,7 +24,6 @@ void Animation::SetAnimation(int initF, int finishF, float timePerF){
 }
 
 float * Animation::UpdateAnimation(float deltaTime){
-	
 	currentTime += deltaTime;
 	
 	if (currentTime > timePerFrame) {

@@ -16,6 +16,7 @@ protected:
 	Animation * anim;
 
 	bool onCollision;
+	bool hasAnimation;
 public:
 	void Draw() override;
 	void DrawMeshWhitTexture(int typeDraw);
@@ -30,6 +31,8 @@ public:
 	bool getCollision();
 
 	Sprite(Renderer * render, int columns, int rows);
+	Sprite(Renderer * render);
+
 	~Sprite();
 };
 
