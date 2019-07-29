@@ -33,9 +33,10 @@ Sprite::Sprite(Renderer * render): Shape(render){
 	SetVertices(vertex, 4);
 
 	hasAnimation = false;
-	//uvArray = anim->UpdateAnimation(0);
+	anim = new Animation(1, 1);
+	uvArray = anim->UpdateAnimation(0);
 
-	//SetTextureVertex(uvArray, 4);
+	SetTextureVertex(uvArray, 4);
 }
 
 void Sprite::SetTextureVertex(float * vertices, int count){

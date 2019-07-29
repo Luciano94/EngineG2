@@ -76,12 +76,13 @@ Tilemap::~Tilemap() {
 
 void Tilemap::SetTextures(float* vertex, int cant) {
 
-	textureID = render->GenBuffer(vertex, sizeof(float)* cant);
+	uvBufferID = render->GenBuffer(vertex, sizeof(float)* cant);
 }
 
 void Tilemap::LoadTexture(const char* name) {
 	Importer::LoadBMP(name, texture);
-	uvBufferID = render->ChargeTexture(texture.width, texture.height, texture.data);
+	textureID = render->ChargeTexture(texture.width, texture.height, texture.data);
+	material->BindTexture("myTextureSampler");
 }
 
 void Tilemap::DrawMesh(int typeDraw) {
@@ -98,7 +99,7 @@ void Tilemap::DrawMesh(int typeDraw) {
 	render->BeginDraw(0);
 	render->BindBuffer(0, bufferId, 3);
 	render->BeginDraw(1);
-	render->BindBuffer(1, textureID, 2);
+	render->BindBuffer(1, uvBufferID, 2);
 	render->DrawBuffer(vertexCount, typeDraw);
 	render->EndDraw(0);
 	render->EndDraw(1);

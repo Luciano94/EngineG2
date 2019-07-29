@@ -114,6 +114,7 @@ void Material::SetMatrixProperty( glm::mat4 & mat){
 }
 
 void Material::BindTexture(const char* name) {
+
 	textureID = glGetUniformLocation(ProgramID, name);
 }
 

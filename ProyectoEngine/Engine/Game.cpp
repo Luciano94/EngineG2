@@ -36,8 +36,8 @@ bool Game::OnStart() {
 
 	/*Tileset*/
 	tilesito = new Tilemap(render, 40, 41, "mapv3.csv", 10.0f, 7.0f, 10.0f, 2.0f, colliderTiles);
-	tilesito->LoadTexture("mapv3.bmp");
 	tilesito->SetMaterial(mat2);
+	tilesito->LoadTexture("mapv3.bmp");
 	
 	/*Sprite 1*/	
 	spr1 = new Sprite(render, 8, 8);
@@ -88,7 +88,7 @@ bool Game::OnUpdate() {
 	spr2->UpdAnim(deltaTime);
 	spr1->UpdAnim(deltaTime);
 	/*Translate*/
-	//render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
+	render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
 	/*if(!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Down))
 		spr2->Translate(0,-speed* deltaTime, 0);
 	if (!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Left))
