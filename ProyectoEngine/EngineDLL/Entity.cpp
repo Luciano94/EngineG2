@@ -56,6 +56,23 @@ void Entity::Translate(float x, float y, float z){
 	UpdateWorldMatrix();
 }
 
+void Entity::Translate(glm::vec3 _pos) {
+	if (bBox == NULL) {
+		pos[0] += _pos.x;
+		pos[1] += _pos.y;
+		pos[2] += _pos.z;
+	}
+	else if (!bBox->GetCollision()) {
+		pos[0] += _pos.x;
+		pos[1] += _pos.y;
+		pos[2] += _pos.z;
+		bBox->SetPos(pos[0], pos[1]);
+		bBox->SetCollision(false);
+	}
+	TranslateMatrix = glm::translate(glm::mat4(1.0f), pos);
+	UpdateWorldMatrix();
+}
+
 void Entity::Rotate(float x, float y, float z){
 	rot[0] += x;
 	rot[1] += y;

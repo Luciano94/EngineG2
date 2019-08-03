@@ -28,7 +28,7 @@ bool Renderer::Start(void* wnd) {
 	WorldMatrix = glm::mat4(1.0f);
 
 	UpdateWVP();
-
+	cout << camPos.x << "	" << camPos.y << "	" << camPos.z << endl;
 	return true;
 }
 
@@ -159,6 +159,21 @@ void Renderer::CameraTranslate(glm::vec3 pos){
 
 	UpdateWVP();
 
+}
+
+void Renderer::setCameraPos(glm::vec3 pos) {
+	glm::vec3 newPos(pos.x, pos.y, camPos.z);
+	camPos = newPos;
+	eyePos = glm::vec3(pos.x, pos.y, 3);
+
+	ViewMatrix = glm::lookAt(
+		eyePos,
+		camPos,
+		glm::vec3(0, 1, 0)
+	);
+
+	UpdateWVP();
+	cout << camPos.x <<"	"<< camPos.y <<"	"<< camPos.z << endl;
 }
 
 Renderer::Renderer() {

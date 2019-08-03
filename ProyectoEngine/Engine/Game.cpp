@@ -2,7 +2,11 @@
 
 bool Game::OnStart() {
 	/*velocity of the objects*/
-	speed = 1;
+	speed = 20.0f;
+
+	/*Input*/
+	input = Input::getInstance();
+	input->SetWindowContext(window);
 
 	/*Collision Manager*/
 	CollisionManager * instance = CollisionManager::GetInstance();
@@ -11,71 +15,71 @@ bool Game::OnStart() {
 	mat1 = new Material();
 	unsigned int programID = mat1->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
 
-	/*Tilemap Material*/
-	mat2 = new Material();
-	unsigned int TileprogramID = mat2->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
-
 	/*Collider Tiles*/
 	vector<int> * colliderTiles = new vector<int>();
-	colliderTiles->push_back(19);
-	colliderTiles->push_back(20);
-	colliderTiles->push_back(21);
-	colliderTiles->push_back(22);
-	colliderTiles->push_back(23);
-	colliderTiles->push_back(24);
-	colliderTiles->push_back(25);
-	colliderTiles->push_back(26);
-	colliderTiles->push_back(27);
-	colliderTiles->push_back(28);
-	colliderTiles->push_back(29);
-	colliderTiles->push_back(30);
-	colliderTiles->push_back(31);
-	colliderTiles->push_back(32);
-	colliderTiles->push_back(33);
-	colliderTiles->push_back(34);
+	colliderTiles->push_back(3);
+	colliderTiles->push_back(8);
 
 	/*Tileset*/
-	tilesito = new Tilemap(render, 40, 41, "mapv3.csv", 10.0f, 7.0f, 10.0f, 2.0f, colliderTiles);
-	tilesito->SetMaterial(mat2);
+	tilesito = new Tilemap(render, 11.0f, 201.0f, "mapv3.csv", 4, 4, 10, 2, colliderTiles);
+	tilesito->SetMaterial(mat1);
 	tilesito->LoadTexture("mapv3.bmp");
 	
-	/*Sprite 1*/	
-	spr1 = new Sprite(render, 8, 8);
-	spr1->SetMaterial(mat1);
-	spr1->LoadMaterial("asteroid.bmp");
-	spr1->SetPos(0, 0, 0);
-	spr1->SetBoundingBox(2.0f, 2.0f, false, 10);
-	instance->SingUpToList(Layers::Player, spr1);
-	spr1->SetAnim(0, 63, 0.1f);
-	
 	/*Sprite 2*/
-	spr2 = new Sprite(render, 4, 2);
-	spr2->SetMaterial(mat1);
-	spr2->LoadMaterial("SpriteSheet.bmp");
-	spr2->SetPos(0, 0, 0);
-	spr2->SetBoundingBox(2.0f, 2.0f, false, 20);
-	instance->SingUpToList(Layers::Player, spr2);
-	spr2->SetAnim(0, 7, 0.1f);
-	
-	/*Sprite 3*/
-	spr3 = new Sprite(render, 1, 1);
-	spr3->SetMaterial(mat1);
-	spr3->LoadMaterial("sample2.bmp");
-	spr3->SetPos(10,0, 0);
-	spr3->SetBoundingBox(2.0f, 2.0f, false, 100);
-	instance->SingUpToList(Layers::EnemyBullet, spr3);
+	player = new Sprite(render, 3, 1);
+	player->SetMaterial(mat1);
+	player->LoadMaterial("PlayerRun.bmp");
+	player->SetPos(0, 0, 0);
+	player->SetBoundingBox(2.0f, 2.0f, false, 20);
+	instance->SingUpToList(Layers::Player, player);
+	player->SetAnim(0, 2, 0.5f);
 	
 	cout << "Game::OnStart()" << endl;
 	return true;
+}
+
+
+void Game::PlayerMovment() {
+	if (tilesito->NextTileIsCollider(player->GetPos().x, player->GetPos().y, 2.0f, 2.0f)) {
+		window->Stop();
+	}
+	else {
+		player->Translate(glm::vec3(0, -speed * deltaTime, 0));
+	}
+
+
+	if (input->isInput(GLFW_KEY_A)) {
+		if (tilesito->NextTileIsCollider(player->GetPos().x, player->GetPos().y, 2.0f, 2.0f)) {
+			window->Stop();
+		}
+		else {
+			player->Translate(glm::vec3(-speed * deltaTime, 0, 0));
+		}
+	}
+
+	if (input->isInput(GLFW_KEY_D)) {
+		if (tilesito->NextTileIsCollider(player->GetPos().x, player->GetPos().y, 2.0f, 2.0f)) {
+			window->Stop();
+		}
+		else {
+
+			player->Translate(glm::vec3(speed * deltaTime, 0, 0));
+		}
+
+	}
+}
+
+void Game::CameraMovment(glm::vec3 playerPos) {
+	glm::vec3 newPos(render->getCameraPos().x, playerPos.y, render->getCameraPos().z);
+	render->setCameraPos(newPos);
 }
 
 bool Game::OnStop() {
 	cout << "Game::OnStop()" << endl;
 	delete mat1;
 
-	delete spr1;
-	delete spr2;
-	delete spr3;
+	delete player;
+
 	
 	return true;
 }
@@ -85,10 +89,14 @@ bool Game::OnUpdate() {
 	CollisionManager::GetInstance()->UpdatePhysicsBox();
 	//tilesito->Update();
 	/*Animations*/
-	spr2->UpdAnim(deltaTime);
-	spr1->UpdAnim(deltaTime);
+	player->UpdAnim(deltaTime);
+	PlayerMovment();
+	CameraMovment(player->GetPos());
+
+	player->UpdAnim(deltaTime);
+
 	/*Translate*/
-	render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
+	//render->CameraTranslate(glm::vec3(speed* deltaTime,0, 0));
 	/*if(!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Down))
 		spr2->Translate(0,-speed* deltaTime, 0);
 	if (!tilesito->CheckCollisions(spr2->getBoundingBox(), Directions::Left))
@@ -101,9 +109,8 @@ bool Game::OnUpdate() {
 void Game::OnDraw()
 {
 	tilesito->Draw();
-	spr1->Draw();
-	spr2->Draw();
-	spr3->Draw();
+	player->Draw();
+
 }
 
 Game::Game() {

@@ -46,9 +46,11 @@ public:
 	void LoadIMatrix();
 	void SetWMatrix(glm::mat4 matrix);
 	void MultiplyWMatrix(glm::mat4 matrix);
+	
 	/*CAMERA*/
 	glm::vec3 getCameraPos();
 	void CameraTranslate(glm::vec3 pos);
+	void setCameraPos(glm::vec3 pos);
 	Renderer();
 	~Renderer();
 };

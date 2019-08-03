@@ -9,7 +9,6 @@
 using namespace std;
 class ENGINEDLL_API GameBase {
 private:
-	Window * window;
 	double currentFrame;
 	double lastFrame;
 protected:
@@ -20,6 +19,7 @@ protected:
 	virtual void OnDraw() = 0;
 	double deltaTime;
 public:
+	Window * window;
 	bool Start(int h, int w, char* name);
 	bool Stop();
 	void Loop();

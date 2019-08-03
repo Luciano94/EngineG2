@@ -4,6 +4,7 @@
 #include "Triangle.h"
 #include "Square.h"
 #include "Circle.h"
+#include "Input.h"
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Material.h"
@@ -13,6 +14,10 @@
 using namespace std;
 class Game : public GameBase {
 private:
+	Input * input;
+	void PlayerMovment();
+
+	void CameraMovment(glm::vec3 playerPos);
 
 	Tilemap * tilesito;
 
@@ -21,12 +26,9 @@ private:
 	float rotZ;
 	float posX;
 
-	Sprite * spr1;
-	Sprite * spr2;
-	Sprite * spr3;
+	Sprite * player;
 	
 	Material * mat1;
-	Material * mat2;
 
 protected:
 	bool OnStart() override;
