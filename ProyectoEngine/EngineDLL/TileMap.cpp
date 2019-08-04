@@ -49,6 +49,7 @@ Tilemap::Tilemap(Renderer* _renderer, float _tilemapWidth, float _tilemapHeight,
 
 					colliderAux.positionY = (tileOffset - row) - tileSize;
 					colliderAux.positionX = (-tileOffset + col);
+					colliderAux.layer = k;
 					//cout << colliderAux.positionX << " - " << colliderAux.positionY << endl;
 					colliderAux.height = tileSize;
 					colliderAux.width = tileSize;
@@ -166,17 +167,17 @@ void Tilemap::SetTilemapVertex(float* _vertex, int _cant) {
 }
 
 
-bool Tilemap::NextTileIsCollider(float _playerTranslationX, float _playerTranslationY, float _playerHeight, float _playerWidht) {
+int Tilemap::NextTileIsCollider(float _playerTranslationX, float _playerTranslationY, float _playerHeight, float _playerWidht) {
 
 	float col = (((_playerTranslationX - GetPos().x) / tileSize) * tileSize) + GetPos().x;
 	float row = (((_playerTranslationY + GetPos().y) / tileSize) * tileSize) - GetPos().y;
 
 	for (int i = 0; i < tilesColliderData->size(); i++) {
 		if (((col + (_playerWidht / 2)) >= tilesColliderData->at(i).positionX) && ((col - (_playerWidht / 2)) <= tilesColliderData->at(i).positionX + tilesColliderData->at(i).width) && (row + (_playerHeight / 2) >= tilesColliderData->at(i).positionY) && (row - (_playerHeight / 2) <= tilesColliderData->at(i).positionY + tilesColliderData->at(i).height)) {
-			return true;
+			return tilesColliderData->at(i).layer;
 		}
 	}
-	return false;
+	return -1;
 }
 
 void Tilemap::UpdateTilemapColliderPosition(float _diferenceX, float _diferenceY) {

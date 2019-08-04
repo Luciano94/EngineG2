@@ -30,6 +30,7 @@ private:
 		float width;
 		float positionY;
 		float height;
+		int layer;
 	};
 
 	vector<TileColliderData>* tilesColliderData;
@@ -46,7 +47,7 @@ public:
 	void LoadMapIDs(const char* file);
 	void SetTilemapVertex(float* vertex, int cant);
 
-	bool NextTileIsCollider(float _playerTranslationX, float _playerTranslationY, float _playerHight, float _playerWidht);
+	int NextTileIsCollider(float _playerTranslationX, float _playerTranslationY, float _playerHight, float _playerWidht);
 
 	void UpdateTilemapColliderPosition(float _diferenceX, float _diferenceY);
 };

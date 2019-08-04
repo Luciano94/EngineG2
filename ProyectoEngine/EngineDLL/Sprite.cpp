@@ -47,11 +47,12 @@ void Sprite::SetTextureVertex(float * vertices, int count){
 	uvBufferID = render->GenBuffer(vertices, sizeof(float)* count * 2);
 }
 
-void Sprite::UpdAnim(float deltaTime){
+int Sprite::UpdAnim(float deltaTime){
 	if (hasAnimation) {
 		uvArray = anim->UpdateAnimation(deltaTime);
 		SetTextureVertex(uvArray, 4);
 	}
+	return anim->getCurrentFrame();
 }
 
 void Sprite::SetAnim(int initF, int finishF, float timePerF){

@@ -35,6 +35,9 @@ float * Animation::UpdateAnimation(float deltaTime){
 	return sprSheet->GetSprite(currentFrame);
 }
 
+int Animation::getCurrentFrame() {
+	return currentFrame;
+}
 
 Animation::~Animation(){
 	delete sprSheet;

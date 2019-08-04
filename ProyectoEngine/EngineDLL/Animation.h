@@ -24,6 +24,8 @@ public:
 	Animation(int columns, int rows);
 	void SetAnimation(int initF, int finishF, float timePerF);
 	float * UpdateAnimation(float deltaTime);
+
+	int getCurrentFrame();
 	
 	~Animation();
 };

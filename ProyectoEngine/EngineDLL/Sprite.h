@@ -24,7 +24,7 @@ public:
 	void DispouseTexture();
 	void SetTextureVertex(float * vertices, int count);
 	
-	void UpdAnim(float deltaTime);
+	int UpdAnim(float deltaTime);
 	void SetAnim(int initF, int finishF, float timePerF);
 
 	void setCollision();

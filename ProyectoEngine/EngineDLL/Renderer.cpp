@@ -28,7 +28,6 @@ bool Renderer::Start(void* wnd) {
 	WorldMatrix = glm::mat4(1.0f);
 
 	UpdateWVP();
-	cout << camPos.x << "	" << camPos.y << "	" << camPos.z << endl;
 	return true;
 }
 
@@ -173,7 +172,6 @@ void Renderer::setCameraPos(glm::vec3 pos) {
 	);
 
 	UpdateWVP();
-	cout << camPos.x <<"	"<< camPos.y <<"	"<< camPos.z << endl;
 }
 
 Renderer::Renderer() {
