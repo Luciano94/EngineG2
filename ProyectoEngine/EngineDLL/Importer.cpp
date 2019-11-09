@@ -75,8 +75,8 @@ void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootN
 	if (!scene->HasMeshes()) {
 		return;
 	}
-	glm::vec3 mins = glm::vec3(0, 0, 0);
-	glm::vec3 maxs = glm::vec3(0, 0, 0);
+	glm::vec3 mins = glm::vec3(INT_MAX, INT_MAX, INT_MAX);
+	glm::vec3 maxs = glm::vec3(INT_MIN, INT_MIN, INT_MIN);
 	ProcessNodes(fbxFile, textFile, rootNode, scene->mRootNode, scene, render, mins, maxs, cam);
 
 	glm::vec3 bbVertices[CUBE_VERTEX] =
@@ -139,8 +139,8 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, glm::vec3 &
 		if (pPos->z > maxs.z)
 			maxs.z = pPos->z;
 
-		mesh->vertexArray->push_back(pPos->y);
 		mesh->vertexArray->push_back(pPos->x);
+		mesh->vertexArray->push_back(pPos->y);
 		mesh->vertexArray->push_back(pPos->z);
 		mesh->uvArray->push_back(pTexCoord->x);
 		mesh->uvArray->push_back(pTexCoord->y);
