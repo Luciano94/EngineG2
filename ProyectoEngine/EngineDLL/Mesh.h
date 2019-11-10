@@ -49,14 +49,21 @@ private:
 	void DisposeIndex();
 	void DisposeTexture();
 	Camera * cam;
+	
+	/*BSP*/
+	bool isBsp = false;
+	glm::vec3 bspForward;
 public:
-
 	BoundingCube * bCube;
 
 	Mesh(Renderer * render, const char * _textureFile, Camera * cam);
 	~Mesh();
 
 	MeshData * getMeshData();
+	void UpdateData(glm::vec3 min, glm::vec3 max);
+	void setBSP(bool _isBSP, Node * node);
+	bool getIsBsp();
+	glm::vec3 getForwardBSP();
 	void setMeshData(MeshData * m);
 	void LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material);
 	void Draw() override;

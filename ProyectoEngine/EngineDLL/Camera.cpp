@@ -1,4 +1,14 @@
 #include "Camera.h"
+#include "Mesh.h"
+
+void Camera::addBSP(Mesh * plane, glm::vec3 nodepos)
+{
+	if (!plane->getIsBsp())
+		return;
+
+	bspPlanes->push_back(generatePlane(nodepos, plane->getForwardBSP()));
+	bspPlanesNormals->push_back(plane->getForwardBSP());
+}
 
 Camera::Camera(Renderer * _renderPrt): Component(render)
 {
@@ -28,7 +38,12 @@ Camera::Camera(Renderer * _renderPrt): Component(render)
 	setCamInternals();
 	setCamDef();
 	renderPtr->setVMatrix(vMatrix);
+
+	bspPlanes = new vector<glm::vec4>();
+	bspPlanesNormals = new vector<glm::vec3>();
 }
+
+
 
 void Camera::Walk(float dir)
 {
@@ -185,7 +200,7 @@ int Camera::boxInFrustum(BoundingCube * boundingCube)
 	{
 		allOutsideCurrentPlane = false;
 
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < CUBE_VERTEX; j++)
 		{
 			glm::vec3 vertexPosition = boundingCube->getVertex(j);
 			glm::vec3 planeNormal = glm::vec3(pl[i]);
@@ -206,6 +221,39 @@ int Camera::boxInFrustum(BoundingCube * boundingCube)
 		return States::INSIDE;
 	else
 		return States::OUTSIDE;
+}
+
+int Camera::boxInBSP(BoundingCube * boundingCube)
+{
+	bool inTheSamePosition = false;
+	for (int i = 0; i < bspPlanes->size(); i++) {
+		float cameraDistanceToPlane = getDistanceToPlane(camPos, bspPlanes->at(i), bspPlanesNormals->at(i));
+		float cameraDistanceSign = glm::sign(cameraDistanceToPlane);
+		for (int j = 0; j < CUBE_VERTEX; j++)
+		{
+			glm::vec3 vertexPosition = boundingCube->getVertex(j);
+			float vertexDistanceToPlane = getDistanceToPlane(vertexPosition, bspPlanes->at(i), bspPlanesNormals->at(i));
+			float vertexDistanceSign = glm::sign(vertexDistanceToPlane);
+
+			if (vertexDistanceSign == cameraDistanceSign)
+				break;
+			if (j == CUBE_VERTEX - 1)
+				inTheSamePosition = true;
+		}
+	}
+	if (!inTheSamePosition)
+		return States::INSIDE;
+	else
+		return States::OUTSIDE;
+}
+
+float Camera::getDistanceToPlane(glm::vec3 point, glm::vec4 _plane, glm::vec3 _planeNormal)
+{
+	float distance = 0.0f;
+
+	distance = glm::dot(_planeNormal, point) + _plane.w;
+
+	return distance;
 }
 
 Camera::~Camera()

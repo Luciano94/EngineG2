@@ -21,6 +21,70 @@ MeshData * Mesh::getMeshData()
 	return meshInfo;
 }
 
+void Mesh::UpdateData(glm::vec3 min, glm::vec3 max)
+{
+	glm::vec3 auxVec = bCube->getVertex(0);
+	auxVec.x = max.x; 
+	auxVec.y = max.y;
+	auxVec.z = max.z;
+
+	auxVec = bCube->getVertex(1);
+	auxVec.x = max.x;
+	auxVec.y = max.y;
+	auxVec.z = min.z;
+
+	auxVec = bCube->getVertex(2);
+	auxVec.x = min.x;
+	auxVec.y = max.y;
+	auxVec.z = max.z;
+
+	auxVec = bCube->getVertex(3);
+	auxVec.x = min.x;
+	auxVec.y = max.y;
+	auxVec.z = min.z;
+
+	auxVec = bCube->getVertex(4);
+	auxVec.x = max.x;
+	auxVec.y = min.y;
+	auxVec.z = max.z;
+
+	auxVec = bCube->getVertex(5);
+	auxVec.x = max.x;
+	auxVec.y = min.y;
+	auxVec.z = min.z;
+
+	auxVec = bCube->getVertex(6);
+	auxVec.x = min.x;
+	auxVec.y = min.y;
+	auxVec.z = max.z;
+
+	auxVec = bCube->getVertex(7);
+	auxVec.x = min.x;
+	auxVec.y = min.y;
+	auxVec.z = min.z;
+}
+
+void Mesh::setBSP(bool _isBSP, Node * node)
+{
+	if (!_isBSP)
+		return;
+
+	isBsp = _isBSP;
+	bspForward = glm::normalize((glm::vec3)(node->GetRotMatrix() * glm::vec4(0.0f,0.0f,1.0f,0.0f)));
+
+	cam->addBSP(this, node->GetPos());
+}
+
+bool Mesh::getIsBsp()
+{
+	return isBsp;
+}
+
+glm::vec3 Mesh::getForwardBSP()
+{
+	return bspForward;
+}
+
 void Mesh::setMeshData(MeshData * m) 
 {
 	meshInfo = m;
@@ -91,10 +155,18 @@ void Mesh::DisposeTexture(){
 
 
 void Mesh::Draw() {
-	if (cam->boxInFrustum(bCube) == States::INSIDE ||
-		cam->boxInFrustum(bCube) == States::INTERSECT) {
-		
-		//cout <<"INSIDE"<< endl;
+	bool shouldDraw = true;
+	if (!isBsp) {
+		if (cam->boxInBSP(bCube) != States::INSIDE) {
+			shouldDraw = false;
+		}
+		if (cam->boxInFrustum(bCube) != States::INSIDE) {
+			shouldDraw = false;
+		}
+	}
+
+	if (shouldDraw){
+		//if(!isBsp) cout << "INSIDE" << endl;
 		if (meshStruct->material != NULL) {
 			meshStruct->material->BindProgram();
 			meshStruct->material->Bind("WVP");
@@ -111,7 +183,7 @@ void Mesh::Draw() {
 		render->EndDraw(1);
 	}
 	else {
-		cout << "OUTSIDE	>>"<< meshStruct->fbxFile << endl;
+		//if (!isBsp) cout << "OUTSIDE	>>" << meshStruct->fbxFile << endl;
 	}
 }
 

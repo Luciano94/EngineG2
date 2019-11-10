@@ -7,7 +7,7 @@ Entity(_render),
 render(_render)
 {
 	cout << "Node" << endl;
-	WorldMatrix = render->getVMatrix();
+	WorldMatrix = render->getWMatrix();
 	nodes = new vector<Node *>();
 	components = new vector<Component *>();
 }

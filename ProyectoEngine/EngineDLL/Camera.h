@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
+class Mesh;
+
 class ENGINEDLL_API Camera: public Component{
 private:
 	Renderer * renderPtr;
@@ -22,6 +24,10 @@ private:
 	glm::vec4 camPos;
 	glm::vec4 up;
 	glm::vec4 point;
+	/*BSP*/
+	vector<glm::vec4> * bspPlanes;
+	vector<glm::vec3> * bspPlanesNormals;
+
 
 	/*Frustum*/
 	enum Planes{
@@ -50,6 +56,13 @@ public:
 	void setCamDef();
 	glm::vec4 generatePlane(glm::vec3 normal, glm::vec3 point);
 	int boxInFrustum(BoundingCube * BundingCube);
+
+
+	/*BSP*/
+	void addBSP(Mesh * plane, glm::vec3 nodePos);
+	int boxInBSP(BoundingCube * boundingCube);
+
+	float getDistanceToPlane(glm::vec3 point, glm::vec4 _plane, glm::vec3 _planeNormal);
 
 	Camera(Renderer * _renderPrt);
 	~Camera();

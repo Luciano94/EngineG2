@@ -18,6 +18,7 @@ protected:
 
 	void UpdateWorldMatrix();
 
+
 	BoundingBox * bBox;
 public:
 	virtual void Draw() = 0;
@@ -33,9 +34,14 @@ public:
 	void SetScale(float x, float y, float z);
 	void Translate(float x, float y, float z);
 	void Rotate(float x, float y, float z);
+	void setRotationMatrix(float x, float y, float z, float w);
+
+	void convertToEulerAngles(const glm::vec4 & quaternion, float & pitch, float & yaw, float & roll);
+	void clampEulerRotation();
 
 	glm::mat4 GetWorldMatrix();
 	glm::vec3 GetPos();
+	glm::mat4 GetRotMatrix();
 	glm::vec3 GetRot();
 	glm::vec3 GetScale();
 };

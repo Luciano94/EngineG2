@@ -101,10 +101,13 @@ void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * 
 {
 	for (int i = 0; i < (int)node->mNumMeshes; i++) {
 		Mesh * mesh = new Mesh(render, textFile, cam);
-		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh, mins, maxs);
 		Node * child = new Node(render);
 		child->addComponent((Component*)mesh);
+		InitMesh(scene->mMeshes[node->mMeshes[i]], mesh, 
+				(Mesh*)child->getComponent(ComponentsType::MeshRender), mins, maxs, node);
 		rootNode->addChild(child);
+		setNodeTransform(node, child);
+		IsBspNode(scene->mMeshes[node->mMeshes[i]], child, mesh);
 	}
 
 	for (int i = 0; i < (int)node->mNumChildren; i++) {
@@ -112,7 +115,29 @@ void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * 
 	}
 }
 
-void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, glm::vec3 &mins, glm::vec3 &maxs)
+void Importer::setNodeTransform(aiNode * aiNode, Node * node) {
+	aiVector3D aiScaling;
+	aiVector3D aiPosition;
+	aiQuaternion aiRotation;
+
+	aiNode->mTransformation.Decompose(aiScaling, aiRotation, aiPosition);
+
+	node->setRotationMatrix(aiRotation.x, aiRotation.y, aiRotation.z, aiRotation.w);
+	node->SetPos(aiPosition.x, aiPosition.y, aiPosition.z);
+	node->SetScale(aiScaling.x, aiScaling.y, aiScaling.z);
+}
+
+bool Importer::IsBspNode(const aiMesh * paiMesh,Node * node, Mesh * meshComponent)
+{
+	string meshName = paiMesh->mName.C_Str();
+	if (meshName.compare(0, 5, "Plane") == 0) {
+		meshComponent->setBSP(true, node);
+		return true;
+	}
+	return false;
+}
+
+void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, Mesh * child, glm::vec3 &mins, glm::vec3 &maxs, aiNode * node)
 {
 	MeshData * mesh = meshComponent->getMeshData();
 	mesh->vertexArray = new std::vector<float>();
@@ -120,7 +145,6 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, glm::vec3 &
 	mesh->indexArray = new std::vector<unsigned int>();
 
 	const aiVector3D Zero3D(0.0f, 0.0f, 0.0f);
-
 	for (unsigned int i = 0; i < paiMesh->mNumVertices; i++) {
 		const aiVector3D* pPos = &(paiMesh->mVertices[i]);
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
@@ -144,9 +168,9 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, glm::vec3 &
 		mesh->vertexArray->push_back(pPos->z);
 		mesh->uvArray->push_back(pTexCoord->x);
 		mesh->uvArray->push_back(pTexCoord->y);
-
-
 	}
+
+	child->UpdateData(mins, maxs);
 
 	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
 		const aiFace& Face = paiMesh->mFaces[i];
@@ -158,4 +182,3 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, glm::vec3 &
 
 	meshComponent->setMeshData(mesh);
 }
-
