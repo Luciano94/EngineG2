@@ -78,7 +78,7 @@ void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootN
 	glm::vec3 mins = glm::vec3(INT_MAX, INT_MAX, INT_MAX);
 	glm::vec3 maxs = glm::vec3(INT_MIN, INT_MIN, INT_MIN);
 	ProcessNodes(fbxFile, textFile, rootNode, scene->mRootNode, scene, render, mins, maxs, cam);
-
+/*
 	glm::vec3 bbVertices[CUBE_VERTEX] =
 	{
 		glm::vec3(mins.x, mins.y, mins.z),
@@ -92,7 +92,7 @@ void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootN
 	};
 	if (rootNode->getNode(0)->getComponent(ComponentsType::MeshRender) != nullptr) {
 		((Mesh *)rootNode->getNode(0)->getComponent(ComponentsType::MeshRender))->bCube->setVertex(bbVertices);
-	}
+	}*/
 }
 
 void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * rootNode, 
@@ -162,6 +162,7 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, Mesh * chil
 			mins.z = pPos->z;
 		if (pPos->z > maxs.z)
 			maxs.z = pPos->z;
+		meshComponent->UpdateData(mins, maxs);
 
 		mesh->vertexArray->push_back(pPos->x);
 		mesh->vertexArray->push_back(pPos->y);
@@ -169,8 +170,6 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, Mesh * chil
 		mesh->uvArray->push_back(pTexCoord->x);
 		mesh->uvArray->push_back(pTexCoord->y);
 	}
-
-	child->UpdateData(mins, maxs);
 
 	for (unsigned int i = 0; i < paiMesh->mNumFaces; i++) {
 		const aiFace& Face = paiMesh->mFaces[i];

@@ -77,6 +77,8 @@ public:
 	unsigned int GenMeshBuffer(unsigned int * indices, int size);
 	void DrawIndexMesh(int size, unsigned int indexBuffer);
 	
+	int objectsDraws = 0;
+
 	Renderer();
 	~Renderer();
 };

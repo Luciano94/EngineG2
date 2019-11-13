@@ -89,6 +89,11 @@ Node * Node::getNode(int index)
 	return nodes->at(index);
 }
 
+Node * Node::getPlayer()
+{
+	return nullptr;
+}
+
 void Node::Update()
 {	
 	for (vector<Component*>::iterator it = components->begin(); it != components->end(); ++it)

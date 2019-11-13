@@ -11,6 +11,10 @@ glm::vec3 BoundingCube::getVertex(int index)
 	return (glm::vec3)globalRotatedPos;
 }
 
+void BoundingCube::setVertex(int index, glm::vec3 pos) {
+	Cube[index].x = pos.x; Cube[index].y = pos.y; Cube[index].z, pos.z;
+}
+
 void BoundingCube::setVertex(glm::vec3 _cube[CUBE_VERTEX])
 {
 	for (int i = 0; i < CUBE_VERTEX; i++)

@@ -31,9 +31,9 @@ bool Game::OnStart() {
 
 	/*cargo los modelos*/
 	cameraNode->addComponent(camera);
-	Importer::LoadMesh("SceneDefault.fbx", "Sample2.bmp", mFourNode, render, camera);
+	Importer::LoadMesh("Definitivo.fbx", "Sample2.bmp", mFourNode, render, camera);
 	camera->Translate(glm::vec3(0.0f,0.0f,-10.0f));
-
+	rifleNode = mFourNode->getNode(5);
 	//Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", mFourNode, render, camera);
 	//Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", rifleNode, render, camera);
 	//Importer::LoadMesh("weapon.fbx", "weapon.bmp", pistolNode, render, camera);
@@ -93,6 +93,13 @@ bool Game::OnUpdate() {
 	if (input->isInput(GLFW_KEY_RIGHT))
 		camera->Rotate(glm::vec3(  -deltaTime,0, 0));
 
+	if (input->isInput(GLFW_KEY_J))
+		rifleNode->Translate(speed * deltaTime, 0, 0);
+
+	if (input->isInput(GLFW_KEY_K))
+		rifleNode->Translate(speed * deltaTime * -1, 0,0);
+
+
 /*Translations*/
 	if (input->isInput(GLFW_KEY_W))
 		camera->Translate(glm::vec3(0, 0, speed * deltaTime));
@@ -114,6 +121,9 @@ bool Game::OnUpdate() {
 
 void Game::OnDraw()
 {
+	cout << "Objects Draw = " << render->objectsDraws << endl;
+	cout.clear();
+	render->objectsDraws = 0;
 }
 
 Game::Game() {

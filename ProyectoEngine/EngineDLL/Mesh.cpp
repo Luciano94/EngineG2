@@ -23,45 +23,46 @@ MeshData * Mesh::getMeshData()
 
 void Mesh::UpdateData(glm::vec3 min, glm::vec3 max)
 {
-	glm::vec3 auxVec = bCube->getVertex(0);
+	glm::vec3 auxVec;
 	auxVec.x = max.x; 
 	auxVec.y = max.y;
 	auxVec.z = max.z;
+	bCube->setVertex(0, auxVec);
 
-	auxVec = bCube->getVertex(1);
 	auxVec.x = max.x;
 	auxVec.y = max.y;
 	auxVec.z = min.z;
+	bCube->setVertex(1, auxVec);
 
-	auxVec = bCube->getVertex(2);
 	auxVec.x = min.x;
 	auxVec.y = max.y;
 	auxVec.z = max.z;
+	bCube->setVertex(2, auxVec);
 
-	auxVec = bCube->getVertex(3);
 	auxVec.x = min.x;
 	auxVec.y = max.y;
 	auxVec.z = min.z;
+	bCube->setVertex(3, auxVec);
 
-	auxVec = bCube->getVertex(4);
 	auxVec.x = max.x;
 	auxVec.y = min.y;
 	auxVec.z = max.z;
+	bCube->setVertex(4, auxVec);
 
-	auxVec = bCube->getVertex(5);
 	auxVec.x = max.x;
 	auxVec.y = min.y;
 	auxVec.z = min.z;
+	bCube->setVertex(5, auxVec);
 
-	auxVec = bCube->getVertex(6);
 	auxVec.x = min.x;
 	auxVec.y = min.y;
 	auxVec.z = max.z;
+	bCube->setVertex(6, auxVec);
 
-	auxVec = bCube->getVertex(7);
 	auxVec.x = min.x;
 	auxVec.y = min.y;
 	auxVec.z = min.z;
+	bCube->setVertex(7, auxVec);
 }
 
 void Mesh::setBSP(bool _isBSP, Node * node)
@@ -166,6 +167,9 @@ void Mesh::Draw() {
 	}
 
 	if (shouldDraw){
+		if (!isBsp) {
+			render->objectsDraws++;
+		}
 		//if(!isBsp) cout << "INSIDE" << endl;
 		if (meshStruct->material != NULL) {
 			meshStruct->material->BindProgram();

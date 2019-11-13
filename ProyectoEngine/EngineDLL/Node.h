@@ -18,7 +18,7 @@ private:
 	vector<Component *> * components;
 	vector<Node *> * nodes;
 public:
-	
+	string name = "";
 
 	Node(Renderer * render);
 	~Node();
@@ -33,6 +33,7 @@ public:
 	vector<Component*>* getComponents();
 
 	Node * getNode(int index);
+	Node * getPlayer();
 	void Update();
 	void Draw();
 };

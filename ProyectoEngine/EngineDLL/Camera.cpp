@@ -237,7 +237,7 @@ int Camera::boxInBSP(BoundingCube * boundingCube)
 
 			if (vertexDistanceSign == cameraDistanceSign)
 				break;
-			if (j == CUBE_VERTEX - 1)
+			if (j == CUBE_VERTEX -1)
 				inTheSamePosition = true;
 		}
 	}
