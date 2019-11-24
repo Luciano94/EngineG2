@@ -99,6 +99,9 @@
     <ClInclude Include="BoundingCube.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="BoundingDrawer.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameBase.cpp">
@@ -168,6 +171,9 @@
       <Filter>Archivos de origen\Node</Filter>
     </ClCompile>
     <ClCompile Include="BoundingCube.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingDrawer.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

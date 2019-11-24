@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "BoundingCube.h"
+#include "BoundingDrawer.h"
 #include "Node.h"
 #include "Camera.h"
 #include <list>
@@ -53,6 +54,7 @@ private:
 	/*BSP*/
 	bool isBsp = false;
 	glm::vec3 bspForward;
+	BoundingDrawer * drawerCube;
 public:
 	BoundingCube * bCube;
 

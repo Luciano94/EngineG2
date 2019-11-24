@@ -31,9 +31,9 @@ bool Game::OnStart() {
 
 	/*cargo los modelos*/
 	cameraNode->addComponent(camera);
-	Importer::LoadMesh("Definitivo.fbx", "Sample2.bmp", mFourNode, render, camera);
+	Importer::LoadMesh("sceneDefault.fbx", "Sample2.bmp", mFourNode, render, camera);
 	camera->Translate(glm::vec3(0.0f,0.0f,-10.0f));
-	rifleNode = mFourNode->getNode(5);
+	rifleNode = mFourNode->getNode(3);
 	//Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", mFourNode, render, camera);
 	//Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", rifleNode, render, camera);
 	//Importer::LoadMesh("weapon.fbx", "weapon.bmp", pistolNode, render, camera);

@@ -127,6 +127,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BoundingCube.h" />
+    <ClInclude Include="BoundingDrawer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="CollisionManager.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BoundingCube.cpp" />
+    <ClCompile Include="BoundingDrawer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="CollisionManager.cpp" />

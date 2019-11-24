@@ -162,6 +162,7 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, Mesh * chil
 			mins.z = pPos->z;
 		if (pPos->z > maxs.z)
 			maxs.z = pPos->z;
+
 		meshComponent->UpdateData(mins, maxs);
 
 		mesh->vertexArray->push_back(pPos->x);

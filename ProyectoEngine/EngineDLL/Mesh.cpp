@@ -14,6 +14,8 @@ Mesh::Mesh(Renderer * render, const char * _textureFile, Camera * cam) :Componen
 	meshStruct->bufferId = -1;
 	meshStruct->uvBufferID = -1;
 	meshStruct->indexBufferID = -1;
+
+	drawerCube = new BoundingDrawer(render);
 }
 
 MeshData * Mesh::getMeshData()
@@ -115,6 +117,9 @@ void Mesh::setMeshData(MeshData * m)
 	meshStruct->programID = meshStruct->material->LoadShaders("VertexTexture.glsl", "FragmentTexture.glsl");
 	LoadMaterial(textureFile, meshStruct->texID, meshStruct->material);
 
+	drawerCube->SetVertices(bCube->getVertex(), CUBE_VERTEX);
+	drawerCube->SetColorVertex(bCube->getVertex(), CUBE_VERTEX);
+	drawerCube->SetMaterial(meshStruct->material);
 }
 
 void Mesh::LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material) {
@@ -170,6 +175,7 @@ void Mesh::Draw() {
 		if (!isBsp) {
 			render->objectsDraws++;
 		}
+		//drawerCube->DrawMesh(GL_POINTS);
 		//if(!isBsp) cout << "INSIDE" << endl;
 		if (meshStruct->material != NULL) {
 			meshStruct->material->BindProgram();

@@ -13,6 +13,7 @@ private:
 	Renderer * renderPtr;
 public:
 	glm::vec3 getVertex(int index);
+	float * getVertex();
 	void setVertex(int index, glm::vec3 pos);
 	void setVertex(glm::vec3 _cube[CUBE_VERTEX]);
 	BoundingCube(Renderer * render);

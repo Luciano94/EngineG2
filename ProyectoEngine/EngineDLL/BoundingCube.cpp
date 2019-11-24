@@ -11,6 +11,21 @@ glm::vec3 BoundingCube::getVertex(int index)
 	return (glm::vec3)globalRotatedPos;
 }
 
+float * BoundingCube::getVertex()
+{
+	float * result = new float[CUBE_VERTEX * 3];
+	int cantVetex = 0;
+	for (size_t i = 0; i < CUBE_VERTEX; i++)
+	{
+		glm::vec3 cube = getVertex(i);
+		result[i] = cube.x;
+		result[i + 1] = cube.y;
+		result[i + 2] = cube.z;
+		cantVetex += 3;
+	}
+	return result;
+}
+
 void BoundingCube::setVertex(int index, glm::vec3 pos) {
 	Cube[index].x = pos.x; Cube[index].y = pos.y; Cube[index].z, pos.z;
 }
