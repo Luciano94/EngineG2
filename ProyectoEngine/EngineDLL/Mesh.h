@@ -69,5 +69,8 @@ public:
 	void setMeshData(MeshData * m);
 	void LoadMaterial(const char * bmpFile, unsigned int &texID, Material * material);
 	void Draw() override;
+
+	glm::vec3 mins = glm::vec3(INT_MAX, INT_MAX, INT_MAX);
+	glm::vec3 maxs = glm::vec3(INT_MIN, INT_MIN, INT_MIN);
 };
 

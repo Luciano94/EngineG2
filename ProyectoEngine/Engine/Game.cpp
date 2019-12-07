@@ -16,33 +16,23 @@ bool Game::OnStart() {
 
 	/*nodes*/
 	chuckNorris = new Node(render); //Scene node
+	cameraNode = new Node(render); //Camera
+
 	weaponsNode = new Node(render);
 	mFourNode = new Node(render);
-	cameraNode = new Node(render);
 	rifleNode = new Node(render);
 	pistolNode = new Node(render);
 
 	/*creo la jerarquia*/
 	chuckNorris->addChild(cameraNode);
 	chuckNorris->addChild(mFourNode);
-	//chuckNorris->addChild(pistolNode);
-	//weaponsNode->addChild(mFourNode);
-	//mFourNode->addChild(rifleNode);
 
 	/*cargo los modelos*/
 	cameraNode->addComponent(camera);
-	Importer::LoadMesh("sceneDefault.fbx", "Sample2.bmp", mFourNode, render, camera);
-	camera->Translate(glm::vec3(0.0f,0.0f,-10.0f));
-	rifleNode = mFourNode->getNode(3);
-	//Importer::LoadMesh("Arma.fbx", "ArmaTex.bmp", mFourNode, render, camera);
-	//Importer::LoadMesh("Arma2.fbx", "ArmaTex2.bmp", rifleNode, render, camera);
-	//Importer::LoadMesh("weapon.fbx", "weapon.bmp", pistolNode, render, camera);
-
-	/*seteo la escala y posicion*/
-	//chuckNorris->SetPos(0, 0, 0);
-	//mFourNode->SetScale(0.5f, 0.5f, 0.5f);
-	//mFourNode->SetPos(0, 0, -10);
-	//rifleNode->SetScale(10, 10, 10);
+	MeshLoader::GetInstance()->LoadMesh("Assets/sceneDefault.fbx", "Assets/ArmaTex.bmp", chuckNorris, render, camera);
+	mFourNode->SetScale(0.5F, 0.5F, 0.5F);
+	camera->Translate(glm::vec3(0.0f,0.0f,-500.0f));
+	rifleNode = chuckNorris->getNode(3);
 
 	setScene(chuckNorris);
 	cout << "Game::OnStart()" << endl;
@@ -63,16 +53,6 @@ bool Game::OnStop() {
 
 bool Game::OnUpdate() {
 	input->PollEvents();
-	//i++;
-	//CollisionManager::GetInstance()->UpdatePhysicsBox();
-
-/*Node Transforms*/
-	//Roto al cargador del arma
-	//mFourNode->getNode(1)->Rotate(0, deltaTime, 0);
-	//Roto el cuerpo del arma
-	//mFourNode->Rotate(deltaTime, 0, 0);
-	//roto la pistola y sus nodos
-	//pistolNode->Rotate(0, deltaTime, 0);
 
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
@@ -98,6 +78,12 @@ bool Game::OnUpdate() {
 
 	if (input->isInput(GLFW_KEY_K))
 		rifleNode->Translate(speed * deltaTime * -1, 0,0);
+
+/*NODE ROTATIONS */
+
+		chuckNorris->Rotate(0, 0, deltaTime);
+
+		rifleNode->Rotate(deltaTime * -1, 0, 0);
 
 
 /*Translations*/

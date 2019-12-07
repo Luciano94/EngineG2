@@ -12,6 +12,7 @@
 #include "Camera.h"
 #include "Shape.h"
 #include "Node.h"
+#include "MeshLoader.h"
 #include <iostream>
 
 using namespace std;

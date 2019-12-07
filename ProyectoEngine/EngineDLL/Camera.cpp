@@ -149,8 +149,6 @@ void Camera::setCamInternals()
 	tang = glm::tan(angle * 0.5f);
 	nh = nearD * tang;
 	nw = nh * ratio;
-	fh = farD * tang;
-	fw = fh * ratio;
 }
 
 void Camera::setCamDef()
@@ -206,7 +204,7 @@ int Camera::boxInFrustum(BoundingCube * boundingCube)
 			glm::vec3 planeNormal = glm::vec3(pl[i]);
 
 			float dist = glm::dot(planeNormal, vertexPosition) + pl[i].w;
-			if (dist < 0.0f)
+			if (dist <= 0.0f)
 				break;
 			if (j == CUBE_VERTEX - 1)
 				allOutsideCurrentPlane = true;

@@ -78,7 +78,7 @@ void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootN
 	glm::vec3 mins = glm::vec3(INT_MAX, INT_MAX, INT_MAX);
 	glm::vec3 maxs = glm::vec3(INT_MIN, INT_MIN, INT_MIN);
 	ProcessNodes(fbxFile, textFile, rootNode, scene->mRootNode, scene, render, mins, maxs, cam);
-/*
+
 	glm::vec3 bbVertices[CUBE_VERTEX] =
 	{
 		glm::vec3(mins.x, mins.y, mins.z),
@@ -92,7 +92,7 @@ void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootN
 	};
 	if (rootNode->getNode(0)->getComponent(ComponentsType::MeshRender) != nullptr) {
 		((Mesh *)rootNode->getNode(0)->getComponent(ComponentsType::MeshRender))->bCube->setVertex(bbVertices);
-	}*/
+	}
 }
 
 void Importer::ProcessNodes(const char * fbxFile, const char * textFile, Node * rootNode, 
@@ -150,18 +150,18 @@ void Importer::InitMesh(const aiMesh* paiMesh, Mesh * meshComponent, Mesh * chil
 		const aiVector3D* pNormal = &(paiMesh->mNormals[i]);
 		const aiVector3D* pTexCoord = paiMesh->HasTextureCoords(0) ? &(paiMesh->mTextureCoords[0][i]) : &Zero3D;
 
-		if (pPos->x < mins.x)
-			mins.x = pPos->x;
-		if (pPos->x > maxs.x)
-			maxs.x = pPos->x;
-		if (pPos->y < mins.y)
-			mins.y = pPos->y;
-		if (pPos->y > maxs.y)
-			maxs.y = pPos->y;
-		if (pPos->z < mins.z)
-			mins.z = pPos->z;
-		if (pPos->z > maxs.z)
-			maxs.z = pPos->z;
+		if (pPos->x < meshComponent->mins.x)
+			meshComponent->mins.x = pPos->x;
+		if (pPos->x > meshComponent->maxs.x)
+			meshComponent->maxs.x = pPos->x;
+		if (pPos->y < meshComponent->mins.y)
+			meshComponent->mins.y = pPos->y;
+		if (pPos->y > meshComponent->maxs.y)
+			meshComponent->maxs.y = pPos->y;
+		if (pPos->z < meshComponent->mins.z)
+			meshComponent->mins.z = pPos->z;
+		if (pPos->z > meshComponent->maxs.z)
+			meshComponent->maxs.z = pPos->z;
 
 		meshComponent->UpdateData(mins, maxs);
 

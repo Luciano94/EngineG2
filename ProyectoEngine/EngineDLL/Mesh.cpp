@@ -162,19 +162,17 @@ void Mesh::DisposeTexture(){
 
 void Mesh::Draw() {
 	bool shouldDraw = true;
-	if (!isBsp) {
-		if (cam->boxInBSP(bCube) != States::INSIDE) {
+	//if (!isBsp) {
+		/*if (cam->boxInBSP(bCube) != States::INSIDE) {
 			shouldDraw = false;
-		}
+		}*/
 		if (cam->boxInFrustum(bCube) != States::INSIDE) {
 			shouldDraw = false;
 		}
-	}
+	//}
 
-	if (shouldDraw){
-		if (!isBsp) {
+	if (!isBsp && shouldDraw){
 			render->objectsDraws++;
-		}
 		//drawerCube->DrawMesh(GL_POINTS);
 		//if(!isBsp) cout << "INSIDE" << endl;
 		if (meshStruct->material != NULL) {
