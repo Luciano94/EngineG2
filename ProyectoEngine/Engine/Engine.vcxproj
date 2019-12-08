@@ -76,10 +76,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)EngineDLL;$(SolutionDir)external\glew-2.1.0\include;$(SolutionDir)external\glfw-3.2.1\include;$(SolutionDir)external\glm-0.9.9.0;$(SolutionDir)external\Assimp\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)EngineDLL;$(SolutionDir)external\glew-2.1.0\include;$(SolutionDir)external\glfw-3.3\include;$(SolutionDir)external\glm-0.9.9.0;$(SolutionDir)external\Assimp\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
-      <Command>COPY "$(SolutionDir)External\Assimp\Bin\assimp-vc140-mt.dll" "$(OutDir)"</Command>
+      <Command>COPY "$(SolutionDir)External\Assimp\dlls\x86\assimp-vc140-mt.dll" "$(OutDir)"
+COPY "$(SolutionDir)External\glew-2.1.0\bin\Release\Win32\glew32.dll" "$(OutDir)"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -88,8 +90,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)EngineDLL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)EngineDLL;$(SolutionDir)external\glew-2.1.0\include;$(SolutionDir)external\glfw-3.3\include;$(SolutionDir)external\glm-0.9.9.0;$(SolutionDir)external\Assimp\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>COPY "$(SolutionDir)External\Assimp\dlls\x64\assimp-vc140-mt.dll" "$(OutDir)"
+COPY "$(SolutionDir)External\glew-2.1.0\bin\Release\x64\glew32.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
