@@ -14,6 +14,10 @@
 
 #define FULL_ROTATION					  360.0f
 
+constexpr const float MAX_BYTE_VALUE = 255.0f;
+constexpr const int CUBE_VERTICES = 8;
+constexpr float DEFAULT_GRAVITY_Y = -9.81f;
+
 enum Layers
 {
 	Player = 0,
@@ -63,10 +67,44 @@ enum ComponentsType{
 	nullComponent
 };
 
+struct Vertex
+{
+	glm::vec3 m_pos;
+	glm::vec2 m_tex;
+	glm::vec3 m_normal;
+
+	Vertex() {}
+
+	Vertex(const glm::vec3& pos, const glm::vec2& tex, const glm::vec3& normal)
+	{
+		m_pos = pos;
+		m_tex = tex;
+		m_normal = normal;
+	}
+};
+
 /*Camera*/
 
 enum States { 
 	OUTSIDE, 
 	INTERSECT, 
 	INSIDE 
+};
+
+/*Physix*/
+enum class PrimitiveType
+{
+	LINES = 1,
+	TRIANGLE = 4,
+	TRIANGLE_STRIP = 5,
+	TRIANGLE_FAN = 6,
+	QUAD = 7
+};
+
+enum class ForceMode
+{
+	FORCE,
+	IMPULSE,
+	VELOCITY_CHANGE,
+	ACCELERATION
 };

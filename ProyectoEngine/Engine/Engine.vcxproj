@@ -94,7 +94,11 @@ COPY "$(SolutionDir)External\glew-2.1.0\bin\Release\Win32\glew32.dll" "$(OutDir)
     </ClCompile>
     <PostBuildEvent>
       <Command>COPY "$(SolutionDir)External\Assimp\dlls\x64\assimp-vc140-mt.dll" "$(OutDir)"
-COPY "$(SolutionDir)External\glew-2.1.0\bin\Release\x64\glew32.dll" "$(OutDir)"</Command>
+COPY "$(SolutionDir)External\glew-2.1.0\bin\Release\x64\glew32.dll" "$(OutDir)"
+COPY "$(SolutionDir)External\PhysX-4.1\dlls\x64\PhysX_64.dll" "$(OutDir)"
+COPY "$(SolutionDir)External\PhysX-4.1\dlls\x64\PhysXCommon_64.dll" "$(OutDir)"
+COPY "$(SolutionDir)External\PhysX-4.1\dlls\x64\PhysXFoundation_64.dll" "$(OutDir)"
+COPY "$(SolutionDir)External\PhysX-4.1\dlls\x64\PhysXCooking_64.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>

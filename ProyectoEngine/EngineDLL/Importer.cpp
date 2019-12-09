@@ -56,6 +56,67 @@ bool Importer::bmpCorrectFormat(unsigned char header[], FILE *bmpFile)
 	return true;
 }
 
+void Importer::LoadRandomTerrain(Node* thisNode, int rows, int columns, glm::vec3 scale,
+	const char* texturesPath)
+{
+/*	Mesh* mesh = new Mesh();
+
+	RandomHeightGenerator::GenerateSeed();
+
+	vector<Vertex> vertices;
+	vector<vector<int>> heights;
+
+	vector<int> currentRowHeights;
+
+	for (unsigned int row = 0; row < (unsigned int)rows; row++)
+	{
+		currentRowHeights.clear();
+
+		for (unsigned int col = 0; col < (unsigned int)columns; col++)
+		{
+			int randomHeight = RandomHeightGenerator::GenerateHeight(row, col);
+
+			float posX = col * scale.x;
+			float posY = (float)randomHeight / MAX_BYTE_VALUE * scale.y;
+			float posZ = row * scale.z;
+
+			float u = (float)col / (float)columns;
+			float v = 1.0f - (float)row / (float)rows;
+
+			Vertex vertex(glm::vec3(posX, posY, posZ),
+				glm::vec2(u, v),
+				glm::vec3(0.0f, 0.0f, 0.0f));
+
+			currentRowHeights.push_back(randomHeight);
+			vertices.push_back(vertex);
+		}
+
+		heights.push_back(currentRowHeights);
+	}
+
+	vector<unsigned int> indices = GenerateTerrainIndices(rows, columns);
+
+	if (texturesPath != "")
+	{
+		mesh->m_Textures.push_back(TextureImporter::LoadImage(texturesPath));
+
+		unsigned int textureId = Renderer::getInstance()->GenTexture(mesh->m_Textures[0].width, mesh->m_Textures[0].height, mesh->m_Textures[0].imageFormat, mesh->m_Textures[0].data);
+		mesh->m_Textures[0].id = textureId;
+		mesh->bufferTextures.push_back(textureId);
+	}
+
+
+	Terrain* terrain = (Terrain*)thisNode->AddComponent(new Terrain());
+	terrain->CreateHeightField(heights, rows, columns, scale);
+
+	mesh->m_Entries.resize(1);
+	mesh->m_Entries[0].Init(vertices, indices);
+
+	mesh->SetDiffTex(mesh->m_Textures);
+
+	thisNode->AddComponent(mesh);*/
+}
+
 void Importer::LoadMesh(const char * fbxFile,const char * textFile, Node * rootNode, Renderer * render, Camera * cam){
 	// Create an instance of the Importer class
 	Assimp::Importer importer;

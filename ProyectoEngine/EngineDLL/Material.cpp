@@ -113,6 +113,21 @@ void Material::SetMatrixProperty( glm::mat4 & mat){
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mat[0][0]);
 }
 
+Material* Material::GenerateMaterial(const char* vertexShaderPath, const char* pixelShaderPath)
+{
+	Material* material = new Material();
+
+	material->ProgramID = material->LoadShaders(vertexShaderPath, pixelShaderPath);
+
+	return material;
+}
+
+void Material::DestroyMaterial(Material* material)
+{
+	if (material)
+		delete material;
+}
+
 void Material::BindTexture(const char* name) {
 	textureID = glGetUniformLocation(ProgramID, name);
 }

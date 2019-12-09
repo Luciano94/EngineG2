@@ -27,6 +27,10 @@ private:
 							aiNode * node, const aiScene * scene, Renderer * render, 
 							glm::vec3 &mins, glm::vec3 &maxs, Camera * cam);
 
+	//Terrain
+	void LoadRandomTerrain(Node* thisNode, int rows, int columns, glm::vec3 scale,
+		const char* texturesPath = "");
+
 	static void setNodeTransform(aiNode * aiNode, Node * node);
 
 	static bool IsBspNode(const aiMesh * paiMesh,Node * node, Mesh * meshComponent);

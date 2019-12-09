@@ -27,7 +27,14 @@ private:
 	CameraType camT;
 	glm::mat4 perspMatrix;
 	glm::mat4 orthoMatrix;
+
+/*Singleton*/
+	Renderer();
+	static Renderer * Instance;
 public:
+	/*Singleton*/
+	static Renderer * GetInstance();
+
 	bool Start(void* wnd);
 	bool Stop();
 
@@ -79,6 +86,5 @@ public:
 	
 	int objectsDraws = 0;
 
-	Renderer();
 	~Renderer();
 };

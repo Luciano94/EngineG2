@@ -3,6 +3,15 @@
 #include <GLFW\glfw3.h>
 using namespace std;
 
+Renderer * Renderer::Instance = NULL;
+
+Renderer * Renderer::GetInstance() {
+	if (Instance == NULL) {
+		Instance = new Renderer();
+	}
+	return Instance;
+}
+
 bool Renderer::Start(void* wnd) {
 	cout << "Renderer::Start()" << endl;
 	win = wnd;

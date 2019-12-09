@@ -76,42 +76,42 @@ bool Game::OnUpdate() {
 
 /*Rotations*/
 	if (input->isInput(GLFW_KEY_Q))
-		camera->Rotate(glm::vec3(0, 0, deltaTime));
+		camera->Rotate(glm::vec3(0, 0, deltaTime->GetDeltaTime()));
 
 	if (input->isInput(GLFW_KEY_E))
-		camera->Rotate(glm::vec3(0, 0, -deltaTime));
+		camera->Rotate(glm::vec3(0, 0, -deltaTime->GetDeltaTime()));
 
 	if (input->isInput(GLFW_KEY_UP))
-		camera->Rotate(glm::vec3(0, -deltaTime, 0));
+		camera->Rotate(glm::vec3(0, -deltaTime->GetDeltaTime(), 0));
 
 	if (input->isInput(GLFW_KEY_DOWN))
-		camera->Rotate(glm::vec3(0,  deltaTime, 0));
+		camera->Rotate(glm::vec3(0, deltaTime->GetDeltaTime(), 0));
 	
 	if (input->isInput(GLFW_KEY_LEFT))
-		camera->Rotate(glm::vec3( deltaTime,0, 0));
+		camera->Rotate(glm::vec3(deltaTime->GetDeltaTime(),0, 0));
 
 	if (input->isInput(GLFW_KEY_RIGHT))
-		camera->Rotate(glm::vec3(  -deltaTime,0, 0));
+		camera->Rotate(glm::vec3(  -deltaTime->GetDeltaTime(),0, 0));
 
 	if (input->isInput(GLFW_KEY_J))
-		rifleNode->Translate(speed * deltaTime, 0, 0);
+		rifleNode->Translate(speed * deltaTime->GetDeltaTime(), 0, 0);
 
 	if (input->isInput(GLFW_KEY_K))
-		rifleNode->Translate(speed * deltaTime * -1, 0,0);
+		rifleNode->Translate(speed * deltaTime->GetDeltaTime() * -1, 0,0);
 
 
 /*Translations*/
 	if (input->isInput(GLFW_KEY_W))
-		camera->Translate(glm::vec3(0, 0, speed * deltaTime));
+		camera->Translate(glm::vec3(0, 0, speed * deltaTime->GetDeltaTime()));
 
 	if (input->isInput(GLFW_KEY_S))
-		camera->Translate(glm::vec3(0, 0, speed * -deltaTime));
+		camera->Translate(glm::vec3(0, 0, speed * -deltaTime->GetDeltaTime()));
 
 	if (input->isInput(GLFW_KEY_A))
-		camera->Translate(glm::vec3(speed * deltaTime, 0, 0));
+		camera->Translate(glm::vec3(speed * deltaTime->GetDeltaTime(), 0, 0));
 
 	if (input->isInput(GLFW_KEY_D))
-		camera->Translate(glm::vec3(-speed * deltaTime, 0, 0));
+		camera->Translate(glm::vec3(-speed * deltaTime->GetDeltaTime(), 0, 0));
 
 	if (input->isInput(GLFW_KEY_LEFT_SHIFT))
 		speed = 100.0f;

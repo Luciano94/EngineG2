@@ -35,7 +35,7 @@ struct meshes
 
 class ENGINEDLL_API Mesh : public Component
 {
-private:
+protected:
 
 	unsigned int texID;
 

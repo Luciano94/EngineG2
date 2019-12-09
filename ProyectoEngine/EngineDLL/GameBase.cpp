@@ -7,9 +7,9 @@ GameBase::~GameBase() {
 }
 
 bool GameBase::Start(int h, int w, char* name) {
-	lastFrame = 0;
+	deltaTime = DeltaTime::GetInstance();
 	cout << "GameBase::Start()" << endl;
-	render = new Renderer();
+	render = Renderer::GetInstance();
 	window = new Window ();
 	if(!window->Start(h,w,name))
 		return false;
@@ -23,7 +23,7 @@ void GameBase::Loop() {
 	render->setClearScreenColor(0.2f, 0.2f, 0.5f, 0.0f);
 	while (looping && !window->ShouldClose()) {
 		render->ClearScreen();	
-		getDeltaTime();
+		deltaTime->UpdateDeltaTime();
 		looping = OnUpdate();
 		if (SceneNode)
 			SceneNode->Update();
@@ -33,12 +33,6 @@ void GameBase::Loop() {
 		render->SwapBuffer();
 		window->PollEvents();
 	}
-}
-
-void GameBase::getDeltaTime(){
-	currentFrame = glfwGetTime();
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
 }
 
 void GameBase::setScene(Node * _Scene)
